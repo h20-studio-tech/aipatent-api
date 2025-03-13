@@ -10,3 +10,5 @@ pandas
 pydantic
 supabase
 unstructured_client
+python-dotenv
+uvicorn
