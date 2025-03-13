@@ -63,10 +63,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="aipatent", version="0.1.0", lifespan=lifespan)
 
 origins = [
-    "http://192.168.0.236:3000",
-    "http://localhost:3000",
-    "https://aipatent.vercel.app/",
-    "https://aipatent-team-h20studios-projects.vercel.app/"
+    "*"
 ]
 
 app.add_middleware(
