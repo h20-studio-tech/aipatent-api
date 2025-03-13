@@ -1,0 +1,15 @@
+.env
+.venv
+.csv
+patent_targets_v1.csv
+prompt-builder-ds
+make_dataset.ipynb
+make_dataset.py
+app/__pycache__/
+__pycache__
+eval/
+evaluation_results_detailed_description.csv
+evaluation_results_field_of_invention.csv
+evaluation_results_summary.csv
+.replit
+replit.nix

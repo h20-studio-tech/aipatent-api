@@ -1,0 +1,1394 @@
+element_id,text,page_number,filename,chunk_id
+9e6d0467f5a7a8a9d60af64b4693464c,"Bacteriophage targeting of gut bacterium attenuates alcoholic liver disease
+
+https://doi.org/10.1038/s41586-019-1742-x
+
+Received: 9 April 2019
+
+Accepted: 2 October 2019
+
+Published online: 13 November 2019",1,ald_paper,1
+a6bf0dff8115f7a67accd04a21d26bd5,"Yi Duan1,2,29, Cristina Llorente1,2,29, Sonja Lang1, Katharina Brandl3, Huikuan Chu1, Lu Jiang1,2, Richard C. White4, Thomas H. Clarke4, Kevin Nguyen4, Manolito Torralba5, Yan Shao6, Jinyuan Liu7, Adriana Hernandez-Morales8, Lauren Lessor9, Imran R. Rahman10, Yukiko Miyamoto1, Melissa Ly11, Bei Gao1, Weizhong Sun1, Roman Kiesel1, Felix Hutmacher1, Suhan Lee1, Meritxell Ventura-Cots12, Francisco Bosques-Padilla13, Elizabeth C. Verna14, Juan G. Abraldes15, Robert S. Brown Jr16, Victor Vargas17,18, Jose Altamirano17, Juan Caballería18,19, Debbie L. Shawcross20, Samuel B. Ho1,2, Alexandre Louvet21, Michael R. Lucey22, Philippe Mathurin21, Guadalupe Garcia-Tsao23,24, Ramon Bataller12, Xin M. Tu7, Lars Eckmann1, Wilfred A. van der Donk10,25,26, Ry Young8,9, Trevor D. Lawley6, Peter Stärkel27, David Pride1,11,28, Derrick E. Fouts4 & Bernd Schnabl1,2,28*",1,ald_paper,2
+4caa28f42ec66b346172e2e3db7824b0,"Chronic liver disease due to alcohol-use disorder contributes markedly to the global burden of disease and mortality1–3. Alcoholic hepatitis is a severe and life-threatening form of alcohol-associated liver disease. The gut microbiota promotes ethanol- induced liver disease in mice4, but little is known about the microbial factors that are responsible for this process. Here we identify cytolysin—a two-subunit exotoxin that is secreted by Enterococcus faecalis5,6—as a cause of hepatocyte death and liver injury. Compared with non-alcoholic individuals or patients with alcohol-use disorder, patients with alcoholic hepatitis have increased faecal numbers of E. faecalis. The presence of cytolysin-positive (cytolytic) E. faecalis correlated with the severity of liver disease and with mortality in patients with alcoholic hepatitis. Using humanized mice that were colonized with bacteria from the faeces of patients with alcoholic hepatitis, we investigated the therapeutic effects of",1,ald_paper,3
+fa7c0c26edf82dc537d45cd39b084ded,"te death and liver injury. Compared with non-alcoholic individuals or patients with alcohol-use disorder, patients with alcoholic hepatitis have increased faecal numbers of E. faecalis. The presence of cytolysin-positive (cytolytic) E. faecalis correlated with the severity of liver disease and with mortality in patients with alcoholic hepatitis. Using humanized mice that were colonized with bacteria from the faeces of patients with alcoholic hepatitis, we investigated the therapeutic effects of bacteriophages that target cytolytic E. faecalis. We found that these bacteriophages decrease cytolysin in the liver and abolish ethanol-induced liver disease in humanized mice. Our findings link cytolytic E. faecalis with more severe clinical outcomes and increased mortality in patients with alcoholic hepatitis. We show that bacteriophages can specifically target cytolytic E. faecalis, which provides a method for precisely editing the intestinal microbiota. A clinical trial with a larger cohort",1,ald_paper,4
+848cfd971c8ba62b75b7ab77ec61038c,"acteriophages that target cytolytic E. faecalis. We found that these bacteriophages decrease cytolysin in the liver and abolish ethanol-induced liver disease in humanized mice. Our findings link cytolytic E. faecalis with more severe clinical outcomes and increased mortality in patients with alcoholic hepatitis. We show that bacteriophages can specifically target cytolytic E. faecalis, which provides a method for precisely editing the intestinal microbiota. A clinical trial with a larger cohort is required to validate the relevance of our findings in humans, and to test whether this therapeutic approach is effective for patients with alcoholic hepatitis.",1,ald_paper,5
+f69623e70df04794c247d3a05995e5b6,"The most severe form of alcohol-related liver disease is alcoholic hepa- titis; mortality ranges from 20% to 40% at 1–6 months, and as many as 75% of patients die within 90 days of a diagnosis of severe alcoholic hepatitis7–9. Therapy with corticosteroids is only marginally effective9. Early liver transplantation is the only curative therapy, but is offered only at select centres and to a limited group of patients10.
+
+Alcohol-related liver disease can be transmitted via faecal micro- biota4. We investigated the microorganisms and microbial factors that are responsible for this transmissible phenotype and for progression of alcohol-related liver disease.
+
+Cytolysin linked to increased mortality We performed 16S ribosomal RNA (rRNA) gene sequencing to deter- mine whether chronic alcohol use and alcoholic hepatitis are associated",1,ald_paper,6
+18dfd4719c4760082d70830fb3dd5b61,"with an altered composition of the faecal microbiota. Differences in faecal microbiota composition were noted in patients with alcohol-use disorder and alcoholic hepatitis, compared to subjects without alcohol- use disorder (controls) (Fig. 1a, Extended Data Fig. 1a, b, Supplementary Tables 1, 2). One substantial difference that we observed was an increase in the proportion of Enterococcus spp. in patients with alcoholic hepa- titis: in these patients, 5.59% of faecal bacteria were Enterococcus spp. compared with almost none in controls (0.023%; for comparison, 0.004% of all reads were Enterococcus spp. in the Human Microbiome Project) or patients with alcohol-use disorder (0.024%). Faecal sam- ples from patients with alcoholic hepatitis had about 2,700-fold more E. faecalis than samples from controls, as measured by quantitative PCR (qPCR) (Extended Data Fig. 1c), which is consistent with the 16S rRNA sequencing results. About 80% of patients with alcoholic hepatitis are positive for",1,ald_paper,7
+71353553fdb6fda679ed42d845c050c1,"spp. compared with almost none in controls (0.023%; for comparison, 0.004% of all reads were Enterococcus spp. in the Human Microbiome Project) or patients with alcohol-use disorder (0.024%). Faecal sam- ples from patients with alcoholic hepatitis had about 2,700-fold more E. faecalis than samples from controls, as measured by quantitative PCR (qPCR) (Extended Data Fig. 1c), which is consistent with the 16S rRNA sequencing results. About 80% of patients with alcoholic hepatitis are positive for E. faecalis in their faeces (Extended Data Fig. 1d).",1,ald_paper,8
+d404c4b5d29da6128da33ce88011af73,"A list of affiliations appears at the end of the paper.
+
+Nature | www.nature.com | 1",1,ald_paper,9
+8db56668cdcc3579c607ff3893fd53cf,"Article
+
+a
+
+Controls Alcohol-use disorder Alcoholic hepatitis
+
+b
+
+Cytolysin-negative Cytolysin-positive
+
+0.2
+
+100
+
+)
+
+% 5 7 . 7 1
+
+(
+
+2 C P
+
+0.1
+
+0
+
+−0.1
+
+)
+
+%
+
+(
+
+s t c e b u S
+
+j
+
+80
+
+60
+
+40
+
+20
+
+–0.2 –0.1
+
+0 PC1 (29.25%)
+
+0.1 0.2
+
+0
+
+Controls
+
+AUD
+
+Alcoholic hepatitis
+
+c
+
+d
+
+Cytolysin-negative Cytolysin-positive
+
+100
+
+%
+
+75
+
+(
+
+l
+
+a v v r u S
+
+i
+
+50
+
+25
+
+0
+
+0
+
+30
+
+60
+
+90 Time (d)
+
+120
+
+150
+
+180
+
+0.15
+
+Cytolysin-negative Cytolysin-positive",2,ald_paper,10
+2ff7a6cc192fd9eb0186d8da9db76de5,"Fig. 1 | E. faecalis cytolysin is associated with mortality in patients with alcoholic hepatitis. a, 16S rRNA sequencing of faecal samples from controls (n = 14), patients with alcohol-use disorder (n = 43) or alcoholic hepatitis (n = 75). We use principal coordinate analysis (PCoA) based on Jaccard dissimilarity matrices to show β-diversity among groups at the genus level. The composition of faecal microbiota was significantly different between each group (P < 0.01). b, Percentage of subjects with faecal samples that were positive for both cylLL and cylLS DNA sequences (cytolysin-positive), in controls (n = 25), patients with alcohol-use disorder (n = 38) or alcoholic hepatitis (n = 82), assessed by qPCR. Statistically significant differences were detected between controls and patients with alcoholic hepatitis (P < 0.01), and between patients with alcohol- use disorder and patients with alcoholic hepatitis (P < 0.001). c, Kaplan–Meier curve of survival of patients with alcoholic",2,ald_paper,11
+d5205304665ea7978658f139f72bd34c,"cts with faecal samples that were positive for both cylLL and cylLS DNA sequences (cytolysin-positive), in controls (n = 25), patients with alcohol-use disorder (n = 38) or alcoholic hepatitis (n = 82), assessed by qPCR. Statistically significant differences were detected between controls and patients with alcoholic hepatitis (P < 0.01), and between patients with alcohol- use disorder and patients with alcoholic hepatitis (P < 0.001). c, Kaplan–Meier curve of survival of patients with alcoholic hepatitis whose faecal samples were cytolysin-positive (n = 25) or cytolysin-negative (n = 54) (P < 0.0001). d, Core genome single-nucleotide polymorphism (SNP) tree of E. faecalis strains isolated from patients with alcoholic hepatitis (n = 93 strains, from 24 patients), showing phylogenetic diversity of cytolysin-positive (red) E. faecalis. Genomically identical isolates from the same patient were combined, and are shown as a single dot. Scale bar represents the nucleotide substitutions per",2,ald_paper,12
+f0c280d989e18d3e325338a4969e5fe0,"c hepatitis whose faecal samples were cytolysin-positive (n = 25) or cytolysin-negative (n = 54) (P < 0.0001). d, Core genome single-nucleotide polymorphism (SNP) tree of E. faecalis strains isolated from patients with alcoholic hepatitis (n = 93 strains, from 24 patients), showing phylogenetic diversity of cytolysin-positive (red) E. faecalis. Genomically identical isolates from the same patient were combined, and are shown as a single dot. Scale bar represents the nucleotide substitutions per SNP site. P values are determined by permutational multivariate analysis of variance (PERMANOVA) followed by false discovery rate (FDR) procedures (a), two-sided Fisher’s exact test followed by FDR procedures (b) or two-sided log- rank (Mantel–Cox) test (c). The exact group size (n) and P values for each comparison are listed in Supplementary Table 10.",2,ald_paper,13
+bd669a244cb7913f11c76cfbee843e28,"The colonization of mice with E. faecalis induces mild hepatic stea- tosis and exacerbates ethanol-induced liver disease11, by mechanisms that are unclear. Cytolysin is a bacterial exotoxin (or bacteriocin) that is produced by E. faecalis12, and which contains two post-translationally modified peptides (CylLL′′ and CylLS′′) in its bioactive form6. The two peptides are encoded by two separate genes: cylLL and cylLS, respec- tively12. Cytolysin has lytic activity against not only Gram-positive bacte- ria, but also eukaryotic cells13. We detected cylLL and cylLS genomic DNA (cytolysin-positive) in faecal samples from 30% of patients with alco- holic hepatitis; none of the faecal samples from controls and only one sample from a patient with alcohol-use disorder was cytolysin-positive, as detected by qPCR (Fig. 1b). Importantly, 89% of cytolysin-positive patients with alcoholic hepatitis died within 180 days of admission, compared to only 3.8% of cytolysin-negative patients (P < 0.0001)",2,ald_paper,14
+f88282c4bf12cecd0be1cf0ef9145547,"bacte- ria, but also eukaryotic cells13. We detected cylLL and cylLS genomic DNA (cytolysin-positive) in faecal samples from 30% of patients with alco- holic hepatitis; none of the faecal samples from controls and only one sample from a patient with alcohol-use disorder was cytolysin-positive, as detected by qPCR (Fig. 1b). Importantly, 89% of cytolysin-positive patients with alcoholic hepatitis died within 180 days of admission, compared to only 3.8% of cytolysin-negative patients (P < 0.0001) (Fig. 1c). Among the cytolysin-positive patients, 72.2% (13 out of 18) died owing to liver failure (including complications related to liver",2,ald_paper,15
+cdf47cd088f3ae447b32287e0ea44a21,"2 | Nature | www.nature.com
+
+failure, such as gastrointestinal bleeding) (Supplementary Table 2). Infection was not associated with 30-day, 90-day or 180-day mortality (P = 0.403, 0.234 or 0.098) in patients with alcoholic hepatitis.",2,ald_paper,16
+158e79a4d4ca8ce2572458eb11e00b7e,"Our univariate logistic and Cox regression of laboratory and clinical parameters found an association between the detection of cytolysin- encoding genes in faeces and the international normalized ratio (INR), platelet count, the model for end-stage liver disease (MELD) score, the sodium MELD score, the age, serum bilirubin, INR and serum creatinine (ABIC) score and death (Supplementary Table 3). In the multivariate Cox analysis, detection of cytolysin-encoding genes in faeces was associated with 90-day (P = 0.004) and with 180-day mortality (P = 0.001) (Supple- mentary Table 3), even after we adjusted for the geographical origin of the patient, antibiotic treatment, platelet count, and creatinine, bilirubin and INR as components of the MELD score. We found no multicollinear- ity between the detection of faecal cytolysin-encoding genes and these cofactors (variance inflation factor < 1.6), which indicates that cytolysin is an independent predictor of mortality in patients with alcoholic",2,ald_paper,17
+8f81d6e312f08aa759ad42f37cf5e6dc,"90-day (P = 0.004) and with 180-day mortality (P = 0.001) (Supple- mentary Table 3), even after we adjusted for the geographical origin of the patient, antibiotic treatment, platelet count, and creatinine, bilirubin and INR as components of the MELD score. We found no multicollinear- ity between the detection of faecal cytolysin-encoding genes and these cofactors (variance inflation factor < 1.6), which indicates that cytolysin is an independent predictor of mortality in patients with alcoholic hepatitis. When we performed receiver-operating-characteristic curve analysis for 90-day mortality, cytolysin had an area under the curve of 0.81, which was superior to other widely used predictors for mortality in clinical practice (Extended Data Fig. 1e). On the basis of our findings, we propose that the detection of cytolysin may be a prognostic factor for more severe liver- related outcomes and increased risk of death, and a stronger predictor of mortality than MELD, ABIC and the",2,ald_paper,18
+5a26c75137ac75c1acec1fbc53672f3a,"alcoholic hepatitis. When we performed receiver-operating-characteristic curve analysis for 90-day mortality, cytolysin had an area under the curve of 0.81, which was superior to other widely used predictors for mortality in clinical practice (Extended Data Fig. 1e). On the basis of our findings, we propose that the detection of cytolysin may be a prognostic factor for more severe liver- related outcomes and increased risk of death, and a stronger predictor of mortality than MELD, ABIC and the discriminant function score.",2,ald_paper,19
+8f78ce532a9f694727543388ca804a07,"To determine phylogeny of E. faecalis in patients with alcoholic hepatitis, we performed targeted culturing from stool samples. Whole- genome sequencing of 93 E. faecalis isolates revealed a broad phylo- genetic diversity of cytolysin-positive E. faecalis from patients with alcoholic hepatitis (Fig. 1d), which indicates that cytolysin production is a variable trait among E. faecalis isolates and that cytolysin is car- ried in mobile genetic elements, which include both chromosomally encoded pathogenicity islands and plasmids14. Detection of any other antimicrobial resistance genes or virulence genes in E. faecalis isolates did not correlate with disease severity or mortality in patients with alcoholic hepatitis (Supplementary Table 4).",2,ald_paper,20
+b4223a036dea64508bfe49460798aec8,"The total amount of faecal E. faecalis, or faecal E. faecalis positivity, did not correlate with disease severity or mortality in patients with alcoholic hepatitis (Supplementary Tables 5, 6). Cytolysin-positive and cytolysin-negative patients with alcoholic hepatitis had similar amounts of faecal E. faecalis (Extended Data Fig. 1f). Although there were differences in the composition of the gut microbiota in patients with alcoholic hepatitis from different geographical regions (Extended Data Fig. 1g), the proportion of cytolysin-positive patients, total amount of faecal E. faecalis, faecal E. faecalis positivity (Extended Data Fig. 1h–j), treatment and clinical outcomes (30-day and 90-day mortality) did not differ significantly among the regions or centres (Supplemen- tary Table 7). In addition, cirrhosis was not associated with cytolysin positivity, the total amount of faecal E. faecalis or faecal E. faecalis positivity in patients with alcoholic hepatitis (Extended Data Fig. 1k–m,",2,ald_paper,21
+1b8ca634f00840572e80e4411ce5b216,"ig. 1g), the proportion of cytolysin-positive patients, total amount of faecal E. faecalis, faecal E. faecalis positivity (Extended Data Fig. 1h–j), treatment and clinical outcomes (30-day and 90-day mortality) did not differ significantly among the regions or centres (Supplemen- tary Table 7). In addition, cirrhosis was not associated with cytolysin positivity, the total amount of faecal E. faecalis or faecal E. faecalis positivity in patients with alcoholic hepatitis (Extended Data Fig. 1k–m, Supplementary Tables 4–6). These results confirm our findings that the presence of cytolysin-producing E. faecalis rather than the total amount or presence of E. faecalis per se determines the severity of alcoholic hepatitis and mortality.",2,ald_paper,22
+4834397895c1eeb5cffef6949e1200e6,"Cytolysin and ethanol-induced liver disease To determine whether cytolysin contributes to liver damage mediated by E. faecalis, we gavaged mice with a cytolytic E. faecalis strain (FA2- 2(pAM714)) or a non-cytolytic E. faecalis strain (FA2-2(pAM771))5; the mice were then placed on a chronic–binge ethanol diet15. Compared to mice gavaged with phosphate-buffered saline (PBS), mice fed with ethanol after they were gavaged with cytolytic E. faecalis developed more severe liver injury as indicated by a higher level of alanine amino- transferase (ALT) (Extended Data Fig. 2a) and increased hepatic stea- tosis (Extended Data Fig. 2b, c). Mice that were fed ethanol after they",2,ald_paper,23
+534b2748e1f0974a2c568180c166213e,"a
+
+s e v e
+
+l
+
+m u r e S
+
+) 1 – l
+
+U
+
+(
+
+T L A
+
+f o
+
+400
+
+300
+
+200
+
+100
+
+0
+
+***
+
+*** **
+
+b
+
+e d i r e c y g i r t
+
+l
+
+c i t a p e H
+
+) r e v
+
+i l
+
+g r e p g m
+
+(
+
+t n e t n o c
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+
+**** **** *** *
+
+Alcoholic hepatitis cytolysin-positive no. 1 Alcoholic hepatitis cytolysin-positive no. 2 Alcoholic hepatitis cytolysin-negative no. 3 Alcoholic hepatitis cytolysin-negative no. 4
+
+Control
+
+Ethanol
+
+Control
+
+Ethanol
+
+c
+
+d
+
+Il1b
+
+Control
+
+Ethanol
+
+e g n a h c d o F
+
+l
+
+8
+
+6
+
+4
+
+2
+
+**
+
+**
+
+0
+
+Alcoholic hepatitis cytolysin-positive no. 1
+
+Alcoholic hepatitis cytolysin-positive no. 2
+
+Alcoholic hepatitis cytolysin-negative no. 3
+
+Alcoholic hepatitis cytolysin-negative no. 4
+
+Control
+
+Ethanol
+
+e
+
+Cxcl1
+
+f
+
+Col1a1
+
+g
+
+Liver cylLS
+
+e g n a h c d o F
+
+l
+
+8
+
+6
+
+4
+
+2
+
+**
+
+**
+
+**
+
+**
+
+e g n a h c d o F
+
+l
+
+20
+
+15
+
+10
+
+5
+
+** *
+
+*** *
+
+)
+
+%
+
+(
+
+e c M
+
+i
+
+100
+
+80
+
+60
+
+40
+
+20
+
+****
+
+****
+
+****
+
+****
+
+0
+
+0
+
+0
+
+ND ND ND
+
+ND
+
+ND ND
+
+Control
+
+Ethanol
+
+Control
+
+Ethanol
+
+Control
+
+Ethanol
+
+h",3,ald_paper,24
+e9da83aadd48a8fe82c21fb17383bd09,"LDH
+
+)
+
+%
+
+40
+
+**
+
+**
+
+(
+
+y t i c x o t o t y C
+
+i
+
+30
+
+20
+
+10
+
+0
+
+0 0
+
+0 200
+
+0 400
+
+–
+
+200 200
+
+400 400
+
+0 0
+
+0 200
+
+0 400
+
++
+
+200 200
+
+400 400
+
+CylLS″ (nM) CylLL″ (nM) Ethanol",3,ald_paper,25
+ee810ef7bc179e283446200bb1c59a48,"Fig. 2 | Transplantation of faeces from cytolysin-positive patients with alcoholic hepatitis exacerbates ethanol-induced liver disease in gnotobiotic mice. a–g, C57BL/6 germ-free mice were colonized with faeces from two cytolysin-positive and two cytolysin-negative patients with alcoholic hepatitis, and subjected to the chronic–binge feeding model. a, Serum levels of ALT. b, Hepatic triglyceride content. c, Representative sections of liver stained with haematoxylin and eosin (H & E). d–f, Hepatic levels of mRNAs that encode Il1b, Cxcl1 and Col1a1. g, Proportions of mice that were positive for cytolysin in the liver, measured by qPCR for cylLS. h, Lactate dehydrogenase (LDH) assay to measure cytotoxicity of hepatocytes isolated from mice that were fed an oral isocaloric control diet (five groups, left) or chronic–binge ethanol diet (five",3,ald_paper,26
+391cfdd1039a9d4593ef84a19865f58c,"groups, right), and incubated with vehicle, CylLS′′, CylLL′′ or both of the cytolysin subunits at the indicated concentrations without (–) or with (+) ethanol (25 mM) for 3 h. The survival of hepatocytes was determined in three independent experiments. Scale bar, 100 μm. Results are expressed as mean ± s.e.m. (a, b, d–f, h). P values are determined by one-way analysis of variance (ANOVA) with Tukey’s post hoc test (a, b, d–f), two-sided Fisher’s exact test followed by FDR procedures (g) or two-way ANOVA with Tukey’s post hoc test (h). All results were generated from at least three independent replicates. The exact group size (n) and P values for each comparison are listed in Supplementary Table 10. *P < 0.05, **P < 0.01, ***P < 0.001, ****P < 0.0001.",3,ald_paper,27
+4ee443111fb2695f847c95a9b7d9f090,"were gavaged with cytolytic E. faecalis also had more liver inflamma- tion with higher expression levels of mRNAs that encode inflamma- tory cytokines and chemokines (Il1b, Cxcl1 and Cxcl2) (Extended Data Fig. 2d–f), compared with mice given PBS. Mice that were fed ethanol after they were gavaged with non-cytolytic E. faecalis had significantly less ethanol-induced liver injury, steatosis and inflammation (Extended Data Fig. 2a–f) and longer survival times (Extended Data Fig. 2g), as compared with mice that were fed ethanol after they were administered with cytolytic E. faecalis.",3,ald_paper,28
+facd35f577fc96f80e7be954c0f63f58,"To explore the mechanism of cytolysin-associated liver damage, we measured cytolysin in the liver. CylLS was significantly increased in the liver of mice given cytolytic E. faecalis but not in the liver of mice that were not given E. faecalis or of mice gavaged with non-cyto- lytic E. faecalis after chronic ethanol administration (Extended Data Fig. 2h). E. faecalis was detectable in the liver of mice given cytolytic and",3,ald_paper,29
+4a90012b1917f734f575aa1362deeb41,"non-cytolytic E. faecalis and fed an ethanol diet, but not when mice were fed an isocaloric (control) diet (Extended Data Fig. 2i); this indicates that ethanol-induced changes in the gut barrier are necessary for the translocation of cytolytic E. faecalis from the intestine to the liver. The livers of ethanol-fed mice that were given cytolytic or non-cytolytic E. faecalis had positive E. faecalis cultures (Extended Data Fig. 2j). We observed an increased intestinal permeability in ethanol-fed mice com- pared with mice fed with an isocaloric diet, but this was independent of gavaging cytolytic or non-cytolytic E. faecalis after chronic ethanol administration (Extended Data Fig. 2k), indicating that cytolysin does not affect intestinal barrier function.",3,ald_paper,30
+9fd72e26e7b038068c90cd8aa30050a4,"Administration of cytolytic or non-cytolytic E. faecalis to mice did not significantly change the composition of the intestinal microbiota, as shown by 16S rRNA gene sequencing (Extended Data Fig. 2l). Cytolytic E. faecalis did not affect intestinal absorption or hepatic metabolism
+
+Nature | www.nature.com | 3",3,ald_paper,31
+3c84ad4328d41c1989755bb9328e4e06,"a
+
+Ef5.1
+
+Ef5.2
+
+Ef5.3
+
+Ef5.4
+
+Ef2.1
+
+Ef2.2
+
+Ef2.3
+
+b
+
+s e v e
+
+l
+
+m u r e S
+
+) 1 – l
+
+U
+
+(
+
+T L A
+
+f o
+
+400
+
+300
+
+200
+
+100
+
+0
+
+Patient no. 5 Control
+
+Patient no. 2
+
+**
+
+Patient no. 5 Ethanol
+
+Patient no. 2
+
+c
+
+e d i r e c y g i r t
+
+l
+
+c i t a p e H
+
+) r e v
+
+i l
+
+g r e p g m
+
+(
+
+t n e t n o c
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+
+Patient no. 5 Control
+
+Patient no. 2
+
+**
+
+Patient no. 5 Ethanol
+
+Patient no. 2
+
+C. crescentus phages
+
+Cytolysin-positive E. faecalis phages
+
+C. crescentus phages
+
+Cytolysin-positive E. faecalis phages
+
+d
+
+e
+
+Il1b
+
+Control
+
+Ethanol
+
+e g n a h c d o F
+
+l
+
+12 10 8 6 4 2 0
+
+***
+
+C. crescentus phages
+
+Cytolysin-positive E. faecalis phages
+
+C. crescentus phages
+
+Cytolysin-positive E. faecalis phages
+
+Patient no. 5
+
+Patient no. 2
+
+Patient no. 5
+
+Patient no. 2
+
+Patient no. 5
+
+Patient no. 2
+
+Control
+
+Ethanol
+
+f
+
+e g n a h c d o F
+
+l
+
+12 10 8 6 4 2 0
+
+Cxcl1
+
+**
+
+**
+
+g
+
+e g n a h c d o F
+
+l
+
+18 15 12 9 6 3 0
+
+Col1a1 *
+
+h
+
+%
+
+(
+
+e c M
+
+i
+
+100
+
+80
+
+60
+
+40
+
+20
+
+0
+
+Liver cylLS
+
+**",4,ald_paper,32
+c787dd60738f20bbe68bba83942be56d,"ND ND ND ND
+
+**
+
+Patient no. 5
+
+Patient no. 2
+
+Patient no. 5
+
+Patient no. 2
+
+Patient no. 5
+
+Patient no. 2
+
+Patient no. 5
+
+Patient no. 2
+
+Patient no. 5
+
+Patient no. 2
+
+Patient no. 5
+
+Patient no. 2
+
+Control
+
+Ethanol
+
+Control
+
+Ethanol
+
+Control
+
+Ethanol",4,ald_paper,33
+b928c08ab3bb107894e42d9aab95e825,"Fig. 3 | Phage therapy against cytolytic E. faecalis abolishes ethanol-induced liver disease in gnotobiotic mice. a, Transmission electron microscopy revealed that the phages we isolated were either siphophages (Ef5.1, Ef5.2, Ef5.3, Ef5.4 and Ef2.2) or myophages (Ef2.1 and Ef2.3). Scale bar, 50 nm. b–h, C57BL/6 germ-free mice were colonized with faeces from two cytolysin- positive patients with alcoholic hepatitis (faeces from one of these patients were also used in Fig. 2) and subjected to the chronic–binge feeding model, gavaged with control phages against C. crescentus (1010 plaque-forming units (PFUs)) or a cocktail of three or four different phages that target cytolytic E. faecalis (1010 PFUs), 1 day before an ethanol binge. b, Serum levels of ALT.",4,ald_paper,34
+4df250fb0baf0edb9b9d0d7611d89b5b,"c, Hepatic triglyceride content. d, Representative H & E-stained liver sections. Scale bar, 100 μm. e–g, Hepatic levels of mRNAs that encode Il1b, Cxcl1 and Col1a1. h, Proportions of mice that were positive for cytolysin in the liver, measured by qPCR for cylLS. Results are expressed as mean ± s.e.m. (b, c, e–g). P values are determined by two-way ANOVA with Tukey’s post hoc test (b, c, e–g) or two-sided Fisher’s exact test followed by FDR procedures (h). All results are generated from at least three independent replicates. The exact group size (n) and P values for each comparison are listed in Supplementary Table 10. *P < 0.05, **P < 0.01, *** P < 0.001.
+
+of ethanol, as indicated by serum levels of ethanol and hepatic levels of Adh1 and Cyp2e1 mRNAs (which encode the two primary enzymes that metabolize ethanol in the liver) (Extended Data Fig. 2m, n). These results indicate that E. faecalis that produce cytolysin promote ethanol- induced liver disease in mice.",4,ald_paper,35
+fdd8f4e97e1e628b985db0fca1e785a9,"To extend our findings to humans, we colonized germ-free mice with faeces from cytolysin-positive and cytolysin-negative patients with alcoholic hepatitis (Supplementary Table 8). Consistent with our findings from mice colonized with cytolytic E. faecalis, gnotobi- otic C57BL/6 mice colonized with faeces from two cytolysin-positive patients developed more severe ethanol-induced liver injury, steatosis, inflammation and fibrosis than mice given faeces from two cytolysin- negative patients (Fig. 2a–f, Extended Data Fig. 3a–d). Transplantation of faeces from cytolysin-positive patients reduced the survival time of the mice (Extended Data Fig. 3e) and increased translocation of
+
+4 | Nature | www.nature.com",4,ald_paper,36
+45ed02fbe09b1e59b5a6f60ff5d43dc3,"cytolytic E. faecalis to the liver after ethanol administration (Fig. 2g). The overall composition of the intestinal microbiota was not differ- ent between mice fed the control diet and colonized with faeces from cytolysin-positive or cytolysin-negative donors with alcoholic hepatitis, as shown by 16S rRNA gene sequencing. Mice transplanted with faeces from one of the cytolysin-positive patients with alcoholic hepatitis (patient no. 2) showed a microbiota that was significantly different from that of the other mouse groups after ethanol administration (Extended Data Fig. 3f). Non-cytolytic E. faecalis was not detected in stool samples from donors with cytolytic E. faecalis (Extended Data Fig. 3g). We did not observe differences in intestinal absorp- tion or hepatic metabolism of ethanol between mice colonized with faeces from cytolysin-positive versus cytolysin-negative patients (Extended Data Fig. 3h, i). Together, these results provide further evi- dence that cytolysin promotes",4,ald_paper,37
+475614b6af8bf99e84acccb10dc1d0e5,"om that of the other mouse groups after ethanol administration (Extended Data Fig. 3f). Non-cytolytic E. faecalis was not detected in stool samples from donors with cytolytic E. faecalis (Extended Data Fig. 3g). We did not observe differences in intestinal absorp- tion or hepatic metabolism of ethanol between mice colonized with faeces from cytolysin-positive versus cytolysin-negative patients (Extended Data Fig. 3h, i). Together, these results provide further evi- dence that cytolysin promotes ethanol-induced liver disease.",4,ald_paper,38
+f125c76bc022376e8cf61d9b0b564eba,"a
+
+Ef6.1
+
+Ef6.2
+
+Ef6.3
+
+Ef 6.4
+
+Ef7.1
+
+Ef7.2
+
+Ef7.3
+
+Ef 7.4
+
+b
+
+s e v e
+
+l
+
+l
+
+m u r e S
+
+) 1 – l
+
+U
+
+(
+
+T L A
+
+f o
+
+400
+
+300
+
+200
+
+100
+
+0
+
+Patient Patient no. 7 no. 6 Control
+
+Patient Patient no. 7 no. 6 Ethanol
+
+c
+
+e d i r e c y g i r t
+
+l
+
+c i t a p e H
+
+) r e v
+
+i l
+
+g r e p g m
+
+(
+
+t n e t n o c
+
+50
+
+40
+
+30
+
+20
+
+10
+
+0
+
+Patient Patient no. 7 no. 6 Control
+
+Patient Patient no. 7 no. 6 Ethanol
+
+C. crescentus phages
+
+Cytolysin-negative E. faecalis phages
+
+C. crescentus phages
+
+Cytolysin-negative E. faecalis phages
+
+d
+
+e
+
+Il1b
+
+Control
+
+5
+
+Ethanol
+
+e g n a h c d o F
+
+l
+
+4
+
+3
+
+2
+
+1
+
+0
+
+C. crescentus phages
+
+Cytolysin-negative E. faecalis phages
+
+Patient no. 6
+
+C. crescentus phages
+
+Cytolysin-negative E. faecalis phages
+
+Patient no. 7
+
+Patient no. 6
+
+Patient no. 7 Control
+
+Patient no. 6
+
+Patient no. 7 Ethanol
+
+f
+
+Cxcl1
+
+g
+
+Col1a1
+
+h
+
+e g n a h c d o F
+
+l
+
+5
+
+4
+
+3
+
+2
+
+1
+
+0
+
+Patient no. 6
+
+Patient no. 7 Control
+
+Patient no. 6
+
+Patient no. 7 Ethanol
+
+e g n a h c d o F
+
+l
+
+6
+
+4
+
+2
+
+0",5,ald_paper,39
+ec8794a345e2b257cbab496dca5a8be1,"Patient no. 6
+
+Patient no. 7 Control
+
+Patient no. 6
+
+Patient no. 7 Ethanol
+
+s u c c o c o r e t n E
+
+a c e a F
+
+) 1 – g U F C
+
+(
+
+1010 109 108 107 106 105
+
+Patient Patient no. 7 no. 6 Control
+
+Patient Patient no. 7 no. 6 Ethanol
+
+Fig. 4 | Phages that target non-cytolytic E. faecalis do not reduce ethanol- induced liver disease in gnotobiotic mice. a, Transmission electron microscopy revealed that the phages we isolated were either podophages (Ef6.2, Ef6.3, Ef7.2, Ef7.3 and Ef7.4) or siphophages (Ef6.1, Ef6.4 and Ef7.1). Scale bar, 50 nm. b–h, C57BL/6 germ-free mice were colonized with faeces from two cytolysin-negative patients with alcoholic hepatitis and subjected to the chronic–binge feeding model, gavaged with control phages against C. crescentus (1010 PFUs) or a cocktail of four different phages that target non-",5,ald_paper,40
+4dcfcfd23b0a93f5bb5da497328385d5,"cytolytic E. faecalis (1010 PFUs), 1 day before an ethanol binge. b, Serum levels of ALT. c, Hepatic triglyceride content. d, Representative H & E-stained liver sections. Scale bar, 100 μm. e–g, Hepatic levels of mRNAs that encode Il1b, Cxcl1 and Col1a1. h, Faecal colony-forming units (CFUs) of Enterococcus. Results are expressed as mean ± s.e.m. (b, c, e–h). P values are determined by two-way ANOVA with Tukey’s post hoc test (b, c, e–h). All results were generated from at least three independent replicates. The exact group size (n) and P values for each comparison are listed in Supplementary Table 10. *P < 0.05.",5,ald_paper,41
+112e8a8d98dec8080b42d4457de0393f,"To determine the mechanism by which cytolysin increases liver dis- ease, we isolated hepatocytes from mice fed ethanol or control diets, and stimulated them with pure bioactive cytolysin peptides (CylLL′′ and CylLS′′)6. Incubation of the primary mouse hepatocytes with the two cytolysin subunits caused a dose-dependent increase in cell death compared to hepatocytes that were incubated with vehicle or with one subunit only (Fig. 2h). When we isolated hepatocytes from ethanol-fed mice and then incubated these hepatocytes with ethanol, we did not observe increased levels of cytolysin-induced cell death compared to hepatocytes isolated from mice on the control diet, which indicates that cytolysin-induced hepatocyte cell death was independent of ethanol. The cytotoxic effects of cytolysin are possibly mediated by pore forma- tion, resulting in cell lysis14.",5,ald_paper,42
+c297e770e2c87adaf5fc4624bc47498f,"Bacteriophage treatment in liver disease To further demonstrate the potential causative role of cytolytic E. faecalis for the development of ethanol-induced steatohepatitis,",5,ald_paper,43
+ea73bed4cb87efec3da65b3743137dc8,"we investigated the effects of treatment with bacteriophages (here- after, phages). Phages are ubiquitous in bacteria-rich environments, including the gut16. E. faecalis phages that are highly strain-specific can be isolated17, which potentially makes the direct editing of gut microbiota feasible. It has previously been shown that Atp4aSl/Sl mice, which lack gastric acid, have overgrowth of intestinal enterococci, which is associated with increased susceptibility to alcohol-induced steatohepatitis11. The gavaging of wild-type mice with an E. faecalis strain isolated from Atp4aSl/Sl mice led to increased ethanol-induced steatohepatitis11. We found that this same E. faecalis strain expressed cytolysin. We then isolated four distinct phages from sewage water. These phages lyse the cytolytic E. faecalis strain isolated from Atp4aSl/Sl mice. All four phages were podophages of the virulent Picovirinae group (Extended Data Fig. 4). Atp4aSl/Sl mice and their wild-type littermates were then",5,ald_paper,44
+ce3d3d5e8ee858c885a4f44c154bec79,"titis11. The gavaging of wild-type mice with an E. faecalis strain isolated from Atp4aSl/Sl mice led to increased ethanol-induced steatohepatitis11. We found that this same E. faecalis strain expressed cytolysin. We then isolated four distinct phages from sewage water. These phages lyse the cytolytic E. faecalis strain isolated from Atp4aSl/Sl mice. All four phages were podophages of the virulent Picovirinae group (Extended Data Fig. 4). Atp4aSl/Sl mice and their wild-type littermates were then placed on the chronic–binge ethanol diet and gavaged with the lytic phage cocktail. Phages directed against Caulobacter crescen- tus, a bacterium that is present in freshwater lakes and streams18 but that does not colonize humans or rodents19,20, were used as controls.",5,ald_paper,45
+fc62b27ba51731b1d7649aaf12d20b7e,Nature | www.nature.com | 5,5,ald_paper,46
+df7735834095c5dc1c08fbef8afe2ea1,"Compared to Atp4aSl/Sl mice gavaged with control phages or vehicle, Atp4aSl/Sl mice gavaged with phages that target cytolytic E. faecalis had less severe liver injury, steatosis and inflammation after chronic ethanol feeding (Extended Data Fig. 5a–f). Administration of E. faecalis phages significantly reduced levels of cytolysin in the liver (Extended Data Fig. 5g) as well as faecal amounts of Enterococcus (Extended Data Fig. 5h). Phage administration did not affect the overall composition of the faecal microbiome, intestinal absorption or hepatic metabolism of ethanol (Extended Data Fig. 5i–k).",6,ald_paper,47
+681c37cd18eca0378446bbace826a732,"To develop a therapeutic approach to precisely edit the intestinal microbiota, we cultured cytolytic E. faecalis strains from the faecal samples of patients with alcoholic hepatitis. We then isolated lytic phages from sewage water against these cytolytic E. faecalis strains; these phages had siphophage or myophage morphology (Fig. 3a, Extended Data Fig. 6). Gnotobiotic mice were colonized with faeces from two cytolysin-positive patients with alcoholic hepatitis (Sup- plementary Table 8) and given three or four different—but patient- specific—lytic phages against cytolytic E. faecalis. The phages against cytolytic E. faecalis abolished ethanol-induced liver injury and steatosis, as shown by lower levels of ALT, lower percentages of hepatic cells positive for terminal deoxynucleotide transferase-mediated dUTP nick-end labelling, and lower levels of hepatic triglycerides and oil red O-staining (Fig. 3b–d, Extended Data Fig. 7a, b), as well as by decreased hepatic levels of Il1b, Cxcl1,",6,ald_paper,48
+6fb2864c7a8ccc0def4b2af6f0cdf402,"ven three or four different—but patient- specific—lytic phages against cytolytic E. faecalis. The phages against cytolytic E. faecalis abolished ethanol-induced liver injury and steatosis, as shown by lower levels of ALT, lower percentages of hepatic cells positive for terminal deoxynucleotide transferase-mediated dUTP nick-end labelling, and lower levels of hepatic triglycerides and oil red O-staining (Fig. 3b–d, Extended Data Fig. 7a, b), as well as by decreased hepatic levels of Il1b, Cxcl1, Cxcl2, Col1a1 and Acta2 mRNAs, and reduced hepatic levels of cylLS, as compared with mice given control phages (against C. crescentus) (Fig. 3e–h, Extended Data Fig. 7c, d). Treatment with phages against cytolytic E. faecalis also reduced faecal amounts of Enterococcus (Extended Data Fig. 7e) without affecting the overall composition of the gut microbiota (Extended Data Fig. 7f). Intestinal absorption of ethanol and hepatic metabolism were similar in all groups (Extended Data Fig. 7g, h).",6,ald_paper,49
+971885a516747233c866da1146f30463,"To demonstrate that the effect of phage treatment occurs via the targeting of cytolysin-positive E. faecalis, rather than a reduction in cytolysin-negative E. faecalis, we colonized gnotobiotic mice with faeces from cytolysin-negative patients with alcoholic hepatitis (Sup- plementary Table 8). Phages against non-cytolytic E. faecalis from patients were isolated from sewage water; they had siphophage or podophage morphology (Fig. 4a, Extended Data Fig. 8). These phages did not reduce features of ethanol-induced liver disease compared with control phages (Fig. 4b–g, Extended Data Fig. 9a–h), despite the reduc- tion of faecal Enterococcus (Fig. 4h). Our findings indicate that treat- ment with lytic phages can selectively attenuate the ethanol-induced liver disease caused by cytolysin-positive E. faecalis in humanized mice.",6,ald_paper,50
+ffd24ef49d7f085e864bbc10c1a1ba0f,"Discussion Phage-based therapies have predominantly been studied in patients with bacterial infections in the gastrointestinal tract21–23, urinary tract24,25 and other organ systems26–28. The results of these studies— although mixed in terms of efficacy—strongly suggest that phage treat- ment offers a safe alternative to antibiotics26,27. However, safety studies are required for complex populations (such as patients with alcoholic hepatitis), because phages can induce a strong immune reaction29. Further work is required to determine whether phages that target cyto- lytic E. faecalis might be used to treat patients with alcoholic hepatitis, a life-threatening disease that at present has no effective treatment. Eradication of this specific bacterial strain might produce better out- comes than current treatments, and environmental sources can be used to easily isolate phages that target cytolysin-positive E. faecalis. Here we provide an example of the efficacy of approaches based on",6,ald_paper,51
+d82b1ac3bc8a4920cdc19c3aebd2f938,"on29. Further work is required to determine whether phages that target cyto- lytic E. faecalis might be used to treat patients with alcoholic hepatitis, a life-threatening disease that at present has no effective treatment. Eradication of this specific bacterial strain might produce better out- comes than current treatments, and environmental sources can be used to easily isolate phages that target cytolysin-positive E. faecalis. Here we provide an example of the efficacy of approaches based on phages in mice for a disease that is not considered a classic infectious disease. Our data also suggest that cytolysin may be used as a predictive biomarker of severe alcoholic hepatitis; an independent, prospective",6,ald_paper,52
+4ee90975c4e97332cd22231706252230,"cohort is therefore needed to validate cytolysin as a biomarker, and to extend the phage findings in mice to human patients.
+
+Online content Any methods, additional references, Nature Research reporting sum- maries, source data, extended data, supplementary information, acknowledgements, peer review information; details of author con- tributions and competing interests; and statements of data and code availability are available at https://doi.org/10.1038/s41586-019-1742-x.
+
+1.
+
+2.
+
+Lozano, R. et al. Global and regional mortality from 235 causes of death for 20 age groups in 1990 and 2010: a systematic analysis for the Global Burden of Disease Study 2010. Lancet 380, 2095–2128 (2012). Lee, B. P., Vittinghoff, E., Dodge, J. L., Cullaro, G. & Terrault, N. A. National trends and long- term outcomes of liver transplant for alcohol-associated liver disease in the United States. JAMA Intern. Med. 179, 340–348 (2019).",6,ald_paper,53
+770a4379617038deb045c79f4061b811,"3. Rehm, J. et al. Burden of disease associated with alcohol use disorders in the United
+
+4.
+
+5.
+
+6.
+
+States. Alcohol. Clin. Exp. Res. 38, 1068–1077 (2014). Llopis, M. et al. Intestinal microbiota contributes to individual susceptibility to alcoholic liver disease. Gut 65, 830–839 (2016). Ike, Y., Clewell, D. B., Segarra, R. A. & Gilmore, M. S. Genetic analysis of the pAD1 hemolysin/bacteriocin determinant in Enterococcus faecalis: Tn917 insertional mutagenesis and cloning. J. Bacteriol. 172, 155–163 (1990). Tang, W. & van der Donk, W. A. The sequence of the enterococcal cytolysin imparts unusual lanthionine stereochemistry. Nat. Chem. Biol. 9, 157–159 (2013).
+
+7. Maddrey, W. C. et al. Corticosteroid therapy of alcoholic hepatitis. Gastroenterology 75,
+
+193–199 (1978).
+
+8. Dominguez, M. et al. A new scoring system for prognostic stratification of patients with
+
+9.",6,ald_paper,54
+3ff9dd65e7b94a9ece979af95ca72b95,"alcoholic hepatitis. Am. J. Gastroenterol. 103, 2747–2756 (2008). Thursz, M. R. et al. Prednisolone or pentoxifylline for alcoholic hepatitis. N. Engl. J. Med. 372, 1619–1628 (2015).
+
+10. Mathurin, P. & Lucey, M. R. Management of alcoholic hepatitis. J. Hepatol. 56,
+
+S39–S45 (2012).
+
+11. Llorente, C. et al. Gastric acid suppression promotes alcoholic liver disease by inducing
+
+overgrowth of intestinal Enterococcus. Nat. Commun. 8, 837 (2017).
+
+12. Gilmore, M. S. et al. Genetic structure of the Enterococcus faecalis plasmid pAD1- encoded cytolytic toxin system and its relationship to lantibiotic determinants. J. Bacteriol. 176, 7335–7344 (1994).
+
+13. Cox, C. R., Coburn, P. S. & Gilmore, M. S. Enterococcal cytolysin: a novel two component peptide system that serves as a bacterial defense against eukaryotic and prokaryotic cells. Curr. Protein Pept. Sci. 6, 77–84 (2005).
+
+14. Van Tyne, D., Martin, M. J. & Gilmore, M. S. Structure, function, and biology of the",6,ald_paper,55
+ce7987394129a27b5c67bf5300d54914,"Enterococcus faecalis cytolysin. Toxins 5, 895–911 (2013).
+
+15. Bertola, A., Mathews, S., Ki, S. H., Wang, H. & Gao, B. Mouse model of chronic and binge
+
+ethanol feeding (the NIAAA model). Nat. Protoc. 8, 627–637 (2013).
+
+16. Ogilvie, L. A. & Jones, B. V. The human gut virome: a multifaceted majority. Front.
+
+Microbiol. 6, 918 (2015).
+
+17. Chatterjee, A. et al. Bacteriophage resistance alters antibiotic-mediated intestinal
+
+expansion of enterococci. Infect. Immun. 87, e00085-19 (2019).
+
+18. Poindexter, J. S. Biological properties and classification of the Caulobacter group.
+
+Bacteriol. Rev. 28, 231–295 (1964).
+
+19. Shin, J. et al. Analysis of the mouse gut microbiome using full-length 16S rRNA amplicon
+
+sequencing. Sci. Rep. 6, 29681 (2016).
+
+20. Human Microbiome Project Consortium. Structure, function and diversity of the healthy
+
+human microbiome. Nature 486, 207–214 (2012).
+
+21. Marcuk, L. M. et al. Clinical studies of the use of bacteriophage in the treatment of",6,ald_paper,56
+87a9d9ae8e24e00b4468211e1d4ead0b,"cholera. Bull. World Health Organ. 45, 77–83 (1971).
+
+22. Sarker, S. A. et al. Oral phage therapy of acute bacterial diarrhea with two coliphage preparations: a randomized trial in children from Bangladesh. EBioMedicine 4, 124–137 (2016).
+
+23. Dalmasso, M., Hill, C. & Ross, R. P. Exploiting gut bacteriophages for human health.
+
+Trends Microbiol. 22, 399–405 (2014).
+
+24. Ujmajuridze, A. et al. Adapted bacteriophages for treating urinary tract infections. Front.
+
+Microbiol. 9, 1832 (2018).
+
+25. Khawaldeh, A. et al. Bacteriophage therapy for refractory Pseudomonas aeruginosa
+
+urinary tract infection. J. Med. Microbiol. 60, 1697–1700 (2011).
+
+26. Schooley, R. T. et al. Development and use of personalized bacteriophage-based
+
+therapeutic cocktails to treat a patient with a disseminated resistant Acinetobacter baumannii infection. Antimicrob. Agents Chemother. 61, e00954-17 (2017). 27. Dedrick, R. M. et al. Engineered bacteriophages for treatment of a patient with a",6,ald_paper,57
+1987d5757dacc5875e426052d18c7ee6,"disseminated drug-resistant Mycobacterium abscessus. Nat. Med. 25, 730–733 (2019).
+
+28. Fish, R. et al. Compassionate use of bacteriophage therapy for foot ulcer treatment as an
+
+effective step for moving toward clinical trials. Methods Mol. Biol. 1693, 159–170 (2018).
+
+29. Górski, A. et al. Phages and immunomodulation. Future Microbiol. 12, 905–914 (2017).
+
+Publisher’s note Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+© The Author(s), under exclusive licence to Springer Nature Limited 2019
+
+6 | Nature | www.nature.com",6,ald_paper,58
+1eae916cf1bdbb419b33eecedfa3df2b,"1Department of Medicine, University of California San Diego, La Jolla, CA, USA. 2Department of Medicine, VA San Diego Healthcare System, San Diego, CA, USA. 3Skaggs School of Pharmacy and Pharmaceutical Sciences, University of California San Diego, La Jolla, CA, USA. 4J. Craig Venter Institute, Rockville, MD, USA. 5J. Craig Venter Institute, La Jolla, CA, USA. 6Host–Microbiota Interactions Laboratory, Wellcome Sanger Institute, Hinxton, UK. 7Division of Biostatistics and Bioinformatics, Department of Family Medicine and Public Health, University of California San Diego, La Jolla, CA, USA. 8Department of Biochemistry and Biophysics, Texas A & M University, College Station, TX, USA. 9Center for Phage Technology, Texas A & M AgriLife Research and Texas A & M University, College Station, TX, USA. 10Department of Biochemistry, University of Illinois at Urbana-Champaign, Urbana, IL, USA. 11Department of Pathology, University of California San Diego, La Jolla, CA, USA. 12Division of",7,ald_paper,59
+8dbcd6fd6bc365ee7208e219401c7d1b,"Department of Family Medicine and Public Health, University of California San Diego, La Jolla, CA, USA. 8Department of Biochemistry and Biophysics, Texas A & M University, College Station, TX, USA. 9Center for Phage Technology, Texas A & M AgriLife Research and Texas A & M University, College Station, TX, USA. 10Department of Biochemistry, University of Illinois at Urbana-Champaign, Urbana, IL, USA. 11Department of Pathology, University of California San Diego, La Jolla, CA, USA. 12Division of Gastroenterology, Hepatology and Nutrition, Department of Medicine, University of Pittsburgh Medical Center, Pittsburgh Liver Research Center, Pittsburgh, PA, USA. 13Hospital Universitario, Departamento de Gastroenterología, Universidad Autonoma de Nuevo Leon, Monterrey, Mexico. 14Division of Digestive and Liver Diseases, Department of Medicine, Columbia University College of Physicians and Surgeons, New York, NY, USA. 15Department of Medicine, University of Alberta, Edmonton, Alberta, Canada.",7,ald_paper,60
+6c32b2b6a71ed65ea861d5918dc92f3d,"Gastroenterology, Hepatology and Nutrition, Department of Medicine, University of Pittsburgh Medical Center, Pittsburgh Liver Research Center, Pittsburgh, PA, USA. 13Hospital Universitario, Departamento de Gastroenterología, Universidad Autonoma de Nuevo Leon, Monterrey, Mexico. 14Division of Digestive and Liver Diseases, Department of Medicine, Columbia University College of Physicians and Surgeons, New York, NY, USA. 15Department of Medicine, University of Alberta, Edmonton, Alberta, Canada. 16Division of Gastroenterology and Hepatology, Weill Cornell Medical College, New York, NY, USA. 17Liver Unit, Hospital Universitari Vall d’Hebron, Universitat Autònoma de Barcelona, Barcelona, Spain. 18Centro de Investigación en Red de Enfermedades Hepáticas y Digestivas (CIBEREHD), Barcelona, Spain. 19Liver Unit, Hospital Clinic, Barcelona, Spain. 20Liver Sciences, Department of Inflammation Biology, School of Infectious Diseases and Microbial Sciences, King’s College London, London, UK.",7,ald_paper,61
+2fe322bbd3f7aa7d9fddf4df2de3b86c,"ada. 16Division of Gastroenterology and Hepatology, Weill Cornell Medical College, New York, NY, USA. 17Liver Unit, Hospital Universitari Vall d’Hebron, Universitat Autònoma de Barcelona, Barcelona, Spain. 18Centro de Investigación en Red de Enfermedades Hepáticas y Digestivas (CIBEREHD), Barcelona, Spain. 19Liver Unit, Hospital Clinic, Barcelona, Spain. 20Liver Sciences, Department of Inflammation Biology, School of Infectious Diseases and Microbial Sciences, King’s College London, London, UK. 21Service des Maladies de L’appareil Digestif et Unité INSERM, Hôpital Huriez, Lille, France. 22Division of Gastroenterology and Hepatology, Department of Medicine, University of Wisconsin School of Medicine and Public Health, Madison, WI, USA. 23Section of Digestive Diseases, Yale University School of Medicine, New Haven, CT, USA. 24Section of Digestive Diseases, VA Connecticut Healthcare System, West Haven, CT, USA. 25Department of Chemistry, University of Illinois at Urbana-Champaign, Urbana,",7,ald_paper,62
+46bdd091e6b7082e7be55ed27dd0a8be,"1Service des Maladies de L’appareil Digestif et Unité INSERM, Hôpital Huriez, Lille, France. 22Division of Gastroenterology and Hepatology, Department of Medicine, University of Wisconsin School of Medicine and Public Health, Madison, WI, USA. 23Section of Digestive Diseases, Yale University School of Medicine, New Haven, CT, USA. 24Section of Digestive Diseases, VA Connecticut Healthcare System, West Haven, CT, USA. 25Department of Chemistry, University of Illinois at Urbana-Champaign, Urbana, IL, USA. 26Howard Hughes Medical Institute, University of Illinois at Urbana-Champaign, Urbana, IL, USA. 27St Luc University Hospital, Université Catholique de Louvain, Brussels, Belgium. 28Center for Innovative Phage Applications and Therapeutics, University of California San Diego, La Jolla, CA, USA. 29These authors contributed equally: Yi Duan, Cristina Llorente. *e-mail: beschnabl@ucsd.edu",7,ald_paper,63
+d041a5cb4555d04a666f89fa8ea2b4e5,Nature | www.nature.com | 7,7,ald_paper,64
+30967d2c2c963e6958e44909b7a5dd57,"Article
+
+Methods
+
+No statistical methods were used to predetermine sample size. The experiments were not randomized and investigators were not blinded to allocation during experiments and outcome assessment.",8,ald_paper,65
+94c658a58730ec3a30987ceadbe273b1,"Patient cohorts Patient cohorts have previously been described30–32. We evaluated 26 subjects without alcohol-use disorder (controls; social drinkers consuming less than 20 g/day), 44 patients with alcohol-use disorder and 88 patients with alcoholic hepatitis. Patients with alcohol-use disorder fulfilling the DSM IV criteria33 of alcohol dependence and with active alcohol consumption (self-reported >60 g/day) presented with various stages of liver disease (21% had advanced F3/4 fibrosis based on fibrosis-4 index) (Supplementary Table 1). Patients with alcohol-use disorder were recruited from an alcohol withdrawal unit in San Diego and Brussels, where they followed a detoxification and rehabilitation programme. At admission to the hospital, a complete medication and medical history was taken, and a complete physical examination was performed, including collection of bio-specimens, basic demographic data (such as age, gender, weight and height) and self-reported daily alcohol",8,ald_paper,66
+01ec3c1ca2f2154e0959e52bd33da30f,"is based on fibrosis-4 index) (Supplementary Table 1). Patients with alcohol-use disorder were recruited from an alcohol withdrawal unit in San Diego and Brussels, where they followed a detoxification and rehabilitation programme. At admission to the hospital, a complete medication and medical history was taken, and a complete physical examination was performed, including collection of bio-specimens, basic demographic data (such as age, gender, weight and height) and self-reported daily alcohol consumption. Patients were actively drink- ing until the day of admission. Controls or patients with alcohol-use disorder did not take antibiotics or immunosuppressive medication during the two months preceding enrolment. Other exclusion criteria were diabetes, inflammatory bowel disease, known liver disease of any other aetiology, and clinically important cardiovascular, pulmonary or renal co-morbidities. Patients with alcoholic hepatitis were enrolled from the InTeam Consortium",8,ald_paper,67
+6cdb3e7dfe0dc9deb06c31dd20c12d05,"daily alcohol consumption. Patients were actively drink- ing until the day of admission. Controls or patients with alcohol-use disorder did not take antibiotics or immunosuppressive medication during the two months preceding enrolment. Other exclusion criteria were diabetes, inflammatory bowel disease, known liver disease of any other aetiology, and clinically important cardiovascular, pulmonary or renal co-morbidities. Patients with alcoholic hepatitis were enrolled from the InTeam Consortium (ClinicalTrials.gov identifier number: NCT02075918) from centres in the USA, Mexico, UK, France and Spain. Inclusion criteria for this study were active alcohol abuse (>50 g/day for men and >40 g/day for women) in the past 3 months, aspartate aminotransferase (AST) > ALT and total bilirubin >3 mg/dl in the past 3 months, and a liver biopsy and/or clinical picture consistent with alco- holic hepatitis. Exclusion criteria were autoimmune liver disease (ANA >1/320), chronic viral hepatitis,",8,ald_paper,68
+fe44479ded7778a99c23b709ed02879b,"ortium (ClinicalTrials.gov identifier number: NCT02075918) from centres in the USA, Mexico, UK, France and Spain. Inclusion criteria for this study were active alcohol abuse (>50 g/day for men and >40 g/day for women) in the past 3 months, aspartate aminotransferase (AST) > ALT and total bilirubin >3 mg/dl in the past 3 months, and a liver biopsy and/or clinical picture consistent with alco- holic hepatitis. Exclusion criteria were autoimmune liver disease (ANA >1/320), chronic viral hepatitis, hepatocellular carcinoma, complete portal vein thrombosis, extrahepatic terminal disease, pregnancy and a lack of signed informed consent. In all patients, the clinical picture was consistent with alcoholic hepatitis and in patients who underwent liver biopsy, the histology was consistent with the diagnosis of alco- holic hepatitis. Liver biopsies were only done if clinically indicated as part of routine clinical care for diagnostic purposes of alcoholic hepatitis. Bio-specimens were collected",8,ald_paper,69
+2c3a286fb9e0354ef702ef99b0572dc8,"hepatocellular carcinoma, complete portal vein thrombosis, extrahepatic terminal disease, pregnancy and a lack of signed informed consent. In all patients, the clinical picture was consistent with alcoholic hepatitis and in patients who underwent liver biopsy, the histology was consistent with the diagnosis of alco- holic hepatitis. Liver biopsies were only done if clinically indicated as part of routine clinical care for diagnostic purposes of alcoholic hepatitis. Bio-specimens were collected during their admission to the hospital. The median time of specimen collection was 4 days fol- lowing admission to the hospital (range 0–24, n = 82). For one patient who underwent liver transplantation, the transplantation date was considered as date of death. Patients were censored at the time point at which they were last seen alive. The baseline characteristics are shown in Supplementary Tables 1, 2. Faecal 16S rRNA sequencing, Enterococcus culture and qPCR were performed. The MELD score, ABIC",8,ald_paper,70
+386fd244c8250d51432e7c751905c2bf,"ring their admission to the hospital. The median time of specimen collection was 4 days fol- lowing admission to the hospital (range 0–24, n = 82). For one patient who underwent liver transplantation, the transplantation date was considered as date of death. Patients were censored at the time point at which they were last seen alive. The baseline characteristics are shown in Supplementary Tables 1, 2. Faecal 16S rRNA sequencing, Enterococcus culture and qPCR were performed. The MELD score, ABIC score and discriminant function were calculated from all alcoholic hepatitis patients from whom respective laboratory values were avail- able. The protocol was approved by the Ethics Committee of Hôpital Huriez, Universidad Autonoma de Nuevo Leon, Hospital Universitari Vall d’Hebron, King’s College London, Yale University, University of North Carolina at Chapel Hill, Weill Cornell Medical College, Columbia University, University of Wisconsin, VA San Diego Healthcare System, University of",8,ald_paper,71
+a799821f3252c590b10aee6aed63711e,", ABIC score and discriminant function were calculated from all alcoholic hepatitis patients from whom respective laboratory values were avail- able. The protocol was approved by the Ethics Committee of Hôpital Huriez, Universidad Autonoma de Nuevo Leon, Hospital Universitari Vall d’Hebron, King’s College London, Yale University, University of North Carolina at Chapel Hill, Weill Cornell Medical College, Columbia University, University of Wisconsin, VA San Diego Healthcare System, University of California San Diego (UCSD) and Université Catholique de Louvain. Patients were enrolled after written informed consent was obtained from each patient.",8,ald_paper,72
+db266098423dc1f54ed9a4b512869ee3,"Mice C57BL/6 mice were purchased from Charles River and used in Fig. 2h and Extended Data Fig. 2. C57BL/6 germ-free mice were bred at UCSD and used in Figs. 2a–g, 3, 4, Extended Data Figs. 3, 7 and 9. Sublytic Atp4aSl/Sl
+
+8 | Nature | www.nature.com
+
+mice on a C57BL/6 background have previously been described11,34 and heterozygous mice were used for breeding; sublytic Atp4aSl/Sl littermate mice and their wild-type littermates were used in Extended Data Fig. 5. Female and male mice (age of 9–12 weeks) were placed on a chronic– binge ethanol diet (NIAAA model) as previously described15. Mice were fed with Lieber–DeCarli diet and the caloric intake from ethanol was 0% on days 1–5 and 36% from day 6 until the end of the study period. At day 16, mice were gavaged with a single dose of ethanol (5 g/kg body weight) in the early morning and killed 9 h later. Pair-fed control mice received a diet with an isocaloric substitution of dextrose.",8,ald_paper,73
+ac8b5bf1f0fb3f4383b9619eecc27acb,"Stool samples from patients with alcoholic hepatitis (Fig. 1) were used for faecal transplantation in germ-free mice. Mice were gavaged with 100 μl of stool samples (1 g stool dissolved in 30 ml Luria–Bertani (LB) medium containing 15% glycerol under anaerobic conditions), starting at an age of 5–6 weeks and repeated 2 weeks later. Two weeks after the second gavage, mice were placed on the ethanol or control (isocaloric) diet.",8,ald_paper,74
+2665c3bae21b6ae1b6b116433d997f8c,"In studies of the effects of cytolysin, 5 × 108 CFUs of a cytolytic E. fae- calis strain (FA2-2(pAM714)), a non-cytolytic E. faecalis strain (FA2- 2(pAM771))5 (E. faecalis Δcytolysin) (kindly provided by M. S. Gilmore), or PBS (vehicle control) were fed to mice by gavage every third day, starting from day 6 through day 15 of ethanol feeding. Administration every third day was necessary, given that E. faecalis does not colonize mice11 (Extended Data Fig. 2o). To determine the effect of phage treat- ment, 1010 PFUs of E. faecalis phages (or C. crescentus phage phiCbK as control)35 were gavaged to the mice 1 day before the ethanol binge (at day 16). All animal studies were reviewed and approved by the Institu- tional Animal Care and Use Committee of UCSD.",8,ald_paper,75
+233d6b209558549830c47602346d6f68,"Bacteriophage isolation and amplification The E. faecalis strain from Atp4aSl/Sl mice faeces has previously been isolated11 and was used to isolate phages Efmus1, Efmus2, Efmus3 and Efmus4 (phages specific to the E. faecalis strain isolated from mouse faeces were named as Efmus with a number (Ef for E. faecalis, mus for mouse, digit for isolation order). E. faecalis strains from human stool samples were isolated using methods described below, and the cor- responding phages were named as Ef with patient number plus a digit (Ef for E. faecalis, last digit for isolation order). All E. faecalis strains were grown statically in brain–heart infusion (BHI) broth or on BHI agar at 37 °C. C. crescentus phage phiCbK was purified as previously described35.",8,ald_paper,76
+ad5137905a4b99e43439ecdd0a19191c,"E. faecalis phages were isolated from untreated raw sewage water obtained from North City Water Reclamation Plant in San Diego. Fifty millilitres of raw sewage water was centrifuged at 8,000g for 1 min at room temperature to pellet large particles. The supernatant was passed through a 0.45-μm and then a 0.2-μm syringe filter (Whatman, PES membrane). One hundred microlitres of the clarified sewage was mixed with 100 μl overnight E. faecalis culture and then added to BHI broth top agar (0.5% agar) and poured over a BHI plate (1.5% agar). After overnight growth at 37 °C, the resulting plaques were recovered using a sterile pipette tip in 500 μl PBS. Phages were replaqued on E. faecalis three more times to ensure that the phages were clonal isolates.",8,ald_paper,77
+5698df8b3acbaf5e2c4d21a425191d13,"High-titre phage stocks were propagated by infecting 200 ml of expo- nentially growing E. faecalis at a multiplicity of infection of 0.1 in BHI broth containing 10 mM MgSO4. Lysis was allowed to proceed for up to six hours at 37 °C with shaking. The lysates were centrifuged at 10,000g for 20 min at room temperature to remove the remaining bacterial cells and debris. Supernatant was then vacuum-filtered through a 0.2-μm membrane filter and kept at 4 °C until use.
+
+Before mice were gavaged, 10–20 ml lysates were concentrated using Corning Spin-X UF Concentrators with 100,000-molecular weight cutoff (MWCO) to a volume of approximately 1 ml. Following concen- tration, the culture medium was replaced with PBS via diafiltration. The resulting lysate was further concentrated to a final volume of 0.5 ml and adjusted to the required PFUs.",8,ald_paper,78
+191d863f88d68dd09588071b2a724c28,"Whole-genome sequencing for phages For all phages except Efmus4, 10 ml of lysates were treated with 10 μg/ml each of DNase and RNase at 37 °C for 1 h and phages were precipitated by adding 1M NaCl and 10% (w/v) polyethylene glycol 8000 (PEG 8000) and incubated at 4 °C overnight. Precipitated phages were then pel- leted by centrifugation at 10,000g for 10 min at 4 °C and resuspended in 500 μl of resuspension buffer (5 mM MgSO4). Phage DNA was then extracted using Promega Wizard DNA Clean-up kit (Promega). Phage genomes were sequenced using a combination of Illumina and Oxford Nanopore Technologies (ONT) MinION platforms. Illumina sequencing libraries were prepared using the Nextera XT library kit with bead-based size selection before loading onto Illumina flow cells. Sequencing was performed with either Illumina MiSeq Reagent Kit v3 in 2 × 300-bp or NextSeq 500 Mid Output Kit in 2 × 150-bp paired-end formats. ONT MinION sequencing libraries were prepared using the Rapid Barcoding Kit",9,ald_paper,79
+09d012226a959905b0c3d07c19f11ee8,"(Promega). Phage genomes were sequenced using a combination of Illumina and Oxford Nanopore Technologies (ONT) MinION platforms. Illumina sequencing libraries were prepared using the Nextera XT library kit with bead-based size selection before loading onto Illumina flow cells. Sequencing was performed with either Illumina MiSeq Reagent Kit v3 in 2 × 300-bp or NextSeq 500 Mid Output Kit in 2 × 150-bp paired-end formats. ONT MinION sequencing libraries were prepared using the Rapid Barcoding Kit (SQK-RBK004) and loaded onto MinION R9.4 flow cells. ONT reads were basecalled with Albacore v.2.3.4 (ONT). The sequence reads were demultiplexed and adapters trimmed from ONT reads using Porechop v.0.2.336. A hybrid Illumina-ONT de novo assembly was performed using the Unicycler v.0.4.7 pipeline37. Subsequently, Pilon v.1.2238 was used iteratively to polish the assemblies with Illumina reads until no addi- tional corrections could be made.",9,ald_paper,80
+d5b7db967a34e60acab82aab781ba139,"For phage Efmus4, 109 PFUs of the phage was filtered sequentially using 0.45-μm and 0.2-μm filters (VWR) and purified on a caesium chloride (CsCl) density gradient39. One millilitre of the CsCl fraction was purified on Amicon YM-100 protein columns (Millipore) and treated with DNase I. DNA was isolated using a Qiagen UltraSens virus kit (Qia- gen), amplified using GenomiPhi V2 (GE Healthcare), and fragmented to 200 to 400 bp using a Bioruptor (Diagenode). Libraries were created using the Ion Plus fragment library kit and sequenced using a 316 Chip on an Ion Torrent Personal Genome Machine (Life Technologies). Reads were trimmed according to modified Phred scores of 0.5 using CLC Genomics Workbench 4.9 (Cambridge), and the remaining reads were assembled using CLC Genomics Workbench 4.9 based on 98% identity with a minimum of 50% read overlap39. Reads were assembled into a single contig of 18,186 bp (20,118 × coverage).",9,ald_paper,81
+0c3eef467b762b9f50153d138f35452f,"Mapping of ONT reads to the hybrid assemblies was used to deter- mine the orientation and terminal ends of linear phage genomes, and reference genomes served as guides to orient circular phage genomes. Phage genome assemblies were annotated using the NCBI Prokaryotic Genome Annotation Pipeline (PGAP)40,41.
+
+Phage raw sequence reads and annotated genomes are available at NCBI under the following consecutive BioSample IDs (SAMN11089809– SAMN11089827). GenBank accession numbers include: Efmus1 (MK721195), Efmus2 (MK721197), Efmus3 (MK721185), Efmus4 (MK721193), Ef2.1 (MK693030), Ef2.2 (MK721189), Ef2.3 (MK721192), Ef5.1 (MK721199), Ef5.2 (MK721186), Ef5.3 (MK721200), Ef5.4 (MK721191), Ef6.1 (MK721187), Ef6.2 (MK721188), Ef6.3 (MK721196), Ef6.4 (MK721190), Ef7.1 (MK721194), Ef7.2 (MK721183), Ef7.3 (MK721184) and Ef7.4 (MK721198).",9,ald_paper,82
+14bc58fe83ca05dbe17ef58fb27450af,"Genetic maps of phage genomes were generated by LinearDisplay. pl (https://github.com/JCVenterInstitute/LinearDisplay), a PERL script that uses Xfig (https://sourceforge.net/projects/mcj/) to render high- quality images. Preliminary annotation of genes was derived from the automated annotation and from Phage_Finder42, which uses curated hidden Markov models and databases of core phage gene to annotate core gene functions. Annotation was then manually reviewed to assign the final colours.
+
+Phage phylogenetic tree A phage whole-genome phylogeny tree was generated from a pairwise distance matrix calculated with the MASH program, which approxi- mates average nucleotide identity (ANI)43. First, a sketch file was created from all the 19 E. faecalis phage genomes isolated and sequenced in",9,ald_paper,83
+d10f23d50baf514fcb72059dd9929ce3,"this study plus 54 Enterococcus phage genomes obtained from Gen- Bank, with 5,000 12-mers generated per genome (mash sketch -k 12 -s 5000). The sketch file was then compared to all the initial phage genome sequences to generate the ANI matrix using the mash distance command using default settings. The GGRaSP R package was used to calculate the UPMGA phylogeny from the ANI distance matrix, after redundant phage genomes (genomes ANI >99.985) were removed using the GGRaSP R package with a user defined cutoff of 0.015 (ggrasp. cluster (threshold = 0.015)). The resulting dendrogram was translated into newick format using the APE R package44, loaded into the iTOL tree viewer45, and annotated with taxonomic information and manually entered clade identification.",9,ald_paper,84
+366c466a103caf80b9fc9f10114645c9,"Electron microscopy Phage morphology was examined by transmission electron microscopy of negatively stained grids, prepared using the valentine method46 with either 2% uranyl-acetate or 2% phosphotungstic acid, and examined at an acceleration voltage of 100 kV in the JEOL 1200 EX transmission electron microscope.",9,ald_paper,85
+67397fe81759e7ff6ecb8321fe1495d9,"Bacterial DNA extraction and 16S rRNA sequencing DNA from human stool samples, mouse liver sections or bacterial cul- ture was extracted as previously described11, and DNA from mouse faeces was extracted using QIAamp Fast DNA Stool kit (Qiagen). 16S rRNA PCR was completed using Illumina adaptor and barcode-ligated 16S primers targeting the V4 region of the 16S rRNA gene47,48. Amplicons were purified using the Qiaquick PCR purification kit (Qiagen) using manufacturer’s specifications. Purified amplicons were then quantified via TECAN assay (Tecan), normalized and pooled in preparation for 16S rRNA sequencing. Pooled library was quantified and checked for qual- ity using Agilent 2100 Bioanalyzer (Agilent Technologies). Library was sequenced on Illumina MiSeq (Illumina) using V2 reagent chemistry, 500 cycles, 2 × 250-bp format using manufacturer’s specifications. 16S sequence reads were processed and operational taxonomic units were determined using our MOTHUR-based 16S rDNA analysis",9,ald_paper,86
+ed5b24c8605485c8bd14cc406e1bf256,"d amplicons were then quantified via TECAN assay (Tecan), normalized and pooled in preparation for 16S rRNA sequencing. Pooled library was quantified and checked for qual- ity using Agilent 2100 Bioanalyzer (Agilent Technologies). Library was sequenced on Illumina MiSeq (Illumina) using V2 reagent chemistry, 500 cycles, 2 × 250-bp format using manufacturer’s specifications. 16S sequence reads were processed and operational taxonomic units were determined using our MOTHUR-based 16S rDNA analysis workflow as previously described11,49. Raw 16S sequence reads can be found in the NCBI Sequence Read Archive (SRA) associated with Bioproject PRJNA525701.",9,ald_paper,87
+1024782019b0d4683af4727ed06566f1,"Real-time qPCR Bacterial genomic DNA was extracted from human stool samples and mouse liver11. RNA was extracted from mouse liver and cDNAs were generated11. Primer sequences for mouse genes were obtained from the NIH qPrimerDepot. Primer sequences for E. faecalis 16S rRNA gene, E. faecalis cylLS and cylLL genes have previously been described50,51. All primers used in this study are listed in Supplementary Table 9. Mouse gene expression and amplification of bacterial genes were determined with Sybr Green (Bio-Rad Laboratories) using ABI Ste- pOnePlus real-time PCR system. The qPCR value of mouse genes was normalized to 18S.",9,ald_paper,88
+d9bc354ad5367fe03300da246250bfde,"E. faecalis isolation and whole-genome sequencing To isolate E. faecalis strains from human subjects, 50–300 mg of human stool was resuspended in 500 μl PBS, serial dilutions were made and 100 μl was placed on plates with selective medium, BBL Enterococcosel broth (Becton Dickinson). Enterococci colonies were identified by the production of dark brown or black colour, generated by hydrolysis of esculin to esculetin (which reacts with ferric ammonium citrate). Each Enterococcus colony was then picked, and qPCR was performed to identify E. faecalis, using specific primers against the E. faecalis 16S rRNA gene50. For each subject, between 1 and 6 E. faecalis colonies were analysed and bacterial genomic DNA was then extracted as described in ‘Bacterial DNA extraction and 16S rRNA sequencing’.
+
+DNA sequencing was performed on the Illumina HiSeq Ten X generat- ing paired-end reads (2 × 151 bp). Bacterial genomes were assembled",9,ald_paper,89
+9803b91c86f54dbf4d7d71af052bcb40,"Article
+
+and annotated using the previously described pipeline52. Antimicrobial resistance and virulence genes including cytolysin (cyl) genes carried by E. faecalis isolates were identified by comparing individual genome assemblies against the CARD and VFDB databases, respectively, using abricate v0.8.10 (https://github.com/tseemann/abricate)53,54.
+
+For the phylogeny of E. faecalis, the genome assemblies of the study isolates were annotated with Prokka55, and a pangenome estimated using Roary52. A 95% identity cutoff was used, and core genes were defined as those in 99% of isolates. A maximum likelihood tree of the SNPs in the core genes was created using RAxML56 and 100 bootstraps. The resulting tree was visualized using iTOL45. Genome sequence data of E. faecalis strains isolated in this study have been deposited in the European Nucleotide Archive (ENA) under the accession number PRJEB25007. Sequence reads are available at ENA under run acces- sion identifiers ERR3200171–ERR3200263.",10,ald_paper,90
+2efd1ff7e3ab8cee851403c6c7821867,"E. faecalis culture All E. faecalis strains were grown statically in BHI broth or on BHI agar plate at 37 °C. Fifty micrograms per millilitre erythromycin was added when cytolytic and non-cytolytic E. faecalis strains were grown (Extended Data Fig. 2).
+
+Determination of levels of faecal Enterococcus To determine levels of faecal enterococci in mice, 10–30 mg of mouse faeces was resuspended into 500 μl PBS and serial dilutions were made. Five microlitres of each dilution from each sample was spotted onto a plate with a selective medium, BBL enterococcosel broth (Becton Dickinson) and the plates were then incubated at 37 °C overnight. For Extended Data Fig. 2o, agar plates contained 50 μg/ml erythromycin. Enterococci colonies were identified by the production of a dark brown or black colour. Colony numbers of each sample were then counted, and CFUs were calculated.",10,ald_paper,91
+08e3a780b763abbb9429976fea3ad8de,"Cytolysin expression and purification To purify bioactive CylLL′′ and CylLS′′, an Escherichia coli heterologous expression system was used. In brief, either 6×His–CylLL or 6×His–CylLS were co-expressed with CylM (the enzyme that performs dehydration and cyclization reactions on cytolysin) in E. coli to yield fully dehydrated and cyclized full-length peptides. The His tag and leader peptide were then removed using recombinant CylA (27–412), the soluble domain of the native peptidase used in cytolysin maturation, to yield bioactive CylLL′′ or CylLS′′. The resulting core peptides were further purified by reversed-phase high-performance liquid chromatography (HPLC).",10,ald_paper,92
+0e6d87d2f3436a3f300daa1e18afbecf,"The cylLL and cylLS genes were previously cloned into the MCSI of a pRSFDuet-1 backbone vector that contained the cylM gene in MCSII6. The cylA (27–412) gene was previously cloned into MCSI of a pRSFDuet-1 backbone vector57. E. coli BL21 Star (DE3) cells (50 μl) were transformed with 100 ng of either the cylLL_cylM:pRSFDuet, cylLS_cylM:pRSFDuet or cylA (27–412):pRSFDuet plasmids via KCM chemical transformation. The cells were plated on LB agar plates supplemented with kanamycin (50 μg/ml) and grown at 37 °C overnight. One colony was picked to inoculate 15 ml of LB broth supplemented with kanamycin overnight at 37 °C. The culture was used to inoculate 1.5 l of terrific broth supple- mented with kanamycin. Cultures were grown with shaking at 37 °C to an optical density at 600 nm (OD600) of 0.8. The temperature of the incu- bator was lowered to 18 °C and expression was induced with the addi- tion of 0.3 mM final concentration of isopropyl β-d-thiogalactoside. The cultures were allowed to",10,ald_paper,93
+6f618c9e4f018054c5d225820a06984d,"own at 37 °C overnight. One colony was picked to inoculate 15 ml of LB broth supplemented with kanamycin overnight at 37 °C. The culture was used to inoculate 1.5 l of terrific broth supple- mented with kanamycin. Cultures were grown with shaking at 37 °C to an optical density at 600 nm (OD600) of 0.8. The temperature of the incu- bator was lowered to 18 °C and expression was induced with the addi- tion of 0.3 mM final concentration of isopropyl β-d-thiogalactoside. The cultures were allowed to incubate at 18 °C for 18 h. The cells were collected by centrifugation at 5,000g for 12 min. The cell paste was collected and frozen at -70 °C.",10,ald_paper,94
+a73bdcae11d25968902ef4da634aac9b,"For the purification of the protease CylA (27–412), the cell paste was thawed and resuspended in 50 ml LanP buffer (20 mM HEPES, 1 M NaCl, pH 7.5). The cell suspension was lysed by homogenization. The lysate was clarified by centrifugation at 13,000g for 45 min and filtered through a 0.45-μm centrifugal filter (Thermo Scientific). The clarified",10,ald_paper,95
+08f7c53ac954472a5218b29163e4245d,"lysate was applied to a pre-equilibrated HisTrap HP 5 ml column (GE Healthcare) through a peristaltic pump. The loaded column was con- nected to an ÄKTA pure 25 M system. The protein was eluted by a linear gradient of LanP buffer to Elution Buffer (20 mM HEPES, 1 M NaCl, 500 mM imidazole, 10% glycerol, pH 7.5) over 30 min. The purest fractions, as determined by 4–20% SDS–PAGE, were combined, concentrated to 1 mg/ml by Amicon Ultra Centrifugal Filters (30 kDa MWCO), and buffer exchanged into storage buffer (20mM HEPES, 300 mM KCl, 10% glycerol, pH 7.5) by PD-10 desalting column (GE Healthcare). Protein concentration was determined by absorbance at 280 nm.",10,ald_paper,96
+0287b62ca7b51a9ba0649d5263c732bc,"For the purification of CylLL′′ and CylLS′′ peptides, the cell paste was thawed and resuspended in 50 ml of LanA Buffer B1 (6 M guanidine HCl, 20 mM NaH2PO4, 500 mM NaCl, 0.5 mM imidazole, pH 7.5). The cell suspension was lysed via sonication (2-s pulse on, 5-s pulse off, 7 min total pulse on time). The cell lysate was clarified by centrifugation at 13,000g for 45 min. The clarified cell lysate was filtered through a 0.45-μm centrifugal filter and applied via gravity flow to a pre-equili- brated, 2 ml bed volume of His60 Ni Superflow Resin (Clonetech). After the lysate had been applied, the resin was washed with 15 ml of LanA Buffer B2 (4 M guanidine HCl, 20 mM NaH2PO4, 500 mM NaCl, 30 mM imidazole, pH 7.5). The resin was washed again with 15 ml of LanA Wash Buffer (20 mM NaH2PO4, 500 mM NaCl, 30 mM imidazole, pH 7.5) to remove the guanidine HCl. The peptides were eluted with 10 ml of LanA elution buffer (20 mM NaH2PO4, 500 mM NaCl, 500 mM imidazole, pH 7.5). A 0.02 mg/ml final",10,ald_paper,97
+7d3e30b30c7dacd49e2c1f11cab2f1e8,"brated, 2 ml bed volume of His60 Ni Superflow Resin (Clonetech). After the lysate had been applied, the resin was washed with 15 ml of LanA Buffer B2 (4 M guanidine HCl, 20 mM NaH2PO4, 500 mM NaCl, 30 mM imidazole, pH 7.5). The resin was washed again with 15 ml of LanA Wash Buffer (20 mM NaH2PO4, 500 mM NaCl, 30 mM imidazole, pH 7.5) to remove the guanidine HCl. The peptides were eluted with 10 ml of LanA elution buffer (20 mM NaH2PO4, 500 mM NaCl, 500 mM imidazole, pH 7.5). A 0.02 mg/ml final concentration of CylA (27–412) was added to the elution fraction and allowed to incubate at room temperature overnight to remove the leader peptide.",10,ald_paper,98
+8f77478487d94aa9fb3fcc4ce08d7c50,"The digestion was quenched by adding 2% (v/v) final concentration of trifluoroacetic acid. The solution was centrifuged at 4,500g for 10 min and filtered through a 0.45-μm syringe filter (Thermo Scientific). The core peptides were purified by semi-preparative reverse-phase HPLC using a Phenomenex Jupiter Proteo column (10 mm × 250 mm, 4 μm, 90 Å) connected to an Agilent 1260 Infinity II liquid chromatography system. The peptides were separated using a linear gradient of 3% (v/v) solvent B (acetonitrile + 0.1% trifluoroacetic acid) in solvent A (water + 0.1% trif- luoroacetic acid). The fractions were spotted on a matrix-assisted laser desorption/ionization (MALDI) target plate by mixing 1 μl of sample with 1 μl of a 25 mg/ml solution of Super-DHB (Sigma) in 80% acetonitrile/water + 0.1% trifluoroacetic acid. The fractions were analysed by MALDI–time of flight (TOF) mass spectrometry on a Bruker UltrafleXtreme MALDI–TOF/ TOF operating in positive ionization, reflector mode.",10,ald_paper,99
+2e0a4ed89adf70e1a1472b248139ca00,"Primary mouse hepatocytes Hepatocytes were isolated from C57BL/6 female mice fed the chronic– binge ethanol diet (NIAAA model)15. Livers were perfused in situ with 0.5 mM EGTA containing calcium-free salt solution and then perfused with a solution containing 0.02% (w/v) collagenase D (Roche Applied Science). Livers were then carefully minced and filtered using a 70-μm nylon cell strainer. Hepatocytes were centrifuged at 50g for 1 min after 3 washes. Hepatocyte viability was assessed by Trypan Blue (Thermo Fisher Scientific). Hepatocytes (1.5 × 105) were seeded on 12-well plates coated with rat collagen type I in DMEM-F12 (Thermo Fisher Scientific) with insulin–transferrin–selenium (1% v/v) (Thermo Fisher Scientific) and 40 ng/ml dexamethasone (MP Biomedicals) containing 10% (v/v) fetal bovine serum (FBS) (Gemini Bio-Products) and antibiotics. After 4 h, the culture was washed with DMEM-F12 medium and changed to the same complemented medium without FBS58. Then 16 h later, hepato- cytes",10,ald_paper,100
+c24a5fb89390ed2e8a4037bf80ccde98,"ue (Thermo Fisher Scientific). Hepatocytes (1.5 × 105) were seeded on 12-well plates coated with rat collagen type I in DMEM-F12 (Thermo Fisher Scientific) with insulin–transferrin–selenium (1% v/v) (Thermo Fisher Scientific) and 40 ng/ml dexamethasone (MP Biomedicals) containing 10% (v/v) fetal bovine serum (FBS) (Gemini Bio-Products) and antibiotics. After 4 h, the culture was washed with DMEM-F12 medium and changed to the same complemented medium without FBS58. Then 16 h later, hepato- cytes were cultured with 0 or 25 mM ethanol and stimulated with 0, 200 or 400 nM CylLS′′ and/or CylLL′′ in the same culture medium without FBS. After 3 h stimulation, hepatocyte cytotoxicity was assessed using Pierce LDH cytotoxicity detection kit (Thermo Fisher Scientific).",10,ald_paper,101
+69a98fc05900478acf61fe92b19fcfe2,Biochemical analysis Serum levels of ALT were determined using Infinity ALT kit (Thermo Scientific). Hepatic triglyceride levels were measured using Triglyceride,10,ald_paper,102
+347342728a3a58457965380163f2cc20,"Liquid Reagents kit (Pointe Scientific). Levels of serum lipopolysac- charide and faecal albumin were determined by enzyme-linked immu- nosorbent kits (Lifeome Biolabs and Bethyl Labs, respectively). Serum levels of ethanol were measured using ethanol assay kit (BioVision).
+
+Staining procedures Formalin-fixed tissue samples were embedded in paraffin and stained with H & E. To determine lipid accumulation, liver sections were embed- ded in OCT compound. Eight-micrometre frozen sections were then cut and stained with Oil Red O (Sigma-Aldrich). Representative images from each group of mice are shown in each figure. The terminal deoxynucleo- tide transferase-mediated dUTP nick-end labelling (TUNEL) assay was performed using an in situ cell death detection kit (Sigma-Aldrich). We randomly selected five high-power fields for counting TUNEL-positive cells and normalized numbers to total cells.",11,ald_paper,103
+f21458274afad7ff845f4be02ee9fbee,"Statistical analysis Results are expressed as mean ± s.e.m. (except when stated otherwise). Univariate and multivariate Cox regression analysis was used to detect associations of cytolysin with overall mortality. The multivariate model was adjusted for geographical origin of the patients, antibiotic treat- ment, platelet count, and creatinine, bilirubin and INR as components of the MELD score. Univariate logistic regression analysis of laboratory and clinical parameters associated with the detection of cytolysin and E. faecalis was performed. Univariate linear regression analysis of labo- ratory and clinical parameters associated with the log-transformed total amount of faecal E. faecalis measured with qPCR was performed. To associate log-transformed total E. faecalis and E. faecalis positiv- ity with mortality, univariate Cox regression was used. P values from univariate and multivariate Cox regression, univariate logistic regres- sion and univariate linear regression were determined",11,ald_paper,104
+899be0735b737d66afce71f6afeb72f2,"tion of cytolysin and E. faecalis was performed. Univariate linear regression analysis of labo- ratory and clinical parameters associated with the log-transformed total amount of faecal E. faecalis measured with qPCR was performed. To associate log-transformed total E. faecalis and E. faecalis positiv- ity with mortality, univariate Cox regression was used. P values from univariate and multivariate Cox regression, univariate logistic regres- sion and univariate linear regression were determined by Wald test. Multicollinearity was examined using the variance inflation factor. Kaplan–Meier curves were used to compare survival between cytolysin- positive and cytolysin-negative patients with alcoholic hepatitis. Faecal E. faecalis, bacterial diversity and richness from controls and patients were compared using Kruskal–Wallis test with Dunn’s post hoc test. Region- and/or centre-specific clinical characteristics of patients with alcoholic hepatitis were compared with Kruskal–Wallis test for",11,ald_paper,105
+6e4f5b08575b1a6a1de9a4943fe92db1,"y Wald test. Multicollinearity was examined using the variance inflation factor. Kaplan–Meier curves were used to compare survival between cytolysin- positive and cytolysin-negative patients with alcoholic hepatitis. Faecal E. faecalis, bacterial diversity and richness from controls and patients were compared using Kruskal–Wallis test with Dunn’s post hoc test. Region- and/or centre-specific clinical characteristics of patients with alcoholic hepatitis were compared with Kruskal–Wallis test for continu- ous and Fisher’s exact test for categorical variables. Faecal E. faecalis in patients with alcoholic hepatitis with or without cytolysin, and with or without cirrhosis, were compared with Mann–Whitney-Wilcoxon rank-sum test. Faecal E. faecalis in patients with alcoholic hepatitis from different region and/or centres were compared with the Kruskal– Wallis test. The percentage of subjects with faecal samples that were positive for E. faecalis and cytolysin was compared using Fisher’s",11,ald_paper,106
+1b8539cd863d13dde39b94430f46c5f9,"for continu- ous and Fisher’s exact test for categorical variables. Faecal E. faecalis in patients with alcoholic hepatitis with or without cytolysin, and with or without cirrhosis, were compared with Mann–Whitney-Wilcoxon rank-sum test. Faecal E. faecalis in patients with alcoholic hepatitis from different region and/or centres were compared with the Kruskal– Wallis test. The percentage of subjects with faecal samples that were positive for E. faecalis and cytolysin was compared using Fisher’s exact test, followed by FDR procedures for multiple group comparisons. Jaccard dissimilarity matrices were used for PCoA, and P values were determined by PERMANOVA followed by FDR procedures to correct for multiple comparisons.",11,ald_paper,107
+d8ebc7c3b3f00cdf072554b66f8ce036,"For mouse and cell culture studies, the significance of multiple groups was evaluated using one-way or two-way ANOVA with Tukey’s post hoc test. Fisher’s exact test was used in the analysis of liver E. faecalis and cytolysin with FDR correction for multiple comparisons. Kaplan–Meier curves were used to compare survival between experi- mental mouse groups. PCoA based on Jaccard dissimilarity matrices was performed between experimental mouse groups and the P values were determined by PERMANOVA followed by FDR procedures to cor- rect for multiple comparisons.
+
+Exact P values for all comparisons, together with group size for each group, were listed in Supplementary Table 10. Statistical analyses were performed using R statistical software, R v.3.5.1 (R Foundation for Sta- tistical Computing) and GraphPad Prism v.6.01. A value of P < 0.05 was considered to be statistically significant (adjusted for multiple comparisons when performing multiple tests).",11,ald_paper,108
+fc172d89ebbbb57ae3bad2b6d4c4e4fa,"Reporting summary Further information on research design is available in the Nature Research Reporting Summary linked to this paper.
+
+Data availability Raw 16S sequence reads can be found in the NCBI SRA associated with Bioproject PRJNA525701. Phage raw sequence reads and annotated genomes are available at NCBI under the following consecutive BioSa- mple identifiers (SAMN11089809–SAMN11089827). Genome sequence data of E. faecalis strains isolated in this study were registered at the ENA under study PRJEB25007.
+
+Code availability The PERL script for making the genetic maps of phage genomes can be found at https://github.com/JCVenterInstitute/LinearDisplay.
+
+30. Brandl, K. et al. Dysregulation of serum bile acids and FGF19 in alcoholic hepatitis.
+
+J. Hepatol. 69, 396–405 (2018).
+
+31. Gao, B. et al. Serum and fecal oxylipins in patients with alcohol-related liver disease.
+
+Dig. Dis. Sci. 64, 1878–1892 (2019).",11,ald_paper,109
+f055ad736f57a52e358ea26f9c2d04d1,"32. Lang, S. et al. Intestinal fungal dysbiosis and systemic immune response to fungi in
+
+patients with alcoholic hepatitis. Hepatology (2019).
+
+33. Ball, S. A., Tennen, H., Poling, J. C., Kranzler, H. R. & Rounsaville, B. J. Personality,
+
+temperament, and character dimensions and the DSM-IV personality disorders in substance abusers. J. Abnorm. Psychol. 106, 545–553 (1997).
+
+34. Krieg, L. et al. Mutation of the gastric hydrogen-potassium ATPase alpha subunit causes
+
+iron-deficiency anemia in mice. Blood 118, 6418–6425 (2011).
+
+35. Gill, J. J. et al. The Caulobacter crescentus phage phiCbK: genomics of a canonical
+
+phage. BMC Genomics 13, 542 (2012).
+
+36. Wick, R. R., Judd, L. M., Gorrie, C. L. & Holt, K. E. Completing bacterial genome assemblies
+
+with multiplex MinION sequencing. Microb. Genom. 3, e000132 (2017). 37. Wick, R. R., Judd, L. M., Gorrie, C. L. & Holt, K. E. Unicycler: resolving bacterial",11,ald_paper,110
+a8031908db328dc87067a3540c0e0e16,"genome assemblies from short and long sequencing reads. PLOS Comput. Biol. 13, e1005595 (2017).
+
+38. Walker, B. J. et al. Pilon: an integrated tool for comprehensive microbial variant detection
+
+and genome assembly improvement. PLoS ONE 9, e112963 (2014).
+
+39. Santiago-Rodriguez, T. M. et al. Transcriptome analysis of bacteriophage communities in
+
+periodontal health and disease. BMC Genomics 16, 549 (2015).
+
+40. Haft, D. H. et al. RefSeq: an update on prokaryotic genome annotation and curation.
+
+Nucleic Acids Res. 46, D851–D860 (2018).
+
+41. Tatusova, T. et al. NCBI prokaryotic genome annotation pipeline. Nucleic Acids Res. 44,
+
+6614–6624 (2016).
+
+42. Fouts, D. E. Phage_Finder: automated identification and classification of prophage
+
+regions in complete bacterial genome sequences. Nucleic Acids Res. 34, 5839–5851 (2006).
+
+43. Ondov, B. D. et al. Mash: fast genome and metagenome distance estimation using
+
+MinHash. Genome Biol. 17, 132 (2016).",11,ald_paper,111
+ba142c6e54a5695bbc3c674f8f690f9b,"44. Paradis, E. & Schliep, K. ape 5.0: an environment for modern phylogenetics and
+
+evolutionary analyses in R. Bioinformatics 35, 526–528 (2019).
+
+45. Letunic, I. & Bork, P. Interactive tree of life (iTOL) v3: an online tool for the display and
+
+annotation of phylogenetic and other trees. Nucleic Acids Res. 44, W242–W245 (2016).
+
+46. Valentine, R. C., Shapiro, B. M. & Stadtman, E. R. Regulation of glutamine synthetase. XII. Electron microscopy of the enzyme from Escherichia coli. Biochemistry 7, 2143–2152 (1968).
+
+47. Haas, B. J. et al. Chimeric 16S rRNA sequence formation and detection in Sanger and
+
+454-pyrosequenced PCR amplicons. Genome Res. 21, 494–504 (2011).
+
+48. Caporaso, J. G. et al. Global patterns of 16S rRNA diversity at a depth of millions of",11,ald_paper,112
+f669e202c38a8d351f0d69fa1d3519de,"sequences per sample. Proc. Natl Acad. Sci. USA 108 (Suppl 1), 4516–4522 (2011). 49. Chen, P. et al. Supplementation of saturated long-chain fatty acids maintains intestinal eubiosis and reduces ethanol-induced liver injury in mice. Gastroenterology 148, 203–214.e16 (2015).
+
+50. Ryu, H. et al. Development of quantitative PCR assays targeting the 16S rRNA genes of
+
+Enterococcus spp. and their application to the identification of enterococcus species in environmental samples. Appl. Environ. Microbiol. 79, 196–204 (2013).
+
+51. Haas, W., Shepard, B. D. & Gilmore, M. S. Two-component regulator of Enterococcus
+
+faecalis cytolysin responds to quorum-sensing autoinduction. Nature 415, 84–87 (2002). 52. Page, A. J. et al. Robust high-throughput prokaryote de novo assembly and improvement
+
+pipeline for Illumina data. Microb. Genom. 2, e000083 (2016).
+
+53. Chen, L. et al. VFDB: a reference database for bacterial virulence factors. Nucleic Acids
+
+Res. 33, D325–D328 (2005).",11,ald_paper,113
+21283a97b5e54691344323644697ed3d,"54. Jia, B. et al. CARD 2017: expansion and model-centric curation of the comprehensive
+
+antibiotic resistance database. Nucleic Acids Res. 45, D566–D573 (2017) 55. Seemann, T. Prokka: rapid prokaryotic genome annotation. Bioinformatics 30,
+
+2068–2069 (2014).
+
+56. Stamatakis, A. RAxML version 8: a tool for phylogenetic analysis and post-analysis of
+
+large phylogenies. Bioinformatics 30, 1312–1313 (2014).",11,ald_paper,114
+6be60c9e324c19327b970a3e1aba1790,"Article
+
+57. Tang, W., Bobeica, S. C., Wang, L. & van der Donk, W. A. CylA is a sequence-specific
+
+58.
+
+protease involved in toxin biosynthesis. J. Ind. Microbiol. Biotechnol. 46, 537–549 (2019). Iwaisako, K. et al. Protection from liver fibrosis by a peroxisome proliferator-activated receptor δ agonist. Proc. Natl Acad. Sci. USA 109, E1369–E1376 (2012).
+
+59. Clarke, T. H., Brinkac, L. M., Sutton, G. & Fouts, D. E. GGRaSP: a R-package for selecting
+
+representative genomes using Gaussian mixture models. Bioinformatics 34, 3032–3034 (2018).",12,ald_paper,115
+d068564426c96eb4c6356ca86a64beca,"Acknowledgements S. Lang was supported by a DFG fellowship (LA 4286/1-1), C.L. was supported by an AASLD Pinnacle Research Award in Liver Disease and a pilot project award from Southern California Research Center for Alcoholic Liver and Pancreatic Disease (ALPD) and Cirrhosis (P50 AA011999), Y.S. was supported by a Wellcome Trust PhD studentship and I.R.R. was supported by National Institute of General Medical Sciences (NIGMS)–NIH Chemistry–Biology Interface Training Grant (T32-GM070421). This study was supported in part by a Biocodex Microbiota Foundation Grant, NIH grants R01 AA24726, U01 AA026939, by Award Number BX004594 from the Biomedical Laboratory Research & Development Service of the VA Office of Research and Development (to B.S.), the Wellcome Trust (WT098051) (to T.D.L.), NIH grant U01AA021908 (to R.B.) and services provided by P30 DK120515 and P50 AA011999.",12,ald_paper,116
+2e1f9a5042788a8c1836c0c2f1d719b6,"Author contributions Y.D. was responsible for acquisition, analysis and interpretation of data, and drafting of the manuscript; C.L. was responsible for study concept and design, acquisition,",12,ald_paper,117
+e5ef018134f24c7c3db095a5c96d0da3,"analysis and interpretation of data and key preliminary experiments; S. Lang, K.B., J.L. and X.M.T. provided assistance with statistical analysis; H.C., L.J., B.G., W.S., R.K., F.H. and S. Lee provided assistance with data acquisition; R.C.W., T.H.C., K.N., M.T. and D.E.F. were responsible for 16S rRNA sequencing, phage genome sequencing and data analysis; Y.S. and T.D.L. were responsible for bacterial genome sequencing and data analysis; A.H.-M., L.L. and R.Y. provided assistance with phage studies and were responsible for electron microscopy data; R.Y. provided critical revision of the manuscript; I.R.R. and W.A.v.d.D. were responsible for cytolysin expression and purification; Y.M. and L.E. provided assistance with the design and conduct of the gnotobiotic mouse studies; M.L. and D.P. provided assistance with phage isolation; M.V.-C., F.B.-P., E.C.V., J.G.A., R.S.B. Jr, V.V., J.A., J.C., D.L.S., S.B.H., A.L., M.R.L., P.M., G.G.-T., R.B. and P.S. were responsible for collection of",12,ald_paper,118
+f7ba577921f736746028f3756da8d725,"tudies and were responsible for electron microscopy data; R.Y. provided critical revision of the manuscript; I.R.R. and W.A.v.d.D. were responsible for cytolysin expression and purification; Y.M. and L.E. provided assistance with the design and conduct of the gnotobiotic mouse studies; M.L. and D.P. provided assistance with phage isolation; M.V.-C., F.B.-P., E.C.V., J.G.A., R.S.B. Jr, V.V., J.A., J.C., D.L.S., S.B.H., A.L., M.R.L., P.M., G.G.-T., R.B. and P.S. were responsible for collection of human samples; D.E.F. and B.S. were responsible for the study concept and design, and editing the manuscript; B.S. was responsible for study supervision.",12,ald_paper,119
+ea7d403697a0a0ce750f595445f83887,"Competing interests B.S. consults for the Ferring Research Institute; however, there is no competing interest with regard to this study. All other authors declare no competing interests.
+
+Additional information Supplementary information is available for this paper at https://doi.org/10.1038/s41586-019- 1742-x. Correspondence and requests for materials should be addressed to B.S. Reprints and permissions information is available at http://www.nature.com/reprints.",12,ald_paper,120
+b3e298e455259fc27f8cc72d047895fb,Extended Data Fig. 1 | See next page for caption.,13,ald_paper,121
+a8dce5c437f755a072d2372bf3f1c775,Article,14,ald_paper,122
+49f51bd7eece8d27c4baabe2056f3296,"Extended Data Fig. 1 | Intestinal dysbiosis in patients with alcoholic hepatitis. a, 16S rRNA sequencing of faecal samples from controls (n = 14), patients with alcohol-use disorder (n = 43), or alcoholic hepatitis (n = 75). The graph demonstrates the relative abundance of sequence reads in each genus. b, Bacterial diversity (Shannon index and Simpson index) and richness (Chao richness) was calculated in controls (n = 14), patients with alcohol-use disorder (n = 43) or alcoholic hepatitis (n = 75). c, E. faecalis in faecal samples from controls (n = 25), patients with alcohol-use disorder (n = 38) or alcoholic hepatitis (n = 82), assessed by qPCR. d, Percentage of faecal samples positive for E. faecalis in controls (n = 25), patients with alcohol-use disorder (n = 38) or alcoholic hepatitis (n = 82), assessed by qPCR. E. faecalis was detected in faeces from 80% of patients with alcoholic hepatitis, versus 36% of controls (P < 0.001). There was also a significant difference between",14,ald_paper,123
+102f322a8580ae0b13cfa2e14cd35116,"= 75). c, E. faecalis in faecal samples from controls (n = 25), patients with alcohol-use disorder (n = 38) or alcoholic hepatitis (n = 82), assessed by qPCR. d, Percentage of faecal samples positive for E. faecalis in controls (n = 25), patients with alcohol-use disorder (n = 38) or alcoholic hepatitis (n = 82), assessed by qPCR. E. faecalis was detected in faeces from 80% of patients with alcoholic hepatitis, versus 36% of controls (P < 0.001). There was also a significant difference between patients with alcohol-use disorder and patients with alcoholic hepatitis (P < 0.01). e, Receiver operating characteristic curves and area under the curve (AUC) for the comparison of 90-day mortality and cytolysin positivity (red; n = 57), MELD score (blue; n = 56), ABIC score (yellow; n = 57) and discriminant function (green; n = 42) in patients with alcoholic hepatitis. f, E. faecalis in faecal samples from patients with alcoholic hepatitis whose faecal samples were cytolysin- positive (n = 25)",14,ald_paper,124
+01ba7321feb5ad965d6e3514b66ef776,"atients with alcohol-use disorder and patients with alcoholic hepatitis (P < 0.01). e, Receiver operating characteristic curves and area under the curve (AUC) for the comparison of 90-day mortality and cytolysin positivity (red; n = 57), MELD score (blue; n = 56), ABIC score (yellow; n = 57) and discriminant function (green; n = 42) in patients with alcoholic hepatitis. f, E. faecalis in faecal samples from patients with alcoholic hepatitis whose faecal samples were cytolysin- positive (n = 25) or cytolysin-negative (n = 54), assessed by qPCR (P = 0.8174). g, 16S rRNA sequencing of faecal samples from patients with alcoholic hepatitis from different centres (France, n = 9; Mexico, n = 6; Spain, n = 5; UK, n = 11; USA (east), n = 16; USA (Midwest), n = 12; USA (west), n = 16 patients). We used PCoA based on Jaccard dissimilarity matrices to show β-diversity among groups at the genus level. The composition of faecal microbiota was significantly different between patients from different",14,ald_paper,125
+20b155020c686b9e9f0cb6a63bd9cdbf,"or cytolysin-negative (n = 54), assessed by qPCR (P = 0.8174). g, 16S rRNA sequencing of faecal samples from patients with alcoholic hepatitis from different centres (France, n = 9; Mexico, n = 6; Spain, n = 5; UK, n = 11; USA (east), n = 16; USA (Midwest), n = 12; USA (west), n = 16 patients). We used PCoA based on Jaccard dissimilarity matrices to show β-diversity among groups at the genus level. The composition of faecal microbiota was significantly different between patients from different regions (P < 0.01). h, Percentage of faecal samples that were positive for cylLL and cylLS DNA sequences (cytolysin- positive), in patients with alcoholic hepatitis from different centres (France,",14,ald_paper,126
+174cfa18b2c0ffc027852b78caf9660d,"n = 16; Mexico, n = 6; Spain, n = 6; UK, n = 10; USA (east), n = 16; USA (Midwest), n = 13; USA (west), n = 15 patients), assessed by qPCR (P = 0.6094). i, E. faecalis in faecal samples from patients with alcoholic hepatitis from different centres, assessed by qPCR (P = 0.5648). j, Percentage of faecal samples that were positive for E. faecalis in patients with alcoholic hepatitis from different centres (France, n = 16; Mexico, n = 6; Spain, n = 6; UK, n = 10; USA (east), n = 16; USA (Midwest), n = 13; USA (west), n = 15 patients), assessed by qPCR (P = 0.0529). k, Percentage of subjects with faecal samples that were positive for cylLL and cylLS DNA sequences (cytolysin-positive), in patients with alcoholic hepatitis and with (n = 30) or without (n = 18) cirrhosis, assessed by qPCR (P = 0.3431). l, E. faecalis in faecal samples from patients with alcoholic hepatitis and with (n = 30) or without (n = 18) cirrhosis, assessed by qPCR (P = 0.5736). m, Percentage of faecal samples that were",14,ald_paper,127
+5dba9d3b14303785159fc9e250470fed,"= 13; USA (west), n = 15 patients), assessed by qPCR (P = 0.0529). k, Percentage of subjects with faecal samples that were positive for cylLL and cylLS DNA sequences (cytolysin-positive), in patients with alcoholic hepatitis and with (n = 30) or without (n = 18) cirrhosis, assessed by qPCR (P = 0.3431). l, E. faecalis in faecal samples from patients with alcoholic hepatitis and with (n = 30) or without (n = 18) cirrhosis, assessed by qPCR (P = 0.5736). m, Percentage of faecal samples that were positive for E. faecalis in patients with alcoholic hepatitis and with (n = 30) or without (n = 18) cirrhosis, assessed by qPCR (P = 0.2878). Results are expressed as mean ± s.e.m. (c, f, i, l). For the box and whisker plots in b, the box extends from the 25th to 75th percentiles, and the centre line represents the median; for all three groups, the bottom whiskers show the minimum values; for the control group (black), the top whisker shows the maximum value; for the other two groups, the top",14,ald_paper,128
+644608f30015ed7f9f453ddcb9b2df81,"e positive for E. faecalis in patients with alcoholic hepatitis and with (n = 30) or without (n = 18) cirrhosis, assessed by qPCR (P = 0.2878). Results are expressed as mean ± s.e.m. (c, f, i, l). For the box and whisker plots in b, the box extends from the 25th to 75th percentiles, and the centre line represents the median; for all three groups, the bottom whiskers show the minimum values; for the control group (black), the top whisker shows the maximum value; for the other two groups, the top whiskers represent the 75th percentile plus 1.5× the inter-quartile distance (the distance between the 25th and 75th percentiles); all values greater than this are plotted as individual dots. P values were determined by Kruskal– Wallis test (i) with Dunn’s post hoc test (b, c), two-sided Fisher’s exact test (h, j, k, m) followed by FDR procedures (d), two-sided Mann–Whitney Wilcoxon rank-sum test (f, l) or PERMANOVA (g). The exact group size (n) and P values for each comparison are listed in",14,ald_paper,129
+0d7b149dd9b9323fa21507c0d6a24b99,"op whiskers represent the 75th percentile plus 1.5× the inter-quartile distance (the distance between the 25th and 75th percentiles); all values greater than this are plotted as individual dots. P values were determined by Kruskal– Wallis test (i) with Dunn’s post hoc test (b, c), two-sided Fisher’s exact test (h, j, k, m) followed by FDR procedures (d), two-sided Mann–Whitney Wilcoxon rank-sum test (f, l) or PERMANOVA (g). The exact group size (n) and P values for each comparison are listed in Supplementary Table 10. *P < 0.05, **P < 0.01, ***P < 0.001, ****P < 0.0001.",14,ald_paper,130
+98c5fe3b6999f0bb145a006dbeca9374,Extended Data Fig. 2 | See next page for caption.,15,ald_paper,131
+663cf932c191abe406198b369e32e422,Article,16,ald_paper,132
+64ea3de25a9434f237347f5a1c04e023,"Extended Data Fig. 2 | Cytolytic E. faecalis causes the progression of ethanol-induced liver disease in mice. a–n, C57BL/6 mice were fed oral isocaloric (control) or chronic–binge ethanol diets and gavaged with vehicle (PBS), a cytolytic E. faecalis strain (FA2-2(pAM714)) (denoted E. faecalis) (5 × 108 CFUs) or a non-cytolytic E. faecalis strain (FA2-2(pAM771))5 (denoted E. faecalis Δcytolysin) (5 × 108 CFUs) every third day. a, Serum levels of ALT. b, Hepatic triglyceride content. c, Representative oil red O-stained liver sections. d–f, Hepatic levels of mRNAs. g, Kaplan–Meier curve of survival of mice on chronic–binge ethanol diets (day 0 denotes the start of ethanol feeding). Mice gavaged with PBS all survived, and are not included in the figure. A higher proportion of mice (n = 15) gavaged with non-cytolytic E. faecalis survived than did mice (n = 25) gavaged with cytolytic E. faecalis. h, Proportions of mice that were positive for cytolysin in the liver, measured by qPCR for cylLS",16,ald_paper,133
+edb085ac7a774566046ae52e7e5395f1,"ive oil red O-stained liver sections. d–f, Hepatic levels of mRNAs. g, Kaplan–Meier curve of survival of mice on chronic–binge ethanol diets (day 0 denotes the start of ethanol feeding). Mice gavaged with PBS all survived, and are not included in the figure. A higher proportion of mice (n = 15) gavaged with non-cytolytic E. faecalis survived than did mice (n = 25) gavaged with cytolytic E. faecalis. h, Proportions of mice that were positive for cytolysin in the liver, measured by qPCR for cylLS (the gene that encodes cytolysin subunit CylLS′′). i, Proportions of mice that were positive for E. faecalis in the liver, measured by qPCR. About 80% of mice colonized with cytolytic E. faecalis, as well as those colonized with non- cytolytic E. faecalis, were positive for E. faecalis in their livers. j, Liver CFUs of Enterococcus in mice on a chronic–binge ethanol diet. k, Paracellular intestinal permeability was evaluated by measuring faecal albumin content and serum levels of",16,ald_paper,134
+9848d8ce6f8ef9c072ab07ed8eee7ad0,"qPCR for cylLS (the gene that encodes cytolysin subunit CylLS′′). i, Proportions of mice that were positive for E. faecalis in the liver, measured by qPCR. About 80% of mice colonized with cytolytic E. faecalis, as well as those colonized with non- cytolytic E. faecalis, were positive for E. faecalis in their livers. j, Liver CFUs of Enterococcus in mice on a chronic–binge ethanol diet. k, Paracellular intestinal permeability was evaluated by measuring faecal albumin content and serum levels of lipopolysaccharide (LPS) by enzyme-linked immunosorbent assays. l, Faecal samples were collected and 16S rRNA genes were sequenced. PCoA based on Jaccard dissimilarity matrices showed no significant differences among mice gavaged with PBS, cytolytic or non-cytolytic E. faecalis following",16,ald_paper,135
+ac916bd00fde54b423d7872c6fcdad1f,"feeding with the control and ethanol diets. Compared to mice fed with a control diet, mice fed with an ethanol diet had significantly different faecal microbiomes after gavaging with E. faecalis (P < 0.05). m, n, Serum levels of ethanol and hepatic levels of Adh1 and Cyp2e1 mRNAs did not differ significantly among mice gavaged with PBS, cytolytic or non-cytolytic E. faecalis after ethanol feeding. o, Mice were gavaged with cytolytic or non- cytolytic E. faecalis strains (carrying the erythromycin resistance gene; 5 × 108 CFUs) at time 0, and faeces were collected 0, 8, 24, 48 and 72 h later. Faecal CFUs of Enterococcus were determined by culturing faecal samples on BBL enterococcosel broth agar plate with 50 μg ml-1 erythromycin. At time 0 and 72 h, five out of five and four out of five mice, respectively, had no detectable erythromycin-resistant Enterococcus in their faeces. These points are not shown on the graph, but have been included in the calculation of mean ± s.e.m. Scale bar,",16,ald_paper,136
+4bb6561280e1b60d8788d4f00e275db1,"n resistance gene; 5 × 108 CFUs) at time 0, and faeces were collected 0, 8, 24, 48 and 72 h later. Faecal CFUs of Enterococcus were determined by culturing faecal samples on BBL enterococcosel broth agar plate with 50 μg ml-1 erythromycin. At time 0 and 72 h, five out of five and four out of five mice, respectively, had no detectable erythromycin-resistant Enterococcus in their faeces. These points are not shown on the graph, but have been included in the calculation of mean ± s.e.m. Scale bar, 100 μm. Results are expressed as mean ± s.e.m. (a, b, d–f, j, k, m–o). P values among groups of mice fed with the control or ethanol diet were determined by one-way ANOVA with Tukey’s post hoc test (a, b, d–f, j, k, m, n), two-sided log-rank (Mantel–Cox) test (g), two-sided Fisher’s exact test followed by FDR procedures (h, i) or PERMANOVA followed by FDR procedures (l). All results were generated from at least three independent replicates. The exact group size (n) and P values for each",16,ald_paper,137
+40ed118575e34bc606b945d0eac675c7,"le bar, 100 μm. Results are expressed as mean ± s.e.m. (a, b, d–f, j, k, m–o). P values among groups of mice fed with the control or ethanol diet were determined by one-way ANOVA with Tukey’s post hoc test (a, b, d–f, j, k, m, n), two-sided log-rank (Mantel–Cox) test (g), two-sided Fisher’s exact test followed by FDR procedures (h, i) or PERMANOVA followed by FDR procedures (l). All results were generated from at least three independent replicates. The exact group size (n) and P values for each comparison are listed in Supplementary Table 10. P values between mice fed with a control diet and mice fed with an ethanol diet were determined by two-way ANOVA (k). *P < 0.05, **P < 0.01, ***P < 0.001, ****P < 0.0001.",16,ald_paper,138
+2fc459ee9c301a3930b98ff8a0a34805,"Extended Data Fig. 3 | Transplantation of cytolysin-positive faeces increases ethanol-induced liver disease in gnotobiotic mice. a–f, h, i, C57BL/6 germ- free mice were colonized with faeces from two cytolysin-positive and two cytolysin-negative patients with alcoholic hepatitis, and then fed isocaloric (control) or chronic–binge ethanol diets. a, Percentage of TUNEL-positive hepatic cells. b, Representative oil red O-stained liver sections. c, d, Hepatic levels of mRNAs that encode the inflammatory cytokine Cxcl2 and Acta2 (a marker of activated hepatic stellate cells). e, Kaplan–Meier curve of survival of mice on chronic–binge ethanol diets (day 0 denotes the start of ethanol feeding), gavaged with faeces from cytolysin-positive (n = 48 mice) or cytolysin-negative (n = 32 mice) patients with alcoholic hepatitis. f, Faecal samples were collected and 16S rRNA genes were sequenced. The graph shows PCoA of faecal microbiomes. No significant difference was observed between mice colonized",17,ald_paper,139
+f1b5f58e3f8961c95a4d0d83510d9971,"tory cytokine Cxcl2 and Acta2 (a marker of activated hepatic stellate cells). e, Kaplan–Meier curve of survival of mice on chronic–binge ethanol diets (day 0 denotes the start of ethanol feeding), gavaged with faeces from cytolysin-positive (n = 48 mice) or cytolysin-negative (n = 32 mice) patients with alcoholic hepatitis. f, Faecal samples were collected and 16S rRNA genes were sequenced. The graph shows PCoA of faecal microbiomes. No significant difference was observed between mice colonized with faeces from cytolysin-positive or cytolysin-negative donors with alcoholic hepatitis, following the control diet. Mice transplanted with faeces from a cytolysin-positive patient with alcoholic hepatitis (patient",17,ald_paper,140
+de654fceefa1624f385d3e4961e93dc0,"no. 2) showed a microbiota that was significantly different to that of the other mouse groups following ethanol administration (P < 0.01). g, Percentage of cytolysin-positive E. faecalis in four patients with alcoholic hepatitis. Stool samples from the four patients were placed on plates with selective medium, and Enterococcus colonies were identified by the production of a dark brown or black colour. Enterococcus colonies were confirmed to be E. faecalis by qPCR. The cytolysin status of each E. faecalis colony was determined by qPCR. h, Serum levels of ethanol were comparable among colonized mice after ethanol feeding. i, Hepatic levels of Adh1 and Cyp2e1 mRNAs did not differ significantly among colonized mice on control or ethanol diets. Scale bar, 100 μm. Results are expressed as mean ± s.e.m. (a, c, d, h, i). P values were determined by one-way ANOVA with Tukey’s post hoc test (a, c, d, h, i), two- sided log-rank (Mantel–Cox) test (e) or PERMANOVA followed by FDR procedures (f).",17,ald_paper,141
+71c690ed90c3dfb74fa382b22bc7a728,"E. faecalis colony was determined by qPCR. h, Serum levels of ethanol were comparable among colonized mice after ethanol feeding. i, Hepatic levels of Adh1 and Cyp2e1 mRNAs did not differ significantly among colonized mice on control or ethanol diets. Scale bar, 100 μm. Results are expressed as mean ± s.e.m. (a, c, d, h, i). P values were determined by one-way ANOVA with Tukey’s post hoc test (a, c, d, h, i), two- sided log-rank (Mantel–Cox) test (e) or PERMANOVA followed by FDR procedures (f). All results were generated from at least three independent replicates. The exact group size (n) and P values for each comparison are listed in Supplementary Table 10. *P < 0.05, **P < 0.01, ***P < 0.001.",17,ald_paper,142
+cd3d69d7bdbbcf56cc07f5e4d5117e85,"Article
+
+Extended Data Fig. 4 | Isolation and amplification of phages against cytolytic E. faecalis isolated from mice. a, BHI agar plate showing phage plaque morphology. The phage cocktail (100 μl) (102–103 PFUs) was mixed with overnight-grown E. faecalis culture (100 μl) and then added to BHI broth top agar (0.5% agar) and poured over a BHI plate (1.5% agar). After overnight growth at 37 °C, images were captured on an Epson Perfection 4990 Photo scanner. b, Simplified illustration of the morphologies of different phages. Siphophages have long, flexible noncontractile tails (left); myophages have contractile tails",18,ald_paper,143
+d75142940b9cfb2f6addb9ac4832cc41,"(middle); and podophages have short noncontractile tails (right). c, Transmission electron microscopy revealed that phages we isolated were all podophages (Efmus1, Efmus2, Efmus3 and Efmus4). d, Genetic map of phage genomes. The linear maps are based on nucleotide sequences of the phage genomes and predicted open reading frames. The name and length (in bp) of each genome are indicated to the left of each phage map. Protein-coding sequences are coloured on the basis of functional role categories. Scale bar, 50 nm. All results were generated from at least three independent replicates.",18,ald_paper,144
+4f9dd600a0dbb54032efc4857b7f90c0,Extended Data Fig. 5 | See next page for caption.,19,ald_paper,145
+71c988abf217c4d6c122421019448861,"Article
+
+Extended Data Fig. 5 | Phages reduce translocation of cytolysin to the liver and reduce ethanol-induced liver disease in Atp4aSl/Sl mice. a–k, Wild-type (WT) and Atp4aSl/Sl littermates were fed oral isocaloric (control) or chronic– binge ethanol diets, and gavaged with vehicle (PBS), control phages against C. crescentus (1010 PFUs) or a cocktail of four different phages that target cytolytic E. faecalis (1010 PFUs), 1 day before an ethanol binge. a, Serum levels of ALT. b, Hepatic triglyceride content. c, Representative oil red O-stained liver sections. d–f, Hepatic levels of mRNAs. g, Proportions of mice that were positive for cytolysin in the liver, measured by qPCR for cylLS. h, Faecal CFUs of Enterococcus. i, Faecal samples were collected and 16S rRNA genes were sequenced. PCoA based on Jaccard dissimilarity matrices found no significant",20,ald_paper,146
+2588d09c2a62e2aba4ad0a7726fdc935,"difference in faecal microbiota among mice given PBS, control phage or phages that target cytolytic E. faecalis in each group. j, k, Serum levels of ethanol and hepatic levels of Adh1 and Cyp2e1 mRNAs did not differ significantly among colonized mice after ethanol feeding. Scale bar, 100 μm. Results are expressed as mean ± s.e.m. (a, b, d–f, h, j, k). P values were determined by two-way ANOVA with Tukey’s post hoc test (a, b, d–f, h, j, k), two-sided Fisher’s exact test followed by FDR procedures (g) or PERMANOVA followed by FDR procedures (i). All results were generated from at least three independent replicates. The exact group size (n) and P values for each comparison are listed in Supplementary Table 10. *P < 0.05, **P < 0.01, ***P < 0.001, ****P < 0.0001.",20,ald_paper,147
+79ad3eed8593b8e65b6b6cc05887a373,"Extended Data Fig. 6 | Isolation and amplification of phages against cytolytic E. faecalis strains isolated from patients with alcoholic hepatitis. a, BHI agar plates showing phage plaque morphology. b, Transmission electron microscopy graphs of myophages Ef2.1 and Ef2.3, stained with phosphotungstic acid showing contracted tails. c, Genetic map of phage genomes. The linear maps are based on nucleotide sequences of the phage
+
+genomes and predicted open reading frames. The name and length (in bp) of each genome are indicated to the left of each phage map. Protein-coding sequences are coloured on the basis of functional role categories. Sequences that encode tRNA genes are indicated by a cloverleaf structure. Scale bar, 50 nm. All results were generated from at least three independent replicates.",21,ald_paper,148
+57cfaa9274dff29814d3a71b75eed302,"Article
+
+Extended Data Fig. 7 | Phages that target cytolytic E. faecalis reduce ethanol-induced liver disease in gnotobiotic mice. a–h, C57BL/6 germ-free mice were colonized with faeces from two cytolysin-positive patients with alcoholic hepatitis (faeces from one patient were also used in Fig. 2). The mice were then fed oral isocaloric (control) or chronic–binge ethanol diets, and gavaged with control phages against C. crescentus (1010 PFUs) or a cocktail of 3 or 4 different phages that target cytolytic E. faecalis (1010 PFUs), one day before an ethanol binge. a, Percentage of TUNEL-positive hepatic cells. b, Representative oil red O-stained liver sections. c, d, Hepatic levels of mRNAs that encode the inflammatory cytokine Cxcl2, and Acta2 (a marker of activated hepatic stellate cells). e, Faecal CFUs of Enterococcus. f, Faecal samples were",22,ald_paper,149
+9bf04f0c156c1b7570c5ceabbd98cdf3,"collected and 16S rRNA genes were sequenced. PCoA based on Jaccard dissimilarity matrices shows no significant differences in the faecal microbiota of mice gavaged with control phage and phages that target cytolytic E. faecalis in each group. g, h, Serum levels of ethanol and hepatic levels of Adh1 and Cyp2e1 mRNAs did not differ significantly among colonized mice after ethanol feeding. Scale bar, 100 μm. Results are expressed as mean ± s.e.m. (a, c–e, g, h). P values were determined by two-way ANOVA with Tukey’s post hoc test (a, c–e, g, h) or PERMANOVA followed by FDR procedures (f). All results were generated from at least three independent replicates. The exact group size (n) and P values for each comparison are listed in Supplementary Table 10. *P < 0.05, ***P < 0.001.",22,ald_paper,150
+130a8987c8e0358246dccad64e4068fc,Extended Data Fig. 8 | See next page for caption.,23,ald_paper,151
+8b97dea8f6344f9281f91d3f5a3d4c96,"Article
+
+Extended Data Fig. 8 | Isolation and amplification of phages against non- cytolytic E. faecalis strains isolated from patients with alcoholic hepatitis. a, BHI agar plates showing phage plaque morphology. b, Genetic map of phage genomes. The linear maps are based on nucleotide sequences of the phage genomes and predicted open reading frames. The name and length (in bp) of each genome are indicated to the left of each phage map. Protein-coding sequences are coloured on the basis of functional role categories. Sequences that encode tRNA genes are indicated by a cloverleaf structure. c, Phylogenetic tree of Enterococcus phages. A whole-genome average nucleotide distance tree was constructed for 73 available Enterococcus phage genomes: 54 of these were",24,ald_paper,152
+e0a17e3a213311be9eb27c60d92d3e61,"from GenBank (denoted by black letters) and 19 were from this study (4 phages against cytolysin-positive E. faecalis isolated from mice (shown in blue letters); 7 phages against cytolysin-positive E. faecalis isolated from patients with alcoholic hepatitis (shown in pink letters); and 8 phages against cytolysin- negative E. faecalis isolated from patients with alcoholic hepatitis (shown in green letters)) with Mash43 using a sketch size of s = 5000 and a k-mer size of k = 12 and GGRaSP59 (Methods). Coloured branches denote specific phage genera or subfamily: Sap6virus, P68virus and Spounavirinae. The scale bar represents per cent average nucleotide divergence. All results were generated from at least three independent replicates.",24,ald_paper,153
+51244b17993344df0ca6c839eb1c8efe,"Extended Data Fig. 9 | Phages that target non-cytolytic E. faecalis do not reduce ethanol-induced liver disease in gnotobiotic mice. a–h, C57BL/6 germ-free mice were colonized with faeces from two cytolysin-negative patients with alcoholic hepatitis. Transplanted gnotobiotic mice were fed oral isocaloric (control) or chronic–binge ethanol diets and gavaged with control phages against C. crescentus (1010 PFUs) or a cocktail of four different phages targeting non-cytolytic E. faecalis (1010 PFUs), 1 day before an ethanol binge. a, Percentage of TUNEL-positive hepatic cells. b, Representative oil red O-stained liver sections. c, d, Hepatic levels of mRNAs that encode the inflammatory cytokine Cxcl2, and Acta2 (a marker of activated hepatic stellate cells). e, Proportions of mice that were positive for cytolysin in the liver, measured by qPCR for cylLS. f, Faecal samples were collected and 16S rRNA",25,ald_paper,154
+851f503f727d2ad8db71ea2147dd6b5b,"genes were sequenced. PCoA based on Jaccard dissimilarity matrices found no significant difference in faecal microbiota among mice gavaged with control phages and phages that target cytolytic E. faecalis in each group. g, h, Serum levels of ethanol and hepatic levels of Adh1 and Cyp2e1 mRNAs did not differ significantly among colonized mice after ethanol feeding. Scale bar, 100 μm. Results are expressed as mean ± s.e.m. (a, c, d, g, h). P values were determined by two-way ANOVA with Tukey’s post hoc test (a, c, d, g, h), two-sided Fisher’s exact test followed by FDR procedures (e) or PERMANOVA followed by FDR procedures (f). All results were generated from at least three independent replicates. The exact group size (n) and P values for each comparison are listed in Supplementary Table 10.",25,ald_paper,155
+f0018e5e77a750e2a089c1e19fba3e71,"Corresponding author(s): Bernd Schnabl
+
+Last updated by author(s): Sep 5, 2019
+
+Reporting Summary
+
+Nature Research wishes to improve the reproducibility of the work that we publish. This form provides structure for consistency and transparency in reporting. For further information on Nature Research policies, see Authors & Referees and the Editorial Policy Checklist.
+
+Statistics For all statistical analyses, confirm that the following items are present in the figure legend, table legend, main text, or Methods section.
+
+n/a Confirmed
+
+The exact sample size (n) for each experimental group/condition, given as a discrete number and unit of measurement
+
+A statement on whether measurements were taken from distinct samples or whether the same sample was measured repeatedly
+
+The statistical test(s) used AND whether they are one- or two-sided Only common tests should be described solely by name; describe more complex techniques in the Methods section.
+
+A description of all covariates tested",26,ald_paper,156
+82902e96bc2b5414e4e64e3bb05e230e,"A description of any assumptions or corrections, such as tests of normality and adjustment for multiple comparisons
+
+A full description of the statistical parameters including central tendency (e.g. means) or other basic estimates (e.g. regression coefficient) AND variation (e.g. standard deviation) or associated estimates of uncertainty (e.g. confidence intervals)
+
+For null hypothesis testing, the test statistic (e.g. F, t, r) with confidence intervals, effect sizes, degrees of freedom and P value noted Give P values as exact values whenever suitable.
+
+For Bayesian analysis, information on the choice of priors and Markov chain Monte Carlo settings
+
+For hierarchical and complex designs, identification of the appropriate level for tests and full reporting of outcomes
+
+Estimates of effect sizes (e.g. Cohen's d, Pearson's r), indicating how they were calculated
+
+Our web collection on statistics for biologists contains articles on many of the points above.
+
+Software and code",26,ald_paper,157
+bc3e2e0ac80f2992b7f59567cee20204,"Policy information about availability of computer code
+
+Data collection
+
+All biochemical assays were measured using SoftMax Pro 7.0.3; qPCRs were run with StepOnePlus real-time PCR system; Liver histological pictures were taken with DP Controller and DP Manager (Olympus); Phage electronic microscopy pictures were taken using Maxim DL5; Plates were scanned using EPSON 4990 Photo; All pictures were viewed using ImageJ
+
+Data analysis
+
+Bacteriophage sequencing and phage tree: Albacore v2.3.4 (ONT), Porechop v0.2.3, Unicycler v0.4.7 pipeline, Pilon v1.22, CLC Genomics Workbench 4.9, NCBI Prokaryotic Genome Annotation Pipeline, in-house PERL script using Xfig, Phage_Finder, MASH program, GGRaSP and APE R-package, iTOL tree viewer 16S sequencing: MOTHUR-based 16S rDNA analysis workflow E. faecalis genome sequencing and tree: abricate v0.8.10 , Prokka, Roary, RAxML, iTOL Statistical analyses: R statistical software 3.5.1, GraphPad Prism v6.01",26,ald_paper,158
+ce534257f5d0b975aced11c9500fbb56,"For manuscripts utilizing custom algorithms or software that are central to the research but not yet described in published literature, software must be made available to editors/reviewers. We strongly encourage code deposition in a community repository (e.g. GitHub). See the Nature Research guidelines for submitting code & software for further information.
+
+Data
+
+Policy information about availability of data All manuscripts must include a data availability statement. This statement should provide the following information, where applicable:
+
+Accession codes, unique identifiers, or web links for publicly available datasets - A list of figures that have associated raw data - A description of any restrictions on data availability
+
+Raw 16S sequence reads can be found in the NCBI SRA associated with Bioproject PRJNA525701. Bacteriophage raw sequence reads and annotated genomes are
+
+n a t u r e r e s e a r c h
+
+|
+
+r e p o r t i n g s u m m a r y
+
+O c t o b e r 2 0 1 8
+
+1",26,ald_paper,159
+be71df65e4889bdd2a2516466b355478,"available at NCBI under the following consecutive BioSample IDs (SAMN11089809 – SAMN11089827). Genome sequence data of E. faecalis strains isolated in this study were registered at ENA under Study PRJEB25007.
+
+Field-specific reporting
+
+Please select the one below that is the best fit for your research. If you are not sure, read the appropriate sections before making your selection.
+
+Life sciences
+
+Behavioural & social sciences
+
+Ecological, evolutionary & environmental sciences
+
+For a reference copy of the document with all sections, see nature.com/documents/nr-reporting-summary-flat.pdf
+
+Life sciences study design
+
+All studies must disclose on these points even when the disclosure is negative.
+
+Sample size
+
+No power analyses or other calculations were used to predetermine sample sizes. Sample sizes were chosen based on prior literature using similar experimental paradigms (Nat Commun. 2017;8:2137; Gut. 2019;68:1504-1515)
+
+Data exclusions
+
+No data were excluded
+
+Replication",27,ald_paper,160
+d2da610dd25a0725fba44fb85d27658d,"In vivo experiments: more than two technical replicates (from different cohorts, on different dates), as well as biological replicates were performed to ensure data reproducibility; In vitro experiments: three independent experiments and also replicates were performed on different dates to ensure data reproducibility. All replications were successful.
+
+Randomization Mice of similar age and weight were randomly assigned to experimental and control groups.
+
+Blinding
+
+The investigators were not blinded during cell and animal experiment assays.
+
+n a t u r e r e s e a r c h
+
+|
+
+r e p o r t i n g s u m m a r y
+
+Reporting for specific materials, systems and methods
+
+We require information from authors about some types of materials, experimental systems and methods used in many studies. Here, indicate whether each material, system or method listed is relevant to your study. If you are not sure if a list item applies to your research, read the appropriate section before selecting a response.",27,ald_paper,161
+7baa078ff4fd41b1d7cbb5f2f887f16d,"Materials & experimental systems n/a Involved in the study
+
+Methods n/a Involved in the study
+
+Antibodies
+
+ChIP-seq
+
+Eukaryotic cell lines
+
+Flow cytometry
+
+Palaeontology
+
+MRI-based neuroimaging
+
+Animals and other organisms
+
+Human research participants
+
+Clinical data
+
+Animals and other organisms
+
+Policy information about studies involving animals; ARRIVE guidelines recommended for reporting animal research
+
+Laboratory animals
+
+Female and male C57BL/6 mice (age, 9–12 weeks) (strain: wild type, Atp4asl/sl)
+
+Wild animals
+
+Field-collected samples
+
+No wild animals were involved in the study.
+
+No field-collected samples were involved in the study
+
+Ethics oversight
+
+All animal studies were reviewed and approved by the Institutional Animal Care and Use Committee of the University of California, San Diego.
+
+Note that full information on the approval of the study protocol must also be provided in the manuscript.
+
+Human research participants",27,ald_paper,162
+253d696e98a8dd897118bb9baa6935a5,"Policy information about studies involving human research participants
+
+Population characteristics
+
+Alcoholic hepatitis patients were from multiple centers from United States, Mexico and Europe, with the age ranged from 30 to
+
+O c t o b e r 2 0 1 8
+
+2",27,ald_paper,163
+8e1be6817fe762bd443ba5b453efb664,"Population characteristics
+
+Recruitment
+
+Ethics oversight
+
+75. Alcohol use disorder patients and non-alcoholic controls were from United States and Europe, with the age ranged from 27 to 74. Both genders were included in all populations. Detailed descriptions in Methods, Extended Data Tables 1 and 2
+
+Patients with alcohol use disorder fulfilling the DSM IV criteria (J Abnorm Psychol. 1997;106:545-553) were recruited from an alcohol withdrawal unit in San Diego, USA and Brussels, Belgium where they followed a detoxification and rehabilitation program. Alcoholic hepatitis patients were enrolled from the InTeam Consortium (ClinicalTrials.gov identifier number: NCT02075918) from centers in the USA, Mexico, United Kingdom, France and Spain. Detailed inclusion and exclusion criteria are listed in Methods",28,ald_paper,164
+8bd69614f588c63bde38346f88b832ad,"The protocol was approved by the Ethics Committee of Hôpital Huriez (Lille, France), Universidad Autonoma de Nuevo Leon (Monterrey, México), Hospital Universitari Vall d'Hebron (Barcelona, Spain), King's College London (London, UK), Yale University (New Haven, USA), University of North Carolina at Chapel Hill (Chapel Hill, USA), Weill Cornell Medical College (New York, USA), Columbia University (New York, USA), University of Wisconsin (Madison, USA), VA San Diego Healthcare System (San Diego, USA) and Université Catholique de Louvain (Brussels, Belgium).
+
+Note that full information on the approval of the study protocol must also be provided in the manuscript.
+
+n a t u r e r e s e a r c h
+
+|
+
+r e p o r t i n g s u m m a r y
+
+O c t o b e r 2 0 1 8
+
+3",28,ald_paper,165

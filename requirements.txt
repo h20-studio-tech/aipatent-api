@@ -1,0 +1,27 @@
+<<<<<<< HEAD
+asyncio
+cohere
+fastapi[standard]
+instructor
+lancedb
+langfuse
+numpy
+openai
+pandas
+pydantic
+supabase
+unstructured_client
+=======
+asyncio
+cohere
+fastapi[standard]
+instructor
+lancedb
+langfuse
+numpy
+openai
+pandas
+pydantic
+supabase
+unstructured_client
+>>>>>>> 5b6e3e1f6bb904635df1f05e870b8aeeed94cf1b
