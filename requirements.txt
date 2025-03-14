@@ -1,4 +1,5 @@
 asyncio
+boto3
 cohere
 fastapi[standard]
 instructor
