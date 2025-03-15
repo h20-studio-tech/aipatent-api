@@ -45,7 +45,7 @@ class Document(BaseModel):
 
 class FilesResponse(BaseModel):
     status: str
-    response: List
+    response: List[Document]
 
 logging.basicConfig(
     level=logging.INFO,
@@ -234,7 +234,7 @@ async def get_files():
     Returns:
         FilesResponse: A Pydantic model containing the status and list of Document instances.
     """
-    files = [(table + ".pdf") for table in await lancedb_tables(db=db_connection["db"])]
+    files = supabase_files()
     return FilesResponse(status="success", response=files)
 
 @app.post("/api/v1/rag/multiquery-search/", response_model=MultiQueryResponse)
