@@ -1,6 +1,8 @@
 import os
 import base64
 import logging
+import boto3
+import asyncio
 import lancedb
 from datetime import datetime
 from pydantic import BaseModel, Field
@@ -12,7 +14,7 @@ from models.rag_typing import Chunk
 from rag import multiquery_search, create_table_from_file, chunks_summary
 from contextlib import asynccontextmanager
 from lancedb.db import AsyncConnection
-from pdf_processing import partition_request, supabase_upload, process_file, supabase_files
+from pdf_processing import partition_request, supabase_upload, process_file, supabase_files, lancedb_tables
 from utils.normalize_filename import normalize_filename
 
 class FileUploadResponse(BaseModel):
@@ -43,7 +45,7 @@ class Document(BaseModel):
 
 class FilesResponse(BaseModel):
     status: str
-    response: List[Document]
+    response: List
 
 logging.basicConfig(
     level=logging.INFO,
@@ -53,12 +55,62 @@ logging.basicConfig(
 
 db_connection = {}
 
+
+def get_temporary_credentials(duration=3600):
+    session = boto3.session.Session()
+    sts_client = session.client('sts')
+    response = sts_client.get_session_token(DurationSeconds=duration)
+    return response['Credentials']
+
+async def refresh_lancedb_connection(lancedb_uri: str, refresh_interval: int = 3000):
+    """
+    Periodically refresh the lancedb connection using new temporary AWS credentials.
+    """
+    while True:
+        try:
+            creds = get_temporary_credentials()
+
+            # Reinitialize the lancedb connection with the new credentials
+            new_connection = await lancedb.connect_async(
+                lancedb_uri,
+                storage_options={
+                    "aws_access_key_id": creds['AccessKeyId'],
+                    "aws_secret_access_key": creds['SecretAccessKey'],
+                    "aws_session_token": creds['SessionToken']
+                }
+            )
+            db_connection["db"] = new_connection
+            print("lancedb connection refreshed successfully.")
+        except Exception as e:
+            print(f"Error refreshing lancedb connection: {e}")
+        # Wait for the refresh interval before updating again
+        await asyncio.sleep(refresh_interval)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    db_connection["db"] = await lancedb.connect_async(os.getenv("LANCEDB_URI")) # type: ignore
+    lancedb_uri = os.getenv("LANCEDB_URI")
+    # Retrieve initial temporary credentials
+    creds = get_temporary_credentials()
+    # Initialize the initial lancedb connection with storage options
+    db_connection["db"] = await lancedb.connect_async(
+        lancedb_uri,
+        storage_options={
+            "aws_access_key_id": creds['AccessKeyId'],
+            "aws_secret_access_key": creds['SecretAccessKey'],
+            "aws_session_token": creds['SessionToken']
+        }
+    )
+    
+    #test connection
+    tables = await db_connection["db"].table_names()
+    logging.info(f"connected to lancedb at {lancedb_uri} with tables: {tables}")
+    
+    # Start the background task to refresh credentials and connection
+    refresh_task = asyncio.create_task(refresh_lancedb_connection(lancedb_uri))
     yield
+    # On shutdown, cancel the refresh task and clear the connection
+    refresh_task.cancel()
     db_connection.clear()
-
 
 app = FastAPI(title="aipatent", version="0.1.0", lifespan=lifespan)
 
@@ -140,12 +192,12 @@ async def upload_file(file: UploadFile):
 @app.get("/api/v1/documents/", response_model=FilesResponse)
 async def get_files():
     """
-    Endpoint to retrieve a list of documents.
+    Endpoint to retrieve a list of documents in lancedb.
     
     Returns:
         FilesResponse: A Pydantic model containing the status and list of Document instances.
     """
-    files = supabase_files()
+    files = [(table + ".pdf") for table in await lancedb_tables(db=db_connection["db"])]
     return FilesResponse(status="success", response=files)
 
 @app.post("/api/v1/rag/multiquery-search/", response_model=MultiQueryResponse)

@@ -77,6 +77,9 @@ async def partition_request(filename: str, content: bytes) -> PartitionRequest:
         ),
     )
 
+async def lancedb_tables(db: AsyncConnection) -> list[str]:
+    return await db.table_names()
+
 def supabase_files() -> list[dict[str, str]]:
     bucket_name = os.getenv("SUPABASE_BUCKET_NAME")
     return supabase.storage.from_(bucket_name).list("files")
