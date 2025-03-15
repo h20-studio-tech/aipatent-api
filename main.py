@@ -57,60 +57,97 @@ db_connection = {}
 
 
 def get_temporary_credentials(duration=3600):
-    session = boto3.session.Session()
-    sts_client = session.client('sts')
-    response = sts_client.get_session_token(DurationSeconds=duration)
-    return response['Credentials']
+    """Retrieve temporary AWS credentials using STS."""
+    # Load AWS credentials from environment variables
+    aws_access_key = os.getenv("ACCESS_KEY_ID")
+    aws_secret_key = os.getenv("SECRET_ACCESS_KEY")
+
+    # Ensure credentials exist before making an API call
+    if not aws_access_key or not aws_secret_key:
+        logging.error("Missing AWS credentials. Ensure they are set in Heroku config vars.")
+        raise ValueError("AWS credentials not found. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.")
+
+    # Initialize a session explicitly with access keys
+    session = boto3.Session(
+        aws_access_key_id=aws_access_key,
+        aws_secret_access_key=aws_secret_key
+    )
+
+    # Use STS to get temporary session credentials
+    sts_client = session.client("sts")
+
+    try:
+        response = sts_client.get_session_token(DurationSeconds=duration)
+        logging.info("Temporary AWS credentials obtained successfully.")
+        return response["Credentials"]
+    except Exception as e:
+        logging.error(f"Failed to obtain AWS credentials: {e}")
+        raise
 
 async def refresh_lancedb_connection(lancedb_uri: str, refresh_interval: int = 3000):
-    """
-    Periodically refresh the lancedb connection using new temporary AWS credentials.
-    """
+    """Periodically refresh the LanceDB connection using new AWS credentials."""
     while True:
         try:
             creds = get_temporary_credentials()
 
-            # Reinitialize the lancedb connection with the new credentials
+            # Reinitialize the LanceDB connection with the new credentials
             new_connection = await lancedb.connect_async(
                 lancedb_uri,
                 storage_options={
-                    "aws_access_key_id": creds['AccessKeyId'],
-                    "aws_secret_access_key": creds['SecretAccessKey'],
-                    "aws_session_token": creds['SessionToken']
+                    "aws_access_key_id": creds["AccessKeyId"],
+                    "aws_secret_access_key": creds["SecretAccessKey"],
+                    "aws_session_token": creds["SessionToken"]
                 }
             )
             db_connection["db"] = new_connection
-            print("lancedb connection refreshed successfully.")
+            logging.info("LanceDB connection refreshed successfully.")
         except Exception as e:
-            print(f"Error refreshing lancedb connection: {e}")
+            logging.error(f"Error refreshing LanceDB connection: {e}")
+        
         # Wait for the refresh interval before updating again
         await asyncio.sleep(refresh_interval)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """Startup and shutdown logic for the FastAPI application."""
     lancedb_uri = os.getenv("LANCEDB_URI")
-    # Retrieve initial temporary credentials
-    creds = get_temporary_credentials()
-    # Initialize the initial lancedb connection with storage options
-    db_connection["db"] = await lancedb.connect_async(
-        lancedb_uri,
-        storage_options={
-            "aws_access_key_id": creds['AccessKeyId'],
-            "aws_secret_access_key": creds['SecretAccessKey'],
-            "aws_session_token": creds['SessionToken']
-        }
-    )
     
-    #test connection
-    tables = await db_connection["db"].table_names()
-    logging.info(f"connected to lancedb at {lancedb_uri} with tables: {tables}")
-    
-    # Start the background task to refresh credentials and connection
-    refresh_task = asyncio.create_task(refresh_lancedb_connection(lancedb_uri))
-    yield
-    # On shutdown, cancel the refresh task and clear the connection
-    refresh_task.cancel()
-    db_connection.clear()
+    refresh_task = None # ✅ Initialize refresh_task to None
+    # Validate that the LanceDB URI is set
+    if not lancedb_uri:
+        raise ValueError("LANCEDB_URI environment variable is missing.")
+
+    try:
+        # Retrieve initial temporary credentials
+        creds = get_temporary_credentials()
+
+        # Initialize the initial LanceDB connection with storage options
+        db_connection["db"] = await lancedb.connect_async(
+            lancedb_uri,
+            storage_options={
+                "aws_access_key_id": creds["AccessKeyId"],
+                "aws_secret_access_key": creds["SecretAccessKey"],
+                "aws_session_token": creds["SessionToken"]
+            }
+        )
+
+        # Test connection
+        tables = await db_connection["db"].table_names()
+        logging.info(f"Connected to LanceDB at {lancedb_uri} with tables: {tables}")
+
+        # Start background task to refresh credentials and connection
+        refresh_task = asyncio.create_task(refresh_lancedb_connection(lancedb_uri))
+
+        yield  # ✅ Keep the app running during its lifespan
+
+    except Exception as e:
+        logging.error(f"Failed to initialize LanceDB connection: {e}")
+        raise
+
+    finally:
+        if refresh_task:  # ✅ Only cancel the task if it was started
+            refresh_task.cancel()
+        db_connection.clear()
 
 app = FastAPI(title="aipatent", version="0.1.0", lifespan=lifespan)
 
