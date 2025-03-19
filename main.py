@@ -16,6 +16,9 @@ from contextlib import asynccontextmanager
 from lancedb.db import AsyncConnection
 from pdf_processing import partition_request, supabase_upload, process_file, supabase_files, lancedb_tables
 from utils.normalize_filename import normalize_filename
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 class FileUploadResponse(BaseModel):
     filename: str = Field(..., description="The name of the uploaded file")

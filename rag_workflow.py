@@ -21,7 +21,9 @@ from utils.langfuse_client import get_langfuse_instance
 from models.workflow import FileProcessedError
 from models.metadata_extraction import Extraction
 from concurrent.futures import ThreadPoolExecutor
+from dotenv import load_dotenv
 
+load_dotenv('.env')
 
 langfuse = get_langfuse_instance()
     

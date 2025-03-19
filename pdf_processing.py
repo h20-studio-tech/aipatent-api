@@ -17,7 +17,9 @@ from models.pdf_workflow import FileProcessedError
 from openai import OpenAI, AsyncOpenAI
 from pydantic import BaseModel, Field
 from lancedb.db import AsyncConnection
+from dotenv import load_dotenv
 
+load_dotenv('.env')
 
 class Extraction(BaseModel):
     method: list[str] = Field(

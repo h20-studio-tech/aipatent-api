@@ -15,6 +15,9 @@ from lancedb.table import Table
 from lancedb.embeddings import get_registry
 from lancedb.db import AsyncConnection
 from openai import OpenAI, AsyncOpenAI
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 
 logging.basicConfig(
