@@ -42,10 +42,6 @@ unstructured = unstructured_client.UnstructuredClient(
 )
 
 
-unstructured = unstructured_client.UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
-)
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
