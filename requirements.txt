@@ -13,3 +13,5 @@ supabase
 unstructured_client
 python-dotenv
 uvicorn
+pdfplumber 
+pytesseract
