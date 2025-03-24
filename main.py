@@ -17,6 +17,8 @@ from lancedb.db import AsyncConnection
 from pdf_processing import partition_request, supabase_upload, process_file, supabase_files, lancedb_tables
 from utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
+from utils.ocr import Embodiment, process_patent_document
+_
 
 load_dotenv('.env')
 
@@ -24,6 +26,14 @@ class FileUploadResponse(BaseModel):
     filename: str = Field(..., description="The name of the uploaded file")
     message: str = Field(..., description="Status message for the upload operation")
     status_code: int = Field(..., description="HTTP status code indicating the result of the operation")
+    
+
+class PatentResponse(BaseModel):
+    filename: str = Field(..., description="The name of the uploaded file")
+    message: str = Field(..., description="Status message for the upload operation")
+    data: list[Embodiment] = Field(..., description="The list of embodiments in a page that contains embodiments")
+    status_code: int = Field(..., description="HTTP status code indicating the result of the operation")  
+
 class MultiQueryResponse(BaseModel):
     status: str
     message: Optional[str] = None
@@ -237,7 +247,7 @@ async def get_files():
     Returns:
         FilesResponse: A Pydantic model containing the status and list of Document instances.
     """
-    files = supabase_files()
+    files = supabase_files() #TODO: Filter Supabase files by lancedb tables for consistency
     return FilesResponse(status="success", response=files)
 
 @app.post("/api/v1/rag/multiquery-search/", response_model=MultiQueryResponse)
@@ -260,4 +270,36 @@ async def query_search(query: str, target_files: list[str]):
         return MultiQueryResponse(status="success", message=summary, data=formatted_chunks)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error during multiquery-search: {e}")
+    
+@app.post("/api/v1/patent/", response_model=PatentResponse, status_code=200)
+async def patent(file: UploadFile):
+    """
+    Endpoint to process a patent document and extract embodiments.
+    
+    Args:
+        file (UploadFile): The patent document file to process.
+    
+    Returns:
+        PatentResponse: A Pydantic model containing the filename, message, data (list of embodiments), and status code.
+    
+    Raises:
+        HTTPException: If an error occurs during the patent document processing.
+    """
+    content = await file.read()
+    filename = file.filename
+    
+    filename = normalize_filename(filename)
+    try:
+        patent_embodiments = await process_patent_document(content, filename)
+        return PatentResponse(
+            filename=filename,
+            message="Patent document processed successfully",
+            data=patent_embodiments,
+            status_code=200
+        )
+    except Exception as e:
+        logging.info(f"patent error during processing: {e}")
+        raise HTTPException(status_code=500, detail=f"Error during patent processing: {e}")
+
+
 
