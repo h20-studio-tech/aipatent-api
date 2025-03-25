@@ -17,3 +17,4 @@ pdfplumber
 pytesseract
 nest_asyncio
 pytest
+pytest-asyncio 
