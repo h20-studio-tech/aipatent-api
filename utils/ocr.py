@@ -9,7 +9,7 @@ from time import time
 from io import BytesIO
 from pdfplumber.page import Page
 from pydantic import BaseModel, Field
-from logging_helper import create_logger
+from utils.logging_helper import create_logger
 from openai import AsyncOpenAI
 from pathlib import Path
 
