@@ -9,7 +9,7 @@ from langfuse.decorators import observe
 from models.rag_typing import Chunk
 from pydantic import BaseModel
 from typing import List
-from utils.langfuse_client import get_langfuse_instance
+from src.utils.langfuse_client import get_langfuse_instance
 from lancedb.pydantic import LanceModel, Vector
 from lancedb.table import Table
 from lancedb.embeddings import get_registry

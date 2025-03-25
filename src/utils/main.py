@@ -16,10 +16,10 @@ from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models.pdf_workflow import FileProcessedError
 from models.rag_typing import Chunk
-from rag import multiquery_search, create_table_from_file, chunks_summary
+from src.rag import multiquery_search, create_table_from_file, chunks_summary
 from contextlib import asynccontextmanager
 from lancedb.db import AsyncConnection
-from pdf_processing import (
+from src.pdf_processing import (
     partition_request,
     supabase_upload,
     process_file,

@@ -17,7 +17,7 @@ from lancedb.embeddings import get_registry
 from typing import List, Tuple, Union
 from openai import AsyncOpenAI, OpenAI
 from pydantic import BaseModel, SecretStr
-from utils.langfuse_client import get_langfuse_instance
+from src.utils.langfuse_client import get_langfuse_instance
 from models.workflow import FileProcessedError
 from models.metadata_extraction import Extraction
 from concurrent.futures import ThreadPoolExecutor

@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import Mock, patch
 from fastapi.testclient import TestClient
 from botocore.exceptions import ClientError
-import main
+import src.main as main
 
 client = TestClient(main.app)
 
