@@ -29,6 +29,7 @@ from pdf_processing import (
 from utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
 from utils.ocr import Embodiment, process_patent_document
+_
 
 load_dotenv(".env")
 
