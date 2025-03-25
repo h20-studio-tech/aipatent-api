@@ -3,7 +3,12 @@ import base64
 import logging
 import boto3
 import asyncio
+import boto3.dynamodb
+import boto3.dynamodb.table
 import lancedb
+import uuid
+import boto3
+from botocore.exceptions import ClientError
 from datetime import datetime
 from pydantic import BaseModel, Field
 from typing import List, Optional
@@ -27,8 +32,16 @@ class FileUploadResponse(BaseModel):
     message: str = Field(..., description="Status message for the upload operation")
     status_code: int = Field(..., description="HTTP status code indicating the result of the operation")
     
-
-class PatentResponse(BaseModel):
+class PatentProject(BaseModel):
+    name: str
+    antigen: str
+    disease: str
+    
+class PatentProjectResponse(BaseModel):
+    patent_id: uuid.UUID
+    message: str = Field(..., description="Status message for the upload operation")
+    status_code: int = Field(..., description="HTTP status code indicating the result of the operation")
+class PatentUploadResponse(BaseModel):
     filename: str = Field(..., description="The name of the uploaded file")
     message: str = Field(..., description="Status message for the upload operation")
     data: list[Embodiment] = Field(..., description="The list of embodiments in a page that contains embodiments")
@@ -271,7 +284,7 @@ async def query_search(query: str, target_files: list[str]):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error during multiquery-search: {e}")
     
-@app.post("/api/v1/patent/", response_model=PatentResponse, status_code=200)
+@app.post("/api/v1/patent/", response_model=PatentUploadResponse, status_code=200)
 async def patent(file: UploadFile):
     """
     Endpoint to process a patent document and extract embodiments.
@@ -291,7 +304,7 @@ async def patent(file: UploadFile):
     filename = normalize_filename(filename)
     try:
         patent_embodiments = await process_patent_document(content, filename)
-        return PatentResponse(
+        return PatentUploadResponse(
             filename=filename,
             message="Patent document processed successfully",
             data=patent_embodiments,
@@ -301,5 +314,48 @@ async def patent(file: UploadFile):
         logging.info(f"patent error during processing: {e}")
         raise HTTPException(status_code=500, detail=f"Error during patent processing: {e}")
 
+# Create DynamoDB client at module level for reuse
+dynamodb = boto3.resource('dynamodb',
+    region_name=os.getenv('AWS_REGION', 'us-east-1'),
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')
+)
 
+@app.post("/api/v1/project/", response_model=PatentProjectResponse, status_code=200)
+async def patent_project(patent: PatentProject):
+    try:
+        # Get the table
+        table = dynamodb.Table('patents')  # Replace 'patents' with your table name
+        
+        # Generate new UUID for the patent
+        patent_id = str(uuid.uuid4())
+        
+        # Create the item to be stored
+        patent_item = {
+            'patent_id': patent_id,
+            **patent.model_dump(),  # Unpack all the validated fields from the PatentProject model
+            'created_at': datetime.datetime.now().isoformat()
+        }
+        
+        # Put the item in DynamoDB
+        response = table.put_item(Item=patent_item)
+        
+        # Check if the put was successful
+        if response['ResponseMetadata']['HTTPStatusCode'] == 200:
+            return PatentProjectResponse(
+                patent_id=patent_id,
+                message="Patent project created successfully"
+            )
+        else:
+            raise HTTPException(status_code=500, detail="Failed to create patent project")
+            
+    except ClientError as e:
+        # Handle specific DynamoDB errors
+        error_code = e.response['Error']['Code']
+        error_message = e.response['Error']['Message']
+        raise HTTPException(status_code=500, detail=f"Database error: {error_message}")
+        
+    except Exception as e:
+        # Handle any other unexpected errors
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
