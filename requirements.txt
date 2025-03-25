@@ -16,3 +16,4 @@ uvicorn
 pdfplumber 
 pytesseract
 nest_asyncio
+pytest
