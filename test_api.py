@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import Mock, patch
 from fastapi.testclient import TestClient
+from botocore.exceptions import ClientError
 from main import app  # Import your FastAPI app
 
 client = TestClient(app)
@@ -45,3 +46,4 @@ def test_create_patent_db_error(mock_dynamodb):
     response = client.post("/api/v1/project/", json=test_data)
     assert response.status_code == 500
     assert "Database error" in response.json()["detail"]
+
