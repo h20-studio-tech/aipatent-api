@@ -11,7 +11,6 @@ from pdfplumber.page import Page
 from pydantic import BaseModel, Field
 from src.utils.logging_helper import create_logger
 from openai import AsyncOpenAI
-from pathlib import Path
 
 
 client = instructor.from_openai(AsyncOpenAI())
@@ -115,19 +114,19 @@ async def get_embodiments(page: EmbodimentsPage) -> Embodiments:
         messages=[
             {
                 "role": "user",
-                "content": f"""
+                "content": """
                     You receive a page from a biology patent document.
-                    page_number: {page_number}
-                    filename: {filename}
+                    page_number: {{ page_number }}
+                    filename: {{ filename }}
                     
                     Use the examples below for understanding of what an Embodiment looks like in a patent document.
                     <EmbodimentExamples>
-                    {chr(10).join(example for example in examples)}
+                    {{ example_embodiments }}
                     </EmbodimentExamples>
                     
                     Extract any Patent Embodiments from the text below
                     
-                    Text: {page_text}
+                    Text: {{ page_text }}
                     
                     
                     Rules
@@ -136,6 +135,12 @@ async def get_embodiments(page: EmbodimentsPage) -> Embodiments:
             }
         ],
         response_model=Embodiments,
+        context={
+            "page_number": page_number,
+            "filename": filename,
+            "page_text": page_text,
+            "example_embodiments": chr(10).join(examples),
+        },
     )
     logger.info(f"Embodiments extracted from page {page_number} of {filename}")
     return completion
