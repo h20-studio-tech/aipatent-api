@@ -396,8 +396,6 @@ async def patent_project(patent: PatentProject):
             )
 
     except ClientError as e:
-        # Handle specific DynamoDB errors
-        error_code = e.response["Error"]["Code"]
         error_message = e.response["Error"]["Message"]
         raise HTTPException(status_code=500, detail=f"Database error: {error_message}")
 
