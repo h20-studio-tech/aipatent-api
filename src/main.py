@@ -110,24 +110,32 @@ def get_temporary_credentials(duration=3600):
     # Load AWS credentials from environment variables
     aws_access_key = os.getenv("ACCESS_KEY_ID")
     aws_secret_key = os.getenv("SECRET_ACCESS_KEY")
-
-    # Ensure credentials exist before making an API call
-    if not aws_access_key or not aws_secret_key:
-        logging.error(
-            "Missing AWS credentials. Ensure they are set in Heroku config vars."
+    aws_region = os.getenv("AWS_REGION", "us-east-1")
+    
+    logging.info(f"Using key ID that starts with: {aws_access_key[:4] if aws_access_key else 'None'}")
+    
+    # Create session - if running on EC2 with instance profile, explicit credentials not needed
+    if aws_access_key and aws_secret_key:
+        logging.info("Using explicit AWS credentials from environment variables")
+        session = boto3.Session(
+            aws_access_key_id=aws_access_key,
+            aws_secret_access_key=aws_secret_key,
+            region_name=aws_region,
         )
-        raise ValueError(
-            "AWS credentials not found. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY."
-        )
-
-    # Initialize a session explicitly with access keys
-    session = boto3.Session(
-        aws_access_key_id=aws_access_key, aws_secret_access_key=aws_secret_key
-    )
+    else:
+        logging.info("No explicit credentials found, using instance profile if available")
+        session = boto3.Session(region_name=aws_region)
+        
+    # Test if we have permissions before proceeding
+    try:
+        sts_client = session.client("sts")
+        identity = sts_client.get_caller_identity()
+        logging.info(f"Successfully authenticated as: {identity['Arn']}")
+    except Exception as e:
+        logging.error(f"AWS authentication error: {e}")
+        raise ValueError("Failed to authenticate with AWS. Check credentials or instance profile.")
 
     # Use STS to get temporary session credentials
-    sts_client = session.client("sts")
-
     try:
         response = sts_client.get_session_token(DurationSeconds=duration)
         logging.info("Temporary AWS credentials obtained successfully.")
@@ -166,7 +174,7 @@ async def lifespan(app: FastAPI):
     """Startup and shutdown logic for the FastAPI application."""
     lancedb_uri = os.getenv("LANCEDB_URI")
 
-    refresh_task = None  # ✅ Initialize refresh_task to None
+    refresh_task = None  # Initialize refresh_task to None
     # Validate that the LanceDB URI is set
     if not lancedb_uri:
         raise ValueError("LANCEDB_URI environment variable is missing.")
@@ -192,14 +200,14 @@ async def lifespan(app: FastAPI):
         # Start background task to refresh credentials and connection
         refresh_task = asyncio.create_task(refresh_lancedb_connection(lancedb_uri))
 
-        yield  # ✅ Keep the app running during its lifespan
+        yield  # Keep the app running during its lifespan
 
     except Exception as e:
         logging.error(f"Failed to initialize LanceDB connection: {e}")
         raise
 
     finally:
-        if refresh_task:  # ✅ Only cancel the task if it was started
+        if refresh_task:  # Only cancel the task if it was started
             refresh_task.cancel()
         db_connection.clear()
 
@@ -358,12 +366,39 @@ async def patent(file: UploadFile):
 
 
 # Create DynamoDB client at module level for reuse
+aws_region = os.getenv("AWS_REGION", "us-east-1")
+aws_access_key = os.getenv("ACCESS_KEY_ID")
+aws_secret_key = os.getenv("SECRET_ACCESS_KEY")
+
+# Log the credentials being used for DynamoDB
+logging.info(f"DynamoDB using key ID that starts with: {aws_access_key[:4] if aws_access_key else 'None'}")
+
+# Always use explicit credentials for DynamoDB to ensure correct account access
 dynamodb = boto3.resource(
     "dynamodb",
-    region_name=os.getenv("AWS_REGION", "us-east-1"),
-    aws_access_key_id=os.getenv("ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("SECRET_ACCESS_KEY"),
+    region_name=aws_region,
+    aws_access_key_id=aws_access_key,
+    aws_secret_access_key=aws_secret_key,
 )
+
+# Test DynamoDB connection
+try:
+    # Get account info for DynamoDB
+    sts_client = boto3.client(
+        'sts',
+        region_name=aws_region,
+        aws_access_key_id=aws_access_key,
+        aws_secret_access_key=aws_secret_key,
+    )
+    dynamodb_account = sts_client.get_caller_identity()['Account']
+    logging.info(f"DynamoDB connected to AWS account: {dynamodb_account}")
+    
+    # Verify table exists
+    table = dynamodb.Table("patents")
+    table.meta.client.describe_table(TableName="patents")
+    logging.info("Successfully verified 'patents' table exists")
+except Exception as e:
+    logging.error(f"DynamoDB connection test failed: {e}")
 
 
 @app.post("/api/v1/project/", response_model=PatentProjectResponse, status_code=200)
