@@ -47,6 +47,19 @@ class PatentProject(BaseModel):
     disease: str
 
 
+class PatentProjectItem(BaseModel):
+    patent_id: str
+    name: str
+    antigen: str
+    disease: str
+    created_at: str
+
+
+class PatentProjectListResponse(BaseModel):
+    status: str
+    projects: List[PatentProjectItem]
+
+
 class PatentProjectResponse(BaseModel):
     patent_id: uuid.UUID
     message: str = Field(..., description="Status message for the upload operation")
@@ -472,4 +485,61 @@ async def patent_project(patent: PatentProject):
 
     except Exception as e:
         # Handle any other unexpected errors
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+
+
+@app.get("/api/v1/projects/", response_model=PatentProjectListResponse, status_code=200)
+async def list_patent_projects():
+    """
+    List all patent projects stored in DynamoDB.
+    
+    This endpoint retrieves all patent projects that have been created in the system.
+    Each project contains basic information such as name, antigen, disease, and creation date.
+    
+    Returns:
+        PatentProjectListResponse: A list of patent projects with their details.
+        
+    Raises:
+        HTTPException: If there's an error retrieving projects from DynamoDB.
+    """
+    try:
+        # Get the table
+        table = dynamodb.Table("patents")
+        
+        # Scan the table to get all items
+        response = table.scan()
+        
+        # Extract the items from the response
+        items = response.get('Items', [])
+        
+        # Convert the items to PatentProjectItem objects
+        projects = []
+        for item in items:
+            try:
+                # Extract required fields from the DynamoDB item
+                project = PatentProjectItem(
+                    patent_id=item.get('patent_id'),
+                    name=item.get('name'),
+                    antigen=item.get('antigen'),
+                    disease=item.get('disease'),
+                    created_at=item.get('created_at')
+                )
+                projects.append(project)
+            except Exception as e:
+                # Log malformed items but continue processing
+                logging.warning(f"Skipping malformed project item: {e}")
+        
+        # Return the list of projects
+        return PatentProjectListResponse(
+            status="success",
+            projects=projects
+        )
+    
+    except ClientError as e:
+        error_message = e.response["Error"]["Message"]
+        logging.error(f"DynamoDB error listing projects: {error_message}")
+        raise HTTPException(status_code=500, detail=f"Database error: {error_message}")
+    
+    except Exception as e:
+        logging.error(f"Unexpected error listing projects: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
