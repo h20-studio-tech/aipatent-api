@@ -150,74 +150,82 @@ async def process_file(content: bytes, filename: str, db: AsyncConnection, force
     :return dict | FileProcessedError: Processing result or error
     """
     
-    
-    # Create a table name by removing the .pdf extension
-    table_name = filename.replace(".pdf", "")
-    if not force_reprocess and table_name in await db.table_names():
-        logging.info("File already exists in database, skipping processing")
-        return FileProcessedError(is_processed=True, error="File already processed.")
-
-
-
-    logging.info(f"Processing file: {filename}")
-
-    req = await partition_request(filename, content)
-    
     try:
-        start_time = time.perf_counter()
-        # Run the blocking partitioning API call in a separate thread
-        res = await asyncio.to_thread(unstructured.general.partition, request=req)
-        element_dicts = [element for element in res.elements]
-        elapsed_time = time.perf_counter() - start_time
-        logging.info(f"Partitioning completed in {elapsed_time:.2f} seconds")
+        # Create a table name by removing the .pdf extension
+        table_name = filename.replace(".pdf", "")
+        if not force_reprocess:
+            try:
+                table_names = await db.table_names()
+                if table_name in table_names:
+                    logging.info("File already exists in database, skipping processing")
+                    return FileProcessedError(is_processed=True, error="File already processed.")
+            except Exception as e:
+                logging.error(f"Error checking if table exists: {str(e)}")
+                return FileProcessedError(is_processed=False, error="Error checking if file exists in database", original_error=e)
 
-        # Asynchronously upload the raw JSON data to supabase
-        json_filename = table_name + ".json"
-        supabase_upload(json.dumps(element_dicts).encode('utf-8'), json_filename, partition=True)
 
-        # Build rows for our DataFrame
-        data = []
-        for chunk_counter, element in enumerate(element_dicts, start=1):
-            row = {
-                "element_id": element.get("element_id"),
-                "text": element.get("text"),
-                "page_number": element.get("metadata", {}).get("page_number"),
-                "filename": element.get("metadata", {}).get("filename"),
-                "chunk_id": chunk_counter,
-            }
-            data.append(row)
+        logging.info(f"Processing file: {filename}")
+        
+        req = await partition_request(filename, content)
+        
+        try:
+            start_time = time.perf_counter()
+            # Run the blocking partitioning API call in a separate thread
+            res = await asyncio.to_thread(unstructured.general.partition, request=req)
+            element_dicts = [element for element in res.elements]
+            elapsed_time = time.perf_counter() - start_time
+            logging.info(f"Partitioning completed in {elapsed_time:.2f} seconds")
 
-        # concurrently extract metadata for each text chunk
-        tasks = [extract_metadata(row["text"], row["chunk_id"]) for row in data]
-        metadata_results = await asyncio.gather(*tasks)
+            # Asynchronously upload the raw JSON data to supabase
+            json_filename = table_name + ".json"
+            supabase_upload(json.dumps(element_dicts).encode('utf-8'), json_filename, partition=True)
 
-        # update rows with the extracted metadata
-        for row, metadata in zip(data, metadata_results):
+            # Build rows for our DataFrame
+            data = []
+            for chunk_counter, element in enumerate(element_dicts, start=1):
+                row = {
+                    "element_id": element.get("element_id"),
+                    "text": element.get("text"),
+                    "page_number": element.get("metadata", {}).get("page_number"),
+                    "filename": element.get("metadata", {}).get("filename"),
+                    "chunk_id": chunk_counter,
+                }
+                data.append(row)
+
+            # concurrently extract metadata for each text chunk
+            tasks = [extract_metadata(row["text"], row["chunk_id"]) for row in data]
+            metadata_results = await asyncio.gather(*tasks)
+
+            # update rows with the extracted metadata
+            for row, metadata in zip(data, metadata_results):
+                
+                metadata_for_chunks = json.loads(json.dumps(metadata))
+                
+                meta_lines = []
+                if metadata_for_chunks.get("keywords"):
+                    meta_lines.append(f"Keywords: {', '.join(metadata_for_chunks['keywords'])}")
+                if metadata_for_chunks.get("method"):
+                    meta_lines.append(f"Methods: {', '.join(metadata_for_chunks['method'])}")
+                if metadata_for_chunks.get("hypothetical_questions"):
+                    meta_lines.append(f"Hypothetical Questions: {', '.join(metadata_for_chunks['hypothetical_questions'])}")
+
+                # if we actually have metadata to add, append it to the text
+                if meta_lines:
+                    metadata_str = "\n\n--- Extracted Metadata ---\n" + "\n".join(meta_lines)
+                    # append the metadata string to the original text
+                    row["text"] = row["text"] + metadata_str
             
-            metadata_for_chunks = json.loads(json.dumps(metadata))
-            
-            meta_lines = []
-            if metadata_for_chunks.get("keywords"):
-                meta_lines.append(f"Keywords: {', '.join(metadata_for_chunks['keywords'])}")
-            if metadata_for_chunks.get("method"):
-                meta_lines.append(f"Methods: {', '.join(metadata_for_chunks['method'])}")
-            if metadata_for_chunks.get("hypothetical_questions"):
-                meta_lines.append(f"Hypothetical Questions: {', '.join(metadata_for_chunks['hypothetical_questions'])}")
 
-            # if we actually have metadata to add, append it to the text
-            if meta_lines:
-                metadata_str = "\n\n--- Extracted Metadata ---\n" + "\n".join(meta_lines)
-                # append the metadata string to the original text
-                row["text"] = row["text"] + metadata_str
-            
+            # Create a Pandas DataFrame from the processed data
+            df = pd.DataFrame(data)
 
-        # Create a Pandas DataFrame from the processed data
-        df = pd.DataFrame(data)
+            total_time = time.perf_counter() - start_time
+            logging.info(f"process_file completed successfully in {total_time:.2f} seconds")
+            return {"filename": filename, "data": df}
 
-        total_time = time.perf_counter() - start_time
-        logging.info(f"process_file completed successfully in {total_time:.2f} seconds")
-        return {"filename": filename, "data": df}
-
-    except Exception as e:
-        logging.error(f"process_file error during processing: {e}")
-        return FileProcessedError(is_processed=False, error=str(e))
+        except Exception as e:
+            logging.error(f"process_file error during processing: {e}")
+            return FileProcessedError(is_processed=False, error=f"Error processing file: {str(e)}", original_error=e)
+    except Exception as outer_e:
+        logging.error(f"Unexpected error in process_file: {outer_e}")
+        return FileProcessedError(is_processed=False, error=f"Unexpected error: {str(outer_e)}", original_error=outer_e)
