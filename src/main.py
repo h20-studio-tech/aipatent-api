@@ -89,11 +89,13 @@ class Document(BaseModel):
     created_at: datetime
     last_accessed_at: datetime
     metadata: Metadata
+    queryable: bool = False  # Flag to indicate if the file is available for querying in LanceDB
 
 
 class FilesResponse(BaseModel):
     status: str
     response: List[Document]
+    diagnostics: Optional[dict] = None  # Add diagnostic information
 
 
 logging.basicConfig(
@@ -239,11 +241,11 @@ async def upload_file(file: UploadFile):
     This endpoint accepts an uploaded file and performs the following steps:
 
     1. Reads the file content.
-    2. Uploads the file to Supabase storage.
-    3. Processes the file to extract its data.
-    4. Checks whether the file already exists in the vector store. If it does, it returns an
+    2. Processes the file to extract its data.
+    3. Checks whether the file already exists in LanceDB. If it does, it returns an
        appropriate message instructing the client to request a search instead.
-    5. Creates a database table from the processed file data if the file is new.
+    4. Creates a database table from the processed file data if the file is new.
+    5. Uploads the file to Supabase storage only after successful processing and LanceDB table creation.
 
     Parameters:
     - file (UploadFile): The file to be uploaded.
@@ -261,13 +263,10 @@ async def upload_file(file: UploadFile):
     # normalized filename
     filename = normalize_filename(filename)
     try:
-        # Step 1: Upload the file content to Supabase storage
-        supabase_upload(content, filename, partition=False)
-
-        # Step 2: Process the file (asynchronous operation)
+        # Step 1: Process the file (asynchronous operation)
         res = await process_file(content, filename, db=db_connection["db"])
 
-        # Step 3: Check if the file already exists in the vector store
+        # Step 2: Check if the file already exists in the vector store
         if isinstance(res, FileProcessedError):
             return FileUploadResponse(
                 filename=filename,
@@ -275,11 +274,14 @@ async def upload_file(file: UploadFile):
                 status_code=401,
             )
 
-        # Step 4: Create a database table from the processed file data
+        # Step 3: Create a database table from the processed file data
         # The table name is derived from the filename (removing the ".pdf" extension)
         await create_table_from_file(
             res["filename"].replace(".pdf", ""), res["data"], db=db_connection["db"]
         )
+        
+        # Step 4: Upload the file content to Supabase storage only after successful processing
+        supabase_upload(content, filename, partition=False)
 
         # Return a successful response
         return FileUploadResponse(
@@ -293,15 +295,49 @@ async def upload_file(file: UploadFile):
 @app.get("/api/v1/documents/", response_model=FilesResponse)
 async def get_files():
     """
-    Endpoint to retrieve a list of documents in lancedb.
+    Endpoint to retrieve a list of documents from Supabase and indicate which ones are available for querying.
+    
+    This endpoint returns all files stored in Supabase storage and marks those that also
+    have corresponding tables in LanceDB as queryable.
 
     Returns:
-        FilesResponse: A Pydantic model containing the status and list of Document instances.
+        FilesResponse: A Pydantic model containing the status, list of Document instances,
+        and diagnostic information.
     """
-    files = (
-        supabase_files()
-    )  # TODO: Filter Supabase files by lancedb tables for consistency
-    return FilesResponse(status="success", response=files)
+    # Get all files from Supabase
+    supabase_files_list = supabase_files()
+    
+    # Get all table names from LanceDB
+    try:
+        lancedb_table_names = await lancedb_tables(db_connection["db"])
+        logging.info(f"Retrieved {len(lancedb_table_names)} tables from LanceDB")
+    except Exception as e:
+        logging.error(f"Error retrieving LanceDB tables: {str(e)}")
+        lancedb_table_names = []
+    
+    # Create a set of LanceDB table names for faster lookup
+    lancedb_filenames = {table_name for table_name in lancedb_table_names}
+    
+    # Mark files that are also available in LanceDB as queryable
+    for file in supabase_files_list:
+        # Check if the file name without .pdf extension exists as a table in LanceDB
+        file_base_name = file["name"].replace(".pdf", "")
+        file["queryable"] = file_base_name in lancedb_filenames
+    
+    # Create diagnostic information
+    diagnostics = {
+        "total_supabase_files": len(supabase_files_list),
+        "total_lancedb_tables": len(lancedb_table_names),
+        "supabase_file_names": [file["name"] for file in supabase_files_list],
+        "lancedb_table_names": list(lancedb_table_names),
+        "queryable_files_count": sum(1 for file in supabase_files_list if file.get("queryable", False))
+    }
+    
+    return FilesResponse(
+        status="success", 
+        response=supabase_files_list,
+        diagnostics=diagnostics
+    )
 
 
 @app.post("/api/v1/rag/multiquery-search/", response_model=MultiQueryResponse)

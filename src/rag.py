@@ -80,17 +80,48 @@ async def create_table_from_file(
     logging.info(f"create_table_from_file: {table_name} of length: {data.shape[0]}")
 
     if data.empty:
-        logging.info("Warning: The DataFrame is empty, no data will be added.")
+        logging.warning("Warning: The DataFrame is empty, no data will be added.")
         return
 
-    if table_name in await db.table_names():
-        await db.drop_table(table_name)
-
-    table = await db.create_table(table_name, schema=schema, exist_ok=True, data=data)
-
-    table_rows = await table.count_rows()
-    logging.info(f"table {table_name} successfully created")
-    logging.info(f"Entries added to the table: {table_rows}")
+    try:
+        # Check if db is properly initialized
+        if db is None:
+            logging.error("LanceDB connection is None. Cannot create table.")
+            raise ValueError("LanceDB connection is None")
+            
+        # Log the connection details
+        logging.info(f"Using LanceDB connection: {db}")
+        
+        # Check available tables before creation
+        existing_tables = await db.table_names()
+        logging.info(f"Existing tables before operation: {existing_tables}")
+        
+        # Check if table already exists
+        if table_name in existing_tables:
+            logging.info(f"Table {table_name} already exists, dropping it first")
+            await db.drop_table(table_name)
+            
+        # Log data sample for debugging
+        logging.info(f"Data sample (first row): {data.iloc[0].to_dict() if len(data) > 0 else None}")
+        
+        # Create the table with more detailed error handling
+        logging.info(f"Creating table {table_name} with schema {schema}")
+        table = await db.create_table(table_name, schema=schema, exist_ok=True, data=data)
+        
+        # Verify table creation
+        table_rows = await table.count_rows()
+        logging.info(f"Table {table_name} successfully created with {table_rows} rows")
+        
+        # Verify table appears in table list after creation
+        updated_tables = await db.table_names()
+        logging.info(f"Tables after creation: {updated_tables}")
+        if table_name not in updated_tables:
+            logging.warning(f"Table {table_name} does not appear in table list after creation!")
+    
+    except Exception as e:
+        logging.error(f"Error creating table {table_name}: {str(e)}")
+        logging.exception("Detailed exception information:")
+        raise  # Re-raise to propagate the error
 
 
 async def search(
