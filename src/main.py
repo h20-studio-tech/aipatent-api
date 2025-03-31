@@ -195,16 +195,38 @@ async def lifespan(app: FastAPI):
         raise ValueError("LANCEDB_URI environment variable is missing.")
 
     try:
-        # Retrieve initial temporary credentials
-        creds = get_temporary_credentials()
+        # Use direct AWS credentials instead of temporary ones
+        aws_access_key = os.getenv("ACCESS_KEY_ID")
+        aws_secret_key = os.getenv("SECRET_ACCESS_KEY")
+        aws_region = os.getenv("AWS_REGION", "us-east-1")
+        
+        if not aws_access_key or not aws_secret_key:
+            logging.error("AWS credentials are missing. LanceDB connection will likely fail.")
+            raise ValueError("AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables are required")
+            
+        logging.info(f"DynamoDB using key ID that starts with: {aws_access_key[:4] if aws_access_key else 'None'}")
+        
+        # Test AWS credentials
+        try:
+            session = boto3.Session(
+                aws_access_key_id=aws_access_key,
+                aws_secret_access_key=aws_secret_key,
+                region_name=aws_region
+            )
+            sts = session.client('sts')
+            account_id = sts.get_caller_identity().get('Account')
+            logging.info(f"DynamoDB connected to AWS account: {account_id}")
+        except Exception as e:
+            logging.error(f"AWS credential test failed: {str(e)}")
+            raise
 
-        # Initialize the initial LanceDB connection with storage options
+        # Initialize the LanceDB connection with direct AWS credentials
         db_connection["db"] = await lancedb.connect_async(
             lancedb_uri,
             storage_options={
-                "aws_access_key_id": creds["AccessKeyId"],
-                "aws_secret_access_key": creds["SecretAccessKey"],
-                "aws_session_token": creds["SessionToken"],
+                "aws_access_key_id": aws_access_key,
+                "aws_secret_access_key": aws_secret_key,
+                "region_name": aws_region
             },
         )
 
@@ -212,8 +234,34 @@ async def lifespan(app: FastAPI):
         tables = await db_connection["db"].table_names()
         logging.info(f"Connected to LanceDB at {lancedb_uri} with tables: {tables}")
 
-        # Start background task to refresh credentials and connection
-        refresh_task = asyncio.create_task(refresh_lancedb_connection(lancedb_uri))
+        # Start background task to refresh credentials and connection periodically
+        # Modify to use direct credentials instead of temporary ones
+        async def keep_alive_connection():
+            while True:
+                try:
+                    # Just verify connection is still working
+                    tables = await db_connection["db"].table_names()
+                    logging.debug(f"LanceDB connection verified with {len(tables)} tables")
+                except Exception as e:
+                    logging.error(f"Connection error, attempting to reconnect: {e}")
+                    # Reconnect with direct credentials
+                    try:
+                        db_connection["db"] = await lancedb.connect_async(
+                            lancedb_uri,
+                            storage_options={
+                                "aws_access_key_id": aws_access_key,
+                                "aws_secret_access_key": aws_secret_key,
+                                "region_name": aws_region
+                            },
+                        )
+                        logging.info("LanceDB connection refreshed successfully.")
+                    except Exception as conn_error:
+                        logging.error(f"Failed to reconnect: {conn_error}")
+                
+                # Wait before checking again
+                await asyncio.sleep(3000)  # 5 minutes
+                
+        refresh_task = asyncio.create_task(keep_alive_connection())
 
         yield  # Keep the app running during its lifespan
 
@@ -247,7 +295,7 @@ async def root():
 
 
 @app.post("/api/v1/documents/", response_model=FileUploadResponse, status_code=200)
-async def upload_file(file: UploadFile):
+async def upload_file(file: UploadFile, force_upload: bool = False):
     """
     Upload and process a document file.
 
@@ -256,12 +304,14 @@ async def upload_file(file: UploadFile):
     1. Reads the file content.
     2. Processes the file to extract its data.
     3. Checks whether the file already exists in LanceDB. If it does, it returns an
-       appropriate message instructing the client to request a search instead.
+       appropriate message instructing the client to request a search instead,
+       unless force_upload is set to True.
     4. Creates a database table from the processed file data if the file is new.
     5. Uploads the file to Supabase storage only after successful processing and LanceDB table creation.
 
     Parameters:
     - file (UploadFile): The file to be uploaded.
+    - force_upload (bool, optional): Override existing file check. Defaults to False.
 
     Returns:
     - FileUploadResponse: A structured JSON response containing the filename and a status message.
@@ -276,8 +326,31 @@ async def upload_file(file: UploadFile):
     # normalized filename
     filename = normalize_filename(filename)
     try:
+        # Verify AWS credentials and LanceDB connection before proceeding
+        try:
+            # Log AWS identity for debugging purposes
+            aws_access_key = os.getenv("ACCESS_KEY_ID")
+            aws_region = os.getenv("AWS_REGION", "us-east-1")
+            logging.info(f"Using AWS key ID that starts with: {aws_access_key[:4] if aws_access_key else 'None'}")
+            
+            # Check if LanceDB connection is valid
+            if db_connection.get("db") is None:
+                logging.error("LanceDB connection is None. Cannot process file.")
+                raise HTTPException(status_code=500, detail="Database connection error")
+                
+            # Verify connection by getting table names
+            tables = await db_connection["db"].table_names()
+            logging.info(f"LanceDB tables before processing: {tables}")
+        except Exception as auth_error:
+            logging.error(f"AWS/LanceDB authentication error before processing: {str(auth_error)}")
+            raise HTTPException(status_code=500, detail=f"Authentication error: {str(auth_error)}")
+
         # Step 1: Process the file (asynchronous operation)
-        res = await process_file(content, filename, db=db_connection["db"])
+        try:
+            res = await process_file(content, filename, db=db_connection["db"], force_reprocess=force_upload)
+        except Exception as process_error:
+            logging.error(f"Error processing file {filename}: {str(process_error)}")
+            raise HTTPException(status_code=500, detail=f"Error processing file: {str(process_error)}")
 
         # Step 2: Check if the file already exists in the vector store
         if isinstance(res, FileProcessedError):
@@ -289,12 +362,20 @@ async def upload_file(file: UploadFile):
 
         # Step 3: Create a database table from the processed file data
         # The table name is derived from the filename (removing the ".pdf" extension)
-        await create_table_from_file(
-            res["filename"].replace(".pdf", ""), res["data"], db=db_connection["db"]
-        )
+        try:
+            await create_table_from_file(
+                res["filename"].replace(".pdf", ""), res["data"], db=db_connection["db"]
+            )
+        except Exception as table_error:
+            logging.error(f"Error creating LanceDB table for {filename}: {str(table_error)}")
+            raise HTTPException(status_code=500, detail=f"Error creating database table: {str(table_error)}")
         
         # Step 4: Upload the file content to Supabase storage only after successful processing
-        supabase_upload(content, filename, partition=False)
+        try:
+            supabase_upload(content, filename, partition=False)
+        except Exception as upload_error:
+            logging.error(f"Error uploading file {filename} to Supabase: {str(upload_error)}")
+            raise HTTPException(status_code=500, detail=f"Error uploading to storage: {str(upload_error)}")
 
         # Return a successful response
         return FileUploadResponse(

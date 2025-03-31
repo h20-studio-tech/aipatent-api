@@ -137,21 +137,23 @@ async def extract_metadata(text: str, chunk_id: str) -> dict:
         # Return empty metadata in case of error
         return {"keywords": [], "method": [], "hypothetical_questions": []}
 
-async def process_file(content: bytes, filename: str, db: AsyncConnection) -> dict | FileProcessedError:
+async def process_file(content: bytes, filename: str, db: AsyncConnection, force_reprocess: bool = False) -> dict | FileProcessedError:
     """
     Asynchronously process a PDF file by partitioning its text into chunks,
     extracting metadata concurrently for each chunk, and saving the results
     to both JSON and CSV formats.
     
-    :param str = file_path: 
-    :param str = filename: 
-    :return dict | FileProcessedError: 
+    :param bytes content: The file content to process
+    :param str filename: The name of the file
+    :param AsyncConnection db: The LanceDB connection
+    :param bool force_reprocess: Whether to force reprocessing even if the file exists
+    :return dict | FileProcessedError: Processing result or error
     """
     
     
     # Create a table name by removing the .pdf extension
     table_name = filename.replace(".pdf", "")
-    if table_name in await db.table_names():
+    if not force_reprocess and table_name in await db.table_names():
         logging.info("File already exists in database, skipping processing")
         return FileProcessedError(is_processed=True, error="File already processed.")
 
