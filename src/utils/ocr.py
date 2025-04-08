@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field, field_validator
 from src.utils.logging_helper import create_logger
 from openai import AsyncOpenAI
 import re
+import pandas as pd
 from src.utils.langfuse_client import get_prompt
 
 client = instructor.from_openai(AsyncOpenAI())
@@ -140,7 +141,11 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
             if is_header:
                 logger.info(f"Found potential header (line {i+1}): '{line}'")
                 
-                if "detailed description" in line_lower and "Detailed Description" not in detected_sections:
+                
+                if ("detailed description" in line_lower or
+                    "detailed description of the invention" in line_lower or
+                    "detailed description and preferred embodiments" in line_lower or
+                    "detailed description of the embodiments" in line_lower) and "Detailed Description" not in detected_sections:
                     # Only consider Detailed Description after Summary has been detected
                     if "Summary of Invention" in detected_sections:
                         detected_section = "Detailed Description"
@@ -384,8 +389,9 @@ examples = [
 ]
 
 
-async def get_embodiments(page: ProcessedPage) -> Embodiments:
-
+async def get_embodiments(page: ProcessedPage) -> list[Embodiment]:
+    
+    page_section = page.section
     page_text = page.text
     filename = page.filename
     page_number = page.page_number
@@ -399,6 +405,7 @@ async def get_embodiments(page: ProcessedPage) -> Embodiments:
                 "content": """
                     You receive a page from a biology patent document.
                     page_number: {{ page_number }}
+                    page_section: {{ page_section }}
                     filename: {{ filename }}
                     
                     Use the examples below for understanding of what an Embodiment looks like in a patent document.
@@ -421,17 +428,18 @@ async def get_embodiments(page: ProcessedPage) -> Embodiments:
             "page_number": page_number,
             "filename": filename,
             "page_text": page_text,
+            "page_section": page_section,
             "example_embodiments": chr(10).join(examples),
         },
     )
     logger.info(f"Embodiments extracted from page {page_number} of {filename}")
-    return completion
+    return completion.content
 
 
-async def find_embodiments(pages: list[ProcessedPage]) -> list[Embodiments]:
-    patent_embodiments: list[Embodiments] = []
+async def find_embodiments(pages: list[ProcessedPage]) -> list[Embodiment]:
     tasks = [asyncio.create_task(get_embodiments(page)) for page in pages]
-    patent_embodiments = await asyncio.gather(*tasks)
+    results = await asyncio.gather(*tasks)
+    patent_embodiments = [embodiment for embodiments in results for embodiment in embodiments]
     return patent_embodiments
 
 
@@ -452,34 +460,37 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
 
         # Extract embodiments       
         embodiments_extraction_start = time()
-        embodiments_collections = await find_embodiments(segmented_pages)
+        embodiments = await find_embodiments(segmented_pages)
         embodiments_extraction_total = time() - embodiments_extraction_start
         logger.info(
             f"Embodiments extraction completed in {embodiments_extraction_total:.2f} seconds"
         )
 
-        results = []
-        for embodiment_collection in embodiments_collections:
-            for embodiment in embodiment_collection.content:
-                results.append(
-                    Embodiment(
-                        text=embodiment["text"],
-                        filename=embodiment["filename"],
-                        page_number=embodiment["page_number"],
-                        section=embodiment["section"]
-                    )
-                )
-
-        return results
+        return embodiments
 
     except Exception as e:
         raise RuntimeError(f"Error processing patent document: {str(e)}")
 
 
-# if __name__ == "__main__":
-#     pdf_path = r"C:\Users\vtorr\Work\Projects\aipatent-api\ALD_GvHD_provisional_patent.pdf"
-#     embodiments_list = asyncio.run(process_patent_document(pdf_path))
+if __name__ == "__main__":
+    pdf_path = r"C:\Users\vtorr\Work\Projects\aipatent-api\experiments\sample_patents\ALD_GvHD provisional patent.pdf"
+    
+    with open(pdf_path, 'rb') as file:
+        
+        embodiments = asyncio.run(process_patent_document(file.read(), 'gvhd-paper'))
 
-#     df = pd.DataFrame([embodiment.model_dump() for embodiment in embodiments_list])
-
-#     df.to_csv("experiments/ald_gvhd_patent_embodiments.csv", index=False)
+        # Convert each item to a dict, handling both Pydantic objects and dictionaries
+        rows = []
+        for emb in embodiments:
+            if hasattr(emb, 'model_dump'):
+                # It's a Pydantic object
+                rows.append(emb.model_dump())
+            elif isinstance(emb, dict):
+                # It's already a dictionary
+                rows.append(emb)
+            else:
+                # Try dict() as a fallback
+                rows.append(dict(emb))
+                
+        df = pd.DataFrame(rows)
+        df.to_csv("experiments/ald_gvhd_patent_embodiments.csv", index=False)
