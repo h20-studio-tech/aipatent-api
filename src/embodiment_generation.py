@@ -1,5 +1,5 @@
 from openai import OpenAI
-from utils.langfuse_client import get_langfuse_instance
+from src.utils.langfuse_client import get_langfuse_instance
 import instructor 
 from pydantic import BaseModel
 langfuse = get_langfuse_instance()
