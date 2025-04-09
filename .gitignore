@@ -16,3 +16,7 @@ replit.nix
 .vscode
 # windsurf rules
 .windsurfrules
+.ide-agent-tasks/dynamodb-list-patent-projects-endpoint.md
+.ide-agent-tasks/files-retrieval-enhancement.md
+experiments/
+

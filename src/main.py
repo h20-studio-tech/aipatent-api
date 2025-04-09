@@ -1,5 +1,4 @@
 import os
-import base64
 import logging
 import boto3
 import asyncio
@@ -18,9 +17,7 @@ from models.pdf_workflow import FileProcessedError
 from models.rag_typing import Chunk
 from src.rag import multiquery_search, create_table_from_file, chunks_summary
 from contextlib import asynccontextmanager
-from lancedb.db import AsyncConnection
 from src.pdf_processing import (
-    partition_request,
     supabase_upload,
     process_file,
     supabase_files,
@@ -29,6 +26,7 @@ from src.pdf_processing import (
 from src.utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
 from src.utils.ocr import Embodiment, process_patent_document
+from embodiment_generation import generate_embodiment
 
 load_dotenv(".env")
 
@@ -53,6 +51,7 @@ class PatentProjectItem(BaseModel):
     antigen: str
     disease: str
     created_at: str
+    updated_at: str
 
 
 class PatentProjectListResponse(BaseModel):
@@ -330,7 +329,6 @@ async def upload_file(file: UploadFile, force_upload: bool = False):
         try:
             # Log AWS identity for debugging purposes
             aws_access_key = os.getenv("ACCESS_KEY_ID")
-            aws_region = os.getenv("AWS_REGION", "us-east-1")
             logging.info(f"Using AWS key ID that starts with: {aws_access_key[:4] if aws_access_key else 'None'}")
             
             # Check if LanceDB connection is valid
@@ -535,7 +533,7 @@ except Exception as e:
 async def patent_project(patent: PatentProject):
     try:
         # Get the table
-        table = dynamodb.Table("patents")
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
 
         # Generate new UUID for the patent
         patent_id = str(uuid.uuid4())
@@ -545,6 +543,7 @@ async def patent_project(patent: PatentProject):
             "patent_id": patent_id,
             **patent.model_dump(),  # Unpack all the validated fields from the PatentProject model
             "created_at": datetime.now().isoformat(),
+            "updated_at": datetime.now().isoformat(),
         }
 
         # Put the item in DynamoDB
@@ -585,7 +584,7 @@ async def list_patent_projects():
     """
     try:
         # Get the table
-        table = dynamodb.Table("patents")
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
         
         # Scan the table to get all items
         response = table.scan()
@@ -603,7 +602,8 @@ async def list_patent_projects():
                     name=item.get('name'),
                     antigen=item.get('antigen'),
                     disease=item.get('disease'),
-                    created_at=item.get('created_at')
+                    created_at=item.get('created_at'),
+                    updated_at=item.get('updated_at'),
                 )
                 projects.append(project)
             except Exception as e:
@@ -615,7 +615,6 @@ async def list_patent_projects():
             status="success",
             projects=projects
         )
-    
     except ClientError as e:
         error_message = e.response["Error"]["Message"]
         logging.error(f"DynamoDB error listing projects: {error_message}")
@@ -624,3 +623,54 @@ async def list_patent_projects():
     except Exception as e:
         logging.error(f"Unexpected error listing projects: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+    
+@app.post("api/v1/embodiment", status_code=200)
+async def synthetic_embodiment(
+    inspiration: float, 
+    source_embodiment: str, 
+    patent_title: str, 
+    disease: str, 
+    antigen: str):
+    
+    try:
+        res =  await generate_embodiment(inspiration, source_embodiment, patent_title, disease, antigen)
+        content = res.content
+        
+        
+        
+        return {"content": content}
+    except Exception as e:
+        logging.error(f"Error generating synthetic embodiment: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error generating synthetic embodiment: {str(e)}")
+
+
+
+class ApprovedEmbodiment(BaseModel):
+    type: str
+    content: dict  # Arbitrary structure to hold embodiment data
+    # Can contain any additional fields as needed
+
+@app.post("/api/v1/embodiment/approve")
+async def embodiment_approve(
+    patent_id: str,
+    embodiment: ApprovedEmbodiment,
+):
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        # Use list_append to add the embodiment to the embodiments list
+        # If the list doesn't exist yet, it will be created
+        response = table.update_item(
+            Key={
+                "patent_id": patent_id
+            },
+            UpdateExpression="SET embodiments = list_append(if_not_exists(embodiments, :empty_list), :embodiment)",
+            ExpressionAttributeValues={
+                ":embodiment": [embodiment.model_dump()],  # Convert Pydantic model to dict
+                ":empty_list": []
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        return {"status": "success", "message": "Embodiment added to patent", "data": response.get("Attributes")}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+    
