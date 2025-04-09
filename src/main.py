@@ -26,7 +26,7 @@ from src.pdf_processing import (
 from src.utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
 from src.utils.ocr import Embodiment, process_patent_document
-from embodiment_generation import generate_embodiment
+from src.embodiment_generation import generate_embodiment
 
 load_dotenv(".env")
 
