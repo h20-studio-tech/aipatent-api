@@ -624,7 +624,7 @@ async def list_patent_projects():
         logging.error(f"Unexpected error listing projects: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
     
-@app.post("api/v1/embodiment", status_code=200)
+@app.post("/api/v1/embodiment/", status_code=200)
 async def synthetic_embodiment(
     inspiration: float, 
     source_embodiment: str, 
@@ -635,9 +635,6 @@ async def synthetic_embodiment(
     try:
         res =  await generate_embodiment(inspiration, source_embodiment, patent_title, disease, antigen)
         content = res.content
-        
-        
-        
         return {"content": content}
     except Exception as e:
         logging.error(f"Error generating synthetic embodiment: {str(e)}")
@@ -650,7 +647,7 @@ class ApprovedEmbodiment(BaseModel):
     content: dict  # Arbitrary structure to hold embodiment data
     # Can contain any additional fields as needed
 
-@app.post("/api/v1/embodiment/approve")
+@app.post("/api/v1/embodiment/approve/")
 async def embodiment_approve(
     patent_id: str,
     embodiment: ApprovedEmbodiment,
