@@ -25,7 +25,7 @@ from src.pdf_processing import (
 )
 from src.utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
-from src.utils.ocr import Embodiment, process_patent_document
+from src.utils.ocr import Embodiment, process_patent_document, categorize_detailed_description
 from src.embodiment_generation import generate_embodiment
 
 load_dotenv(".env")
@@ -480,6 +480,9 @@ async def patent(file: UploadFile):
     filename = normalize_filename(filename)
     try:
         patent_embodiments = await process_patent_document(content, filename)
+        detailed_description_embodiments = await categorize_detailed_description([embodiment for embodiment in patent_embodiments if embodiment.section == "detailed_description"])
+        # detailed description embodiments received from categorize_detailed_description should replace the original detailed description embodiments
+        patent_embodiments = [embodiment for embodiment in patent_embodiments if embodiment.section != "detailed_description"] + detailed_description_embodiments
         return PatentUploadResponse(
             filename=filename,
             message="Patent document processed successfully",

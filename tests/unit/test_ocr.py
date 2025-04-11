@@ -1,13 +1,16 @@
 import pytest
+import pytest_asyncio
 from unittest.mock import AsyncMock, patch, MagicMock
-import asyncio
 
+# Assuming the models are defined in src.utils.ocr
+# Adjust the import path if necessary based on your project structure
 from src.utils.ocr import (
-    get_embodiments, 
+    get_embodiments,
     ProcessedPage,
     Embodiments,
     Embodiment,
-    PatentSection
+    categorize_embodiment,
+    DetailedDescriptionEmbodiment
 )
 
 
@@ -17,7 +20,7 @@ def sample_processed_page():
     return ProcessedPage(
         text="In certain aspects the disclosure relates to a method for preventing or treating a disease...",
         filename="test_patent.pdf",
-        page=5,
+        page_number=5,
         section="Detailed Description"
     )
 
@@ -30,7 +33,7 @@ def mock_embodiments_response():
             Embodiment(
                 text="In certain aspects the disclosure relates to a method for preventing or treating a disease...",
                 filename="test_patent.pdf",
-                page=5,
+                page_number=5,
                 section="Detailed Description"
             )
         ]
@@ -58,16 +61,16 @@ async def test_get_embodiments_success(sample_processed_page, mock_embodiments_r
         assert call_args['model'] == 'o3-mini'
         
         # Verify context contains expected values
-        assert call_args['context']['page_number'] == sample_processed_page.page
+        assert call_args['context']['page_number'] == sample_processed_page.page_number
         assert call_args['context']['filename'] == sample_processed_page.filename
         assert call_args['context']['page_text'] == sample_processed_page.text
         assert isinstance(call_args['context']['example_embodiments'], str)
         
-        # Verify the result is as expected
-        assert result == mock_embodiments_response
-        assert len(result.content) == 1
-        assert result.content[0].text == mock_embodiments_response.content[0].text
-        assert result.content[0].section == mock_embodiments_response.content[0].section
+        # Verify the result is as expected (list of embodiments)
+        assert result == mock_embodiments_response.content # Compare to the list inside
+        assert len(result) == 1 # Check length of the list
+        assert result[0].text == mock_embodiments_response.content[0].text # Access item in the list
+        assert result[0].section == mock_embodiments_response.content[0].section # Access item in the list
 
 
 @pytest.mark.asyncio
@@ -85,9 +88,9 @@ async def test_get_embodiments_empty_response(sample_processed_page):
         # Call the function
         result = await get_embodiments(sample_processed_page)
         
-        # Verify the result is as expected
-        assert result == empty_response
-        assert len(result.content) == 0
+        # Verify the result is as expected (empty list)
+        assert result == empty_response.content # Compare to the empty list inside
+        assert len(result) == 0 # Check length of the list
 
 
 @pytest.mark.asyncio
@@ -132,7 +135,7 @@ async def test_get_embodiments_template_rendering(sample_processed_page, mock_em
         assert 'example_embodiments' in context
         
         # Ensure template variables match the page attributes
-        assert context['page_number'] == sample_processed_page.page
+        assert context['page_number'] == sample_processed_page.page_number
         assert context['filename'] == sample_processed_page.filename
         assert context['page_text'] == sample_processed_page.text
 
@@ -146,21 +149,21 @@ async def test_segment_pages_basic_classification():
         summary_page = ProcessedPage(
             text="SUMMARY OF THE INVENTION\nThis invention relates to...",
             filename="test.pdf",
-            page=1,
+            page_number=1,
             section=""
         )
         
         detailed_page = ProcessedPage(
             text="DETAILED DESCRIPTION\nIn one embodiment...",
             filename="test.pdf",
-            page=2,
+            page_number=2,
             section=""
         )
         
         claims_page = ProcessedPage(
             text="CLAIMS\n1. A method comprising...",
             filename="test.pdf",
-            page=3,
+            page_number=3,
             section=""
         )
         
@@ -189,14 +192,14 @@ async def test_segment_pages_with_language_model():
     summary_page = ProcessedPage(
         text="SUMMARY OF THE INVENTION",
         filename="test.pdf",
-        page=1,
+        page_number=1,
         section=""
     )
     
     ambiguous_page = ProcessedPage(
         text="This part describes various aspects of the invention without clear section headers...",
         filename="test.pdf",
-        page=2,
+        page_number=2,
         section=""
     )
             
@@ -204,8 +207,10 @@ async def test_segment_pages_with_language_model():
     original_client = client.chat.completions.create
     
     async def mock_completion_create(*args, **kwargs):
+        # Simulate the PatentSectionWithConfidence model structure
         mock_response = MagicMock()
         mock_response.section = "Detailed Description"
+        mock_response.confidence = 0.9 # Add confidence attribute
         return mock_response
             
     try:
@@ -217,3 +222,70 @@ async def test_segment_pages_with_language_model():
         assert result[1].section == "Detailed Description"
     finally:
         client.chat.completions.create = original_client
+
+
+# --- Test Data ---
+TEST_EMBODIMENT_INPUT = Embodiment(
+    text="This embodiment describes the treatment of condition X using compound Y.",
+    filename="test_patent.pdf",
+    page_number=5,
+    section="Detailed Description",
+)
+
+# --- Mocks ---
+# Mock return value for disease rationale
+MOCK_DISEASE_RATIONALE_OUTPUT = DetailedDescriptionEmbodiment(
+    **TEST_EMBODIMENT_INPUT.model_dump(), category="disease rationale"
+)
+
+# Mock return value for product composition
+MOCK_PRODUCT_COMPOSITION_OUTPUT = DetailedDescriptionEmbodiment(
+    **TEST_EMBODIMENT_INPUT.model_dump(), category="product composition"
+)
+
+
+# --- Tests ---
+@pytest.mark.asyncio
+async def test_categorize_embodiment_disease_rationale(mocker):
+    """
+    Test that categorize_embodiment correctly identifies 'disease rationale'
+    when the mocked LLM returns that category.
+    """
+    # Arrange: Patch the client's create method
+    mock_create = mocker.patch(
+        "src.utils.ocr.client.chat.completions.create",
+        new_callable=AsyncMock,  # Use AsyncMock for async methods
+        return_value=MOCK_DISEASE_RATIONALE_OUTPUT,
+    )
+
+    # Act: Call the function under test
+    result = await categorize_embodiment(TEST_EMBODIMENT_INPUT)
+
+    # Assert: Check the result and that the mock was called
+    assert isinstance(result, DetailedDescriptionEmbodiment)
+    assert result.category == "disease rationale"
+    assert result.text == TEST_EMBODIMENT_INPUT.text # Ensure other fields are preserved
+    mock_create.assert_awaited_once() # Verify the mock was called as expected
+
+
+@pytest.mark.asyncio
+async def test_categorize_embodiment_product_composition(mocker):
+    """
+    Test that categorize_embodiment correctly identifies 'product composition'
+    when the mocked LLM returns that category.
+    """
+    # Arrange: Patch the client's create method
+    mock_create = mocker.patch(
+        "src.utils.ocr.client.chat.completions.create",
+        new_callable=AsyncMock,
+        return_value=MOCK_PRODUCT_COMPOSITION_OUTPUT,
+    )
+
+    # Act: Call the function under test
+    result = await categorize_embodiment(TEST_EMBODIMENT_INPUT)
+
+    # Assert: Check the result and that the mock was called
+    assert isinstance(result, DetailedDescriptionEmbodiment)
+    assert result.category == "product composition"
+    assert result.filename == TEST_EMBODIMENT_INPUT.filename # Ensure other fields are preserved
+    mock_create.assert_awaited_once()

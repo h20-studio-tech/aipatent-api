@@ -36,6 +36,10 @@ class Embodiment(BaseModel):
     )
     section: str = Field(..., description="The section of the embodiment in the source file")
 
+class DetailedDescriptionEmbodiment(Embodiment):
+    category: str = Field(..., 
+                          description="The category of the embodiment",
+                          enum=["disease rationale", "product composition"])
 
 class Embodiments(BaseModel):
     content: list[Embodiment] | list = Field(
@@ -88,7 +92,9 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
     logger.info(f"Processing {len(pages)} pages")
     
     # Sort pages by page number
-    for page in sorted(pages, key=lambda p: p.page_number):
+    for original_page in sorted(pages, key=lambda p: p.page_number):
+        # Create a deep copy to work with, avoiding modification of original objects
+        page = original_page.model_copy(deep=True)
         logger.info(f"Processing page {page.page_number}")
         
         # If no section has been detected yet, default to "Summary of Invention"
@@ -442,6 +448,51 @@ async def find_embodiments(pages: list[ProcessedPage]) -> list[Embodiment]:
     patent_embodiments = [embodiment for embodiments in results for embodiment in embodiments]
     return patent_embodiments
 
+async def categorize_embodiment(embodiment: Embodiment) -> DetailedDescriptionEmbodiment: 
+    return await client.chat.completions.create(
+        model='gpt-4.5-preview',
+        messages=[
+                {
+                    "role":"user",
+                    "content":"""
+                    Analyze the following embodiment of a patent {{ filename }}:
+                    
+                    this embodiment comes from page {{ page_number }}
+                    
+                    this embodiment is a {{ section }} embodiment
+                    
+                    You are tasked with categorizing the embodiment into exactly one of the following categories:
+                    - disease_rationale
+                    - product_composition
+                    
+                    <content>
+                    {{ content }}
+                    </content> 
+                    
+                    
+                    <rules>
+                    - If the embodiment is related to the disease or condition the subject is suffering from, categorize it as disease_rationale.
+                    - If the embodiment is related to the composition of the product, categorize it as product_composition.
+                    </rules>
+                    """
+                }
+        ],
+        response_model=DetailedDescriptionEmbodiment,
+        context={
+            "filename": embodiment.filename,
+            "content": embodiment.text,
+            "section": embodiment.section,
+            "page_number": embodiment.page_number,
+            
+        }
+    )
+
+async def categorize_detailed_description(embodiments: list[Embodiment]) -> list[DetailedDescriptionEmbodiment]:
+    tasks = [asyncio.create_task(categorize_embodiment(embodiment)) for embodiment in embodiments]
+    results = await asyncio.gather(*tasks)
+    detailed_description_embodiments = [embodiment for embodiments in results for embodiment in embodiments]
+    return detailed_description_embodiments
+
 
 async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodiment]:
     try:
@@ -472,25 +523,25 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         raise RuntimeError(f"Error processing patent document: {str(e)}")
 
 
-if __name__ == "__main__":
-    pdf_path = r"C:\Users\vtorr\Work\Projects\aipatent-api\experiments\sample_patents\ALD_GvHD provisional patent.pdf"
+# if __name__ == "__main__":
+#     pdf_path = r"C:\Users\vtorr\Work\Projects\aipatent-api\experiments\sample_patents\ALD_GvHD provisional patent.pdf"
     
-    with open(pdf_path, 'rb') as file:
+#     with open(pdf_path, 'rb') as file:
         
-        embodiments = asyncio.run(process_patent_document(file.read(), 'gvhd-paper'))
+#         embodiments = asyncio.run(process_patent_document(file.read(), 'gvhd-paper'))
 
-        # Convert each item to a dict, handling both Pydantic objects and dictionaries
-        rows = []
-        for emb in embodiments:
-            if hasattr(emb, 'model_dump'):
-                # It's a Pydantic object
-                rows.append(emb.model_dump())
-            elif isinstance(emb, dict):
-                # It's already a dictionary
-                rows.append(emb)
-            else:
-                # Try dict() as a fallback
-                rows.append(dict(emb))
+#         # Convert each item to a dict, handling both Pydantic objects and dictionaries
+#         rows = []
+#         for emb in embodiments:
+#             if hasattr(emb, 'model_dump'):
+#                 # It's a Pydantic object
+#                 rows.append(emb.model_dump())
+#             elif isinstance(emb, dict):
+#                 # It's already a dictionary
+#                 rows.append(emb)
+#             else:
+#                 # Try dict() as a fallback
+#                 rows.append(dict(emb))
                 
-        df = pd.DataFrame(rows)
-        df.to_csv("experiments/ald_gvhd_patent_embodiments.csv", index=False)
+#         df = pd.DataFrame(rows)
+#         df.to_csv("experiments/ald_gvhd_patent_embodiments.csv", index=False)
