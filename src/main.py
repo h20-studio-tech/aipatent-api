@@ -10,7 +10,7 @@ import boto3
 from botocore.exceptions import ClientError
 from datetime import datetime
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Union
 from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from models.pdf_workflow import FileProcessedError
@@ -25,7 +25,7 @@ from src.pdf_processing import (
 )
 from src.utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
-from src.utils.ocr import Embodiment, process_patent_document, categorize_detailed_description
+from src.utils.ocr import Embodiment, process_patent_document, DetailedDescriptionEmbodiment
 from src.embodiment_generation import generate_embodiment
 
 load_dotenv(".env")
@@ -70,7 +70,7 @@ class PatentProjectResponse(BaseModel):
 class PatentUploadResponse(BaseModel):
     filename: str = Field(..., description="The name of the uploaded file")
     message: str = Field(..., description="Status message for the upload operation")
-    data: list[Embodiment] = Field(
+    data: list[Union[Embodiment, DetailedDescriptionEmbodiment]] = Field(
         ..., description="The list of embodiments in a page that contains embodiments"
     )
     status_code: int = Field(
@@ -480,9 +480,6 @@ async def patent(file: UploadFile):
     filename = normalize_filename(filename)
     try:
         patent_embodiments = await process_patent_document(content, filename)
-        detailed_description_embodiments = await categorize_detailed_description([embodiment for embodiment in patent_embodiments if embodiment.section == "detailed_description"])
-        # detailed description embodiments received from categorize_detailed_description should replace the original detailed description embodiments
-        patent_embodiments = [embodiment for embodiment in patent_embodiments if embodiment.section != "detailed_description"] + detailed_description_embodiments
         return PatentUploadResponse(
             filename=filename,
             message="Patent document processed successfully",

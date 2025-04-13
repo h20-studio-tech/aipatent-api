@@ -217,8 +217,14 @@ async def test_segment_pages_with_language_model():
         client.chat.completions.create = mock_completion_create
         result = await segment_pages([summary_page, ambiguous_page])
                 
-        # First page should be Summary, second should be Detailed Description from our mock
-        assert result[0].section == "Summary of Invention"
+        # Add debugging to print sections before assertion
+        print("\n--- Debugging segment_pages output ---")
+        for i, p in enumerate(result):
+            print(f"Result Page {i} (Input Page Num {p.page_number}): Section = {p.section}")
+        print("--- End Debugging ---")
+        
+        # Assert: First page should be Summary, second should be Detailed Description
+        assert result[0].section == "Summary of Invention" 
         assert result[1].section == "Detailed Description"
     finally:
         client.chat.completions.create = original_client

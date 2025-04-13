@@ -1,21 +1,21 @@
-import os
+import json 
 import instructor
 import asyncio
 import pytesseract
 import pdfplumber
+import sys
 from time import time
 from io import BytesIO
 from pdfplumber.page import Page
 from pydantic import BaseModel, Field, field_validator
-from src.utils.logging_helper import create_logger
 from openai import AsyncOpenAI
 import re
 import pandas as pd
+from src.utils.logging_helper import create_logger
 from src.utils.langfuse_client import get_prompt
 
 client = instructor.from_openai(AsyncOpenAI())
 logger = create_logger("ocr.py")
-
 
 class ProcessedPage(BaseModel):
     text: str = Field(
@@ -31,13 +31,18 @@ class ProcessedPage(BaseModel):
 class Embodiment(BaseModel):
     text: str = Field(..., description="The embodiment")
     filename: str = Field(..., description="The source file of the embodiment")
+    page_number: int = Field(..., description="The page number of the embodiment in the source file")
+    section: str = Field(..., description="The section of the embodiment in the source file")
+
+class DetailedDescriptionEmbodiment(BaseModel):
+    # Define all fields explicitly instead of using inheritance
+    text: str = Field(..., description="The embodiment")
+    filename: str = Field(..., description="The source file of the embodiment")
     page_number: int = Field(
         ..., description="The page number of the embodiment in the source file"
     )
     section: str = Field(..., description="The section of the embodiment in the source file")
-
-class DetailedDescriptionEmbodiment(Embodiment):
-    category: str = Field(..., 
+    sub_category: str = Field(..., 
                           description="The category of the embodiment",
                           enum=["disease rationale", "product composition"])
 
@@ -52,12 +57,12 @@ class PatentSection(BaseModel):
     section: str = Field(
         ..., 
         description="The section of the patent document",
-        enum=["Summary of Invention", "Detailed Description", "Claims"]
+        enum=["summary of invention", "detailed description", "claims"]
     )   
 
 
 class PatentSectionWithConfidence(BaseModel):
-    section: str = Field(enum=["Summary of Invention", "Detailed Description", "Claims"])
+    section: str = Field(enum=["summary of invention", "detailed description", "claims"])
     confidence: float
 
     @field_validator('confidence')
@@ -85,7 +90,7 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
     
     # Track which sections have been detected
     # The expected order is: Summary -> Detailed Description -> Claims
-    section_order = ["Summary of Invention", "Detailed Description", "Claims"]
+    section_order = ["summary of invention", "detailed description", "claims"]
     detected_sections = set()
     
     logger.info("Starting section detection process")
@@ -99,7 +104,7 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
         
         # If no section has been detected yet, default to "Summary of Invention"
         if current_section is None:
-            current_section = "Summary of Invention"
+            current_section = "summary of invention"
             detected_sections.add(current_section)
             # Update the page's section
             page.section = current_section
@@ -151,10 +156,10 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                 if ("detailed description" in line_lower or
                     "detailed description of the invention" in line_lower or
                     "detailed description and preferred embodiments" in line_lower or
-                    "detailed description of the embodiments" in line_lower) and "Detailed Description" not in detected_sections:
+                    "detailed description of the embodiments" in line_lower) and "detailed description" not in detected_sections:
                     # Only consider Detailed Description after Summary has been detected
-                    if "Summary of Invention" in detected_sections:
-                        detected_section = "Detailed Description"
+                    if "summary of invention" in detected_sections:
+                        detected_section = "detailed description"
                         section_found = True
                         detection_method = "strong header match"
                         matched_text = line
@@ -162,8 +167,8 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                         break
                 elif "claims" in line_lower and "Claims" not in detected_sections:
                     # Only consider Claims after at least Summary and Detailed Description have been detected
-                    if "Summary of Invention" and "Detailed Description" in detected_sections:
-                        detected_section = "Claims"
+                    if "summary of invention" and "detailed description" in detected_sections:
+                        detected_section = "claims"
                         section_found = True
                         detection_method = "strong header match"
                         matched_text = line
@@ -187,8 +192,8 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                 next_section = section_order[next_idx]
                 logger.info(f"Checking for '{next_section}' section")
                 
-                if next_section == "Detailed Description" and "Detailed Description" not in detected_sections:
-                    # Check for various forms of "Detailed Description" header
+                if next_section == "detailed description" and "detailed description" not in detected_sections:
+                    # Check for various forms of "detailed description" header
                     detailed_patterns = [
                         r"detailed\s+description",
                         r"detailed\s+description\s+of\s+the\s+invention", 
@@ -217,16 +222,16 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                                 line_content = filtered_text[start_pos:start_pos+line_end].strip()
                                 
                                 if any(line_content.endswith(suffix) for suffix in ["description", "embodiments", "invention"]):
-                                    detected_section = "Detailed Description"
+                                    detected_section = "detailed description"
                                     section_found = True
                                     detection_method = "keyword match"
                                     matched_text = matched_phrase
-                                    logger.info(f"DETECTED 'Detailed Description' via keyword match: '{matched_phrase}'")
+                                    logger.info(f"DETECTED 'detailed description' via keyword match: '{matched_phrase}'")
                                     break
                         if section_found:
                             break
                             
-                elif next_section == "Claims" and "Claims" not in detected_sections:
+                elif next_section == "claims" and "claims" not in detected_sections:
                     # Look for "Claims" as a standalone header
                     claim_matches = list(re.finditer(r"claims", filtered_text))
                     for match in claim_matches:
@@ -240,19 +245,19 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                             
                             # Verify it's actually the Claims section with numbered items
                             if re.search(r"^\s*\d+\.\s+", filtered_text[start_pos:], re.MULTILINE):
-                                detected_section = "Claims"
+                                detected_section = "claims"
                                 section_found = True
                                 detection_method = "keyword match"
                                 matched_text = matched_phrase
-                                logger.info(f"DETECTED 'Claims' via keyword match: '{matched_phrase}'")
+                                logger.info(f"DETECTED 'claims' via keyword match: '{matched_phrase}'")
                                 break
                 
                 if section_found:
                     break
         
-        # Special case: If this is the last page and "Claims" haven't been detected,
-        # check more aggressively for Claims indicators (numbered paragraphs starting with numbers)
-        if not section_found and "Claims" not in detected_sections:
+        # Special case: If this is the last page and "claims" haven't been detected,
+        # check more aggressively for claims indicators (numbered paragraphs starting with numbers)
+        if not section_found and "claims" not in detected_sections:
             # Check if this page has a structure that looks like claims (numbered paragraphs)
             has_numbered_items = re.search(r"^\s*\d+\.\s+", text_lower, re.MULTILINE)
             if has_numbered_items:
@@ -263,11 +268,11 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                 has_claim_language = any(phrase in text_lower for phrase in ["comprising", "wherein", "consisting of"])
                 
                 if len(numbered_items) > 1 and has_claim_language:
-                    detected_section = "Claims"
+                    detected_section = "claims"
                     section_found = True
                     detection_method = "structural analysis"
                     matched_text = f"Numbered items ({len(numbered_items)}) with claim language"
-                    logger.info(f"DETECTED 'Claims' via structural analysis: {len(numbered_items)} numbered items with claim language")
+                    logger.info(f"DETECTED 'claims' via structural analysis: {len(numbered_items)} numbered items with claim language")
         
         # Update current section if a new one was detected
         if section_found:
@@ -445,11 +450,22 @@ async def get_embodiments(page: ProcessedPage) -> list[Embodiment]:
 async def find_embodiments(pages: list[ProcessedPage]) -> list[Embodiment]:
     tasks = [asyncio.create_task(get_embodiments(page)) for page in pages]
     results = await asyncio.gather(*tasks)
-    patent_embodiments = [embodiment for embodiments in results for embodiment in embodiments]
+    patent_embodiments = [
+        Embodiment(**embodiment) if isinstance(embodiment, dict) else embodiment
+        for embodiments in results
+        for embodiment in embodiments
+    ]
     return patent_embodiments
 
 async def categorize_embodiment(embodiment: Embodiment) -> DetailedDescriptionEmbodiment: 
-    return await client.chat.completions.create(
+    # Create a custom model for the API response that only needs to provide the sub_category
+    class CategoryResponse(BaseModel):
+        sub_category: str = Field(..., 
+                           description="The category of the embodiment",
+                           enum=["disease rationale", "product composition"])
+    
+    # Get just the category from the API
+    response = await client.chat.completions.create(
         model='gpt-4.5-preview',
         messages=[
                 {
@@ -462,8 +478,8 @@ async def categorize_embodiment(embodiment: Embodiment) -> DetailedDescriptionEm
                     this embodiment is a {{ section }} embodiment
                     
                     You are tasked with categorizing the embodiment into exactly one of the following categories:
-                    - disease_rationale
-                    - product_composition
+                    - disease rationale
+                    - product composition
                     
                     <content>
                     {{ content }}
@@ -471,30 +487,72 @@ async def categorize_embodiment(embodiment: Embodiment) -> DetailedDescriptionEm
                     
                     
                     <rules>
-                    - If the embodiment is related to the disease or condition the subject is suffering from, categorize it as disease_rationale.
-                    - If the embodiment is related to the composition of the product, categorize it as product_composition.
+                    - If the embodiment is related to the disease or condition the subject is suffering from, categorize it as "disease rationale".
+                    - If the embodiment is related to the composition of the product, categorize it as "product composition".
                     </rules>
                     """
                 }
         ],
-        response_model=DetailedDescriptionEmbodiment,
+        response_model=CategoryResponse,
         context={
             "filename": embodiment.filename,
             "content": embodiment.text,
             "section": embodiment.section,
             "page_number": embodiment.page_number,
-            
         }
     )
+    
+    # Manually create a DetailedDescriptionEmbodiment with all fields from original embodiment plus the sub_category
+    return DetailedDescriptionEmbodiment(
+        text=embodiment.text,
+        filename=embodiment.filename,
+        page_number=embodiment.page_number,
+        section=embodiment.section,
+        sub_category=response.sub_category
+    )
+
+
+#test categorize embodiment with this text
+async def test_categorize_embodiment():
+    embodiment_text = """
+    In certain embodiments, the composition comprises at least 0.01%, 0.05%, 0.1%, 0.5%, 1%, 2%, 3%, 4%, 5%, 6%, 7%, 8%, 9%, 10%, 15%, 20%, 25%, 30%, 35%, 40%, 45%, 50%, 55%, 60%, 65%, 70%, 75%, 80%, 85%, 90%, 95%, 96%, 97%, 98% or 99% w/w of the hyperimmunized egg product. Any of these values may be used to define a range for the concentration of the hyperimmunized egg product in the composition. For example, in some embodiments, the composition comprises between 0.01% and 50%, between 0.1% and 50%, or between 1% and 50% w/w of the hyperimmunized egg product.
+    """
+    embodiment = Embodiment(text=embodiment_text, filename="test", page_number=1, section="detailed description")
+    result = await categorize_embodiment(embodiment)
+    
+    # Log detailed information about the result
+    logger.info(f"Result type: {type(result).__name__}")
+    logger.info(f"Result attributes: {dir(result) if hasattr(result, '__dict__') else 'Not a complex object'}")
+    logger.info(f"Is result iterable: {hasattr(result, '__iter__') and not isinstance(result, (str, DetailedDescriptionEmbodiment))}")
+    
+    if hasattr(result, 'model_dump'):
+        logger.info(f"Model dump: {result.model_dump()}")
+    
+    # Print the result for inspection
+    print(f"Result: {result}")
+
+    print(result)
+    
 
 async def categorize_detailed_description(embodiments: list[Embodiment]) -> list[DetailedDescriptionEmbodiment]:
+    """Categorize a list of detailed description embodiments.
+    
+    This function takes a list of Embodiment objects and returns a list of DetailedDescriptionEmbodiment objects
+    with the appropriate sub_category field set.
+    """
+    # Run categorize_embodiment for each embodiment - ensuring proper typing
     tasks = [asyncio.create_task(categorize_embodiment(embodiment)) for embodiment in embodiments]
     results = await asyncio.gather(*tasks)
-    detailed_description_embodiments = [embodiment for embodiments in results for embodiment in embodiments]
-    return detailed_description_embodiments
+    
+    # Each result should be a single DetailedDescriptionEmbodiment object
+    for i, result in enumerate(results):
+        if not isinstance(result, DetailedDescriptionEmbodiment):
+            logger.error(f"Expected DetailedDescriptionEmbodiment but got {type(result)} at index {i}")
+            raise TypeError(f"categorize_embodiment returned {type(result)} instead of DetailedDescriptionEmbodiment")
+    
+    return results
 
-
-async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodiment]:
+async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodiment | DetailedDescriptionEmbodiment]:
     try:
         # Process PDF pages
         pdf_processing_start = time()
@@ -513,35 +571,37 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         embodiments_extraction_start = time()
         embodiments = await find_embodiments(segmented_pages)
         embodiments_extraction_total = time() - embodiments_extraction_start
-        logger.info(
-            f"Embodiments extraction completed in {embodiments_extraction_total:.2f} seconds"
-        )
-
-        return embodiments
-
+        
+        # Validate that all embodiments are of the correct type
+        if embodiments and len(embodiments) > 0:
+            logger.info(f"First embodiment type: {type(embodiments[0]).__name__}")
+            
+            # Enforce strict typing - all items must be Embodiment instances
+            for i, embodiment in enumerate(embodiments):
+                if not isinstance(embodiment, Embodiment):
+                    logger.error(f"Item at index {i} is of type {type(embodiment).__name__}, not Embodiment")
+                    raise TypeError(f"Expected all items to be Embodiment instances, found {type(embodiment).__name__}")
+        
+        # Categorize detailed description embodiments - select only the ones with 'detailed description' section
+        detailed_description_embodiments = [embodiment for embodiment in embodiments if embodiment.section == "detailed description"]
+        logger.info(f"Found {len(detailed_description_embodiments)} detailed description embodiments to categorize")
+        
+        # Run categorization to add sub_category field to detailed description embodiments
+            
+        categorized_detailed_description = await categorize_detailed_description(detailed_description_embodiments)
+        logger.info(f"Categorized {len(categorized_detailed_description)} detailed description embodiments")
+            
+        #enforce that they are instances of DetailedDescriptionEmbodiment
+        for i, embodiment in enumerate(categorized_detailed_description):
+            if not isinstance(embodiment, DetailedDescriptionEmbodiment):
+                logger.error(f"Item at index {i} is of type {type(embodiment).__name__}, not DetailedDescriptionEmbodiment")
+                raise TypeError(f"Expected all items to be DetailedDescriptionEmbodiment instances, found {type(embodiment).__name__}")
+            # Replace the original detailed_description embodiments with the categorized ones
+        non_detailed_embodiments = [embodiment for embodiment in embodiments if embodiment.section != "detailed description"]
+        embodiments_with_detailed_description_categorized = non_detailed_embodiments + categorized_detailed_description
+        
+        return embodiments_with_detailed_description_categorized
+        
     except Exception as e:
         raise RuntimeError(f"Error processing patent document: {str(e)}")
-
-
-# if __name__ == "__main__":
-#     pdf_path = r"C:\Users\vtorr\Work\Projects\aipatent-api\experiments\sample_patents\ALD_GvHD provisional patent.pdf"
-    
-#     with open(pdf_path, 'rb') as file:
         
-#         embodiments = asyncio.run(process_patent_document(file.read(), 'gvhd-paper'))
-
-#         # Convert each item to a dict, handling both Pydantic objects and dictionaries
-#         rows = []
-#         for emb in embodiments:
-#             if hasattr(emb, 'model_dump'):
-#                 # It's a Pydantic object
-#                 rows.append(emb.model_dump())
-#             elif isinstance(emb, dict):
-#                 # It's already a dictionary
-#                 rows.append(emb)
-#             else:
-#                 # Try dict() as a fallback
-#                 rows.append(dict(emb))
-                
-#         df = pd.DataFrame(rows)
-#         df.to_csv("experiments/ald_gvhd_patent_embodiments.csv", index=False)
