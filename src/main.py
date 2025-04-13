@@ -425,9 +425,11 @@ async def get_files():
         "queryable_files_count": sum(1 for file in supabase_files_list if file.get("queryable", False))
     }
     
+    queryable_files = [file for file in supabase_files_list if file['queryable']] 
+    
     return FilesResponse(
         status="success", 
-        response=supabase_files_list,
+        response=queryable_files,
         diagnostics=diagnostics
     )
 
