@@ -43,7 +43,8 @@ from src.models.api_schemas import (
      ApprovedEmbodimentRequest,
      ApproachKnowledge,
      TechnologyKnowledge,
-     InnovationKnowledge
+     InnovationKnowledge,
+     ResearchNote
 )
 
 load_dotenv(".env")
@@ -745,6 +746,41 @@ async def store_technology_knowledge(request: TechnologyKnowledge):
             content={
                 "status": "success",
                 "message": "Technology knowledge added to patent",
+                "data": response.get("Attributes")
+            }
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": str(e)
+            }
+        )
+        
+@app.post("/api/v1/knowledge/research-note/")
+async def store_research_note(request: ResearchNote):
+    """
+    Store research notes for a given patent and update the patent object in DynamoDB.
+    """
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        response = table.update_item(
+            Key={
+                "patent_id": str(request.patent_id)
+            },
+            UpdateExpression="SET research_notes = list_append(if_not_exists(research_notes, :empty_list), :note)",
+            ExpressionAttributeValues={
+                ":note": [request.model_dump()],
+                ":empty_list": []
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "status": "success",
+                "message": "Research note added to patent",
                 "data": response.get("Attributes")
             }
         )

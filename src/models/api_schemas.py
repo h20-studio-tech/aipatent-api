@@ -5,7 +5,7 @@ from typing import List, Optional, Any, Union
 from pydantic import field_validator
 from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment
 from src.models.rag_schemas import Chunk
-
+from enum import Enum
 
 class FileUploadResponse(BaseModel):
     """
@@ -280,6 +280,34 @@ class TechnologyKnowledge(BaseModel):
     question: str
     answer: str
     created_at: datetime
+
+    @field_validator('patent_id')
+    @classmethod
+    def validate_uuid4(cls, v):
+        if v.version != 4:
+            raise ValueError('patent_id must be a valid UUID4')
+        return v
+  
+
+
+class NoteCategory(str, Enum):
+    APPROACH = "approach"
+    INNOVATION = "innovation"
+    TECHNOLOGY = "technology"    
+class ResearchNote(BaseModel):
+    """
+    Request class to store research notes about a patent.
+    
+    Attributes:
+        patent_id: Unique identifier for the associated patent
+        category: Category of the research note (e.g., "Approach", "Innovation")
+        content: The actual note content
+        created_at: Timestamp when the note was created
+    """
+    patent_id: uuid.UUID = Field(..., description="Unique identifier for the associated patent")
+    category: str = Field(..., description="'Approach', 'Innovation',", json_schema_extra=["approach", "innovation","technology"])
+    content: str = Field(..., description="The actual note content")
+    created_at: datetime = Field(..., description="Timestamp when the note was created")
 
     @field_validator('patent_id')
     @classmethod
