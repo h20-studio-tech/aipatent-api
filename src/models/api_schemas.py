@@ -247,7 +247,7 @@ class ApproachKnowledge(BaseModel):
     patent_id: str
     question: str
     answer: str
-    created_at: datetime
+    created_at: str
     
     @field_validator('patent_id')
     @classmethod
@@ -263,7 +263,7 @@ class InnovationKnowledge(BaseModel):
     patent_id: str
     question: str
     answer: str
-    created_at: datetime
+    created_at: str
 
     @field_validator('patent_id')
     @classmethod
@@ -279,7 +279,7 @@ class TechnologyKnowledge(BaseModel):
     patent_id: str
     question: str
     answer: str
-    created_at: datetime
+    created_at: str
 
     @field_validator('patent_id')
     @classmethod
@@ -307,7 +307,7 @@ class ResearchNote(BaseModel):
     patent_id: str = Field(..., description="Unique identifier for the associated patent")
     category: str = Field(..., description="'Approach', 'Innovation',", json_schema_extra=["approach", "innovation","technology"])
     content: str = Field(..., description="The actual note content")
-    created_at: datetime = Field(..., description="Timestamp when the note was created")
+    created_at: str = Field(..., description="Timestamp when the note was created")
 
     @field_validator('patent_id')
     @classmethod
