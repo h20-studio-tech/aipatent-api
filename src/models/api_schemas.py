@@ -226,12 +226,12 @@ class ApprovedEmbodimentRequest(BaseModel):
     patent_id: str = Field(..., description="The UUIDv4 of the patent to update")
     embodiment: Union[Embodiment, DetailedDescriptionEmbodiment] = Field(..., description="The embodiment object to store")
 
-    @field_validator('patent_id')
-    @classmethod
-    def validate_uuid4(cls, v):
-        if v.version != 4:
-            raise ValueError('patent_id must be a valid UUID4')
-        return v
+    # @field_validator('patent_id')
+    # @classmethod
+    # def validate_uuid4(cls, v):
+    #     if v.version != 4:
+    #         raise ValueError('patent_id must be a valid UUID4')
+    #     return v
     
     
 class ApproachKnowledge(BaseModel):
@@ -249,12 +249,12 @@ class ApproachKnowledge(BaseModel):
     answer: str
     created_at: str
     
-    @field_validator('patent_id')
-    @classmethod
-    def validate_uuid4(cls, v):
-        if v.version != 4:
-            raise ValueError('patent_id must be a valid UUID4')
-        return v
+    # @field_validator('patent_id')
+    # @classmethod
+    # def validate_uuid4(cls, v):
+    #     if v.version != 4:
+    #         raise ValueError('patent_id must be a valid UUID4')
+    #     return v
     
 class InnovationKnowledge(BaseModel):
     """
@@ -265,12 +265,12 @@ class InnovationKnowledge(BaseModel):
     answer: str
     created_at: str
 
-    @field_validator('patent_id')
-    @classmethod
-    def validate_uuid4(cls, v):
-        if v.version != 4:
-            raise ValueError('patent_id must be a valid UUID4')
-        return v
+    # @field_validator('patent_id')
+    # @classmethod
+    # def validate_uuid4(cls, v):
+    #     if v.version != 4:
+    #         raise ValueError('patent_id must be a valid UUID4')
+    #     return v
 
 class TechnologyKnowledge(BaseModel):
     """
@@ -281,12 +281,12 @@ class TechnologyKnowledge(BaseModel):
     answer: str
     created_at: str
 
-    @field_validator('patent_id')
-    @classmethod
-    def validate_uuid4(cls, v):
-        if v.version != 4:
-            raise ValueError('patent_id must be a valid UUID4')
-        return v
+    # @field_validator('patent_id')
+    # @classmethod
+    # def validate_uuid4(cls, v):
+    #     if v.version != 4:
+    #         raise ValueError('patent_id must be a valid UUID4')
+    #     return v
   
 
 
@@ -309,9 +309,9 @@ class ResearchNote(BaseModel):
     content: str = Field(..., description="The actual note content")
     created_at: str = Field(..., description="Timestamp when the note was created")
 
-    @field_validator('patent_id')
-    @classmethod
-    def validate_uuid4(cls, v):
-        if v.version != 4:
-            raise ValueError('patent_id must be a valid UUID4')
-        return v
+    # @field_validator('patent_id')
+    # @classmethod
+    # def validate_uuid4(cls, v):
+    #     if v.version != 4:
+    #         raise ValueError('patent_id must be a valid UUID4')
+    #     return v
