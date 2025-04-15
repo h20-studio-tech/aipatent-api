@@ -1,10 +1,8 @@
 import pytest
-import asyncio
 from unittest.mock import AsyncMock, patch, MagicMock
 from src.rag import multiquery_search, search
-from models.rag_typing import Chunk
+from src.models.rag_schemas import Chunk
 from lancedb.db import AsyncConnection
-from src.rag import MultiQueryQuestions
 
 @pytest.fixture
 def mock_db():

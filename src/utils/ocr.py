@@ -1,75 +1,26 @@
-import json 
 import instructor
 import asyncio
 import pytesseract
 import pdfplumber
-import sys
 from time import time
 from io import BytesIO
 from pdfplumber.page import Page
-from pydantic import BaseModel, Field, field_validator
 from openai import AsyncOpenAI
 import re
-import pandas as pd
 from src.utils.logging_helper import create_logger
 from src.utils.langfuse_client import get_prompt
+from src.models.ocr_schemas import (
+    Embodiments, 
+    ProcessedPage, 
+    Embodiment, 
+    DetailedDescriptionEmbodiment,
+    PatentSectionWithConfidence,
+    CategoryResponse
+    )
+
 
 client = instructor.from_openai(AsyncOpenAI())
 logger = create_logger("ocr.py")
-
-class ProcessedPage(BaseModel):
-    text: str = Field(
-        ..., description="The content of a page that contains embodiments"
-    )
-    filename: str = Field(..., description="The source file of the embodiment")
-    page_number: int = Field(
-        ..., description="The page number of the embodiment in the source file"
-    )
-    section: str = Field(..., description="The section of the embodiment in the source file")
-
-
-class Embodiment(BaseModel):
-    text: str = Field(..., description="The embodiment")
-    filename: str = Field(..., description="The source file of the embodiment")
-    page_number: int = Field(..., description="The page number of the embodiment in the source file")
-    section: str = Field(..., description="The section of the embodiment in the source file")
-
-class DetailedDescriptionEmbodiment(BaseModel):
-    # Define all fields explicitly instead of using inheritance
-    text: str = Field(..., description="The embodiment")
-    filename: str = Field(..., description="The source file of the embodiment")
-    page_number: int = Field(
-        ..., description="The page number of the embodiment in the source file"
-    )
-    section: str = Field(..., description="The section of the embodiment in the source file")
-    sub_category: str = Field(..., 
-                          description="The category of the embodiment",
-                          enum=["disease rationale", "product composition"])
-
-class Embodiments(BaseModel):
-    content: list[Embodiment] | list = Field(
-        ..., description="The list of embodiments in a page that contains embodiments"
-    )
-
-
-class PatentSection(BaseModel):
-    """Classification of a patent document section."""
-    section: str = Field(
-        ..., 
-        description="The section of the patent document",
-        enum=["summary of invention", "detailed description", "claims"]
-    )   
-
-
-class PatentSectionWithConfidence(BaseModel):
-    section: str = Field(enum=["summary of invention", "detailed description", "claims"])
-    confidence: float
-
-    @field_validator('confidence')
-    def validate_confidence(cls, v):
-        if not (0 <= v <= 1):
-            raise ValueError('Confidence must be between 0 and 1')
-        return v
 
 
 def pdf_pages(pdf_data: bytes, filename: str) -> tuple[list[Page], str]:
@@ -165,7 +116,7 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                         matched_text = line
                         logger.info(f"DETECTED 'Detailed Description' via strong header match: '{line}'")
                         break
-                elif "claims" in line_lower and "Claims" not in detected_sections:
+                elif "claims" in line_lower and "claims" not in detected_sections:
                     # Only consider Claims after at least Summary and Detailed Description have been detected
                     if "summary of invention" and "detailed description" in detected_sections:
                         detected_section = "claims"
@@ -458,12 +409,6 @@ async def find_embodiments(pages: list[ProcessedPage]) -> list[Embodiment]:
     return patent_embodiments
 
 async def categorize_embodiment(embodiment: Embodiment) -> DetailedDescriptionEmbodiment: 
-    # Create a custom model for the API response that only needs to provide the sub_category
-    class CategoryResponse(BaseModel):
-        sub_category: str = Field(..., 
-                           description="The category of the embodiment",
-                           enum=["disease rationale", "product composition"])
-    
     # Get just the category from the API
     response = await client.chat.completions.create(
         model='gpt-4.5-preview',
@@ -602,6 +547,6 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         
         return embodiments_with_detailed_description_categorized
         
-    except Exception as e:
+    except Exception as e: 
         raise RuntimeError(f"Error processing patent document: {str(e)}")
         

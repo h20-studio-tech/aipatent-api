@@ -1,24 +1,15 @@
 import pytest
 from unittest.mock import AsyncMock, patch, MagicMock
-import asyncio
-from io import BytesIO
-
 from src.utils.ocr import (
     get_embodiments,
-    ProcessedPage,
-    Embodiments,
-    Embodiment,
-    PatentSection,
-    process_pdf_pages,
     segment_pages,
     find_embodiments
 )
-
+from src.models.ocr_schemas import ProcessedPage, Embodiments
 
 @pytest.mark.asyncio
 async def test_segment_pages_with_mixed_sections():
     """Test how the first matching section keyword is prioritized."""
-    from src.utils.ocr import segment_pages
     
     # First page always gets "Summary of Invention" regardless of content
     first_page = ProcessedPage(

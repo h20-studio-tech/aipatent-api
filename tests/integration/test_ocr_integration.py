@@ -78,19 +78,19 @@ async def test_segment_pages_with_real_content(mock_instructor_client):
         ProcessedPage(
             text="FIELD OF THE INVENTION\nThis invention relates to biomedical applications...",
             filename="test.pdf",
-            page=1,
+            page_number=1,
             section=""
         ),
         ProcessedPage(
             text="The present invention provides methods for detecting and preventing diseases...",
             filename="test.pdf",
-            page=2,
+            page_number=2,
             section=""
         ),
         ProcessedPage(
             text="DETAILED DESCRIPTION\nIn one embodiment, the composition comprises...",
             filename="test.pdf",
-            page=3,
+            page_number=3,
             section=""
         )
     ]
@@ -100,8 +100,8 @@ async def test_segment_pages_with_real_content(mock_instructor_client):
     
     # Validate results
     assert len(result) == 3
-    assert result[0].section == "Summary of Invention"  # First page default
-    assert result[2].section == "Detailed Description"  # Keyword match
+    assert result[0].section == "summary of invention"  # First page default
+    assert result[2].section == "detailed description"  # Keyword match
     
     # The middle page should have triggered the language model
     assert mock_instructor_client.called
@@ -118,8 +118,8 @@ async def test_get_embodiments_with_realistic_content(mock_instructor_client):
         product comprises a therapeutically effective amount of one or more antibodies to an antigen selected 
         from the group consisting of Enterococcus faecalis and Enterococcus faecalis cytolysin toxin.""",
         filename="test.pdf",
-        page=5,
-        section="Detailed Description"
+        page_number=5,
+        section="detailed description"
     )
     
     await get_embodiments(page)
@@ -144,8 +144,8 @@ async def test_full_pipeline_with_real_file(sample_patent_path, mock_instructor_
     mock_embodiment = {
         "text": "A method for preventing disease comprising administering an egg product...",
         "filename": os.path.basename(sample_patent_path),
-        "page": 3,
-        "section": "Detailed Description"
+        "page_number": 3,
+        "section": "detailed description"
     }
     
     # Configure mock to return an embodiment
@@ -155,7 +155,7 @@ async def test_full_pipeline_with_real_file(sample_patent_path, mock_instructor_
         if 'response_model' in kwargs and kwargs['response_model'].__name__ == 'Embodiments':
             return embodiments_response
         section_response = MagicMock()
-        section_response.section = "Detailed Description"
+        section_response.section = "detailed description"
         return section_response
     
     mock_instructor_client.side_effect = AsyncMock(side_effect=new_side_effect)

@@ -236,17 +236,18 @@ TEST_EMBODIMENT_INPUT = Embodiment(
     filename="test_patent.pdf",
     page_number=5,
     section="Detailed Description",
+    sub_category=""
 )
 
 # --- Mocks ---
 # Mock return value for disease rationale
 MOCK_DISEASE_RATIONALE_OUTPUT = DetailedDescriptionEmbodiment(
-    **TEST_EMBODIMENT_INPUT.model_dump(), category="disease rationale"
+    **TEST_EMBODIMENT_INPUT.model_dump(), sub_category="disease rationale"
 )
 
 # Mock return value for product composition
 MOCK_PRODUCT_COMPOSITION_OUTPUT = DetailedDescriptionEmbodiment(
-    **TEST_EMBODIMENT_INPUT.model_dump(), category="product composition"
+    **TEST_EMBODIMENT_INPUT.model_dump(), sub_category="product composition"
 )
 
 
@@ -292,6 +293,6 @@ async def test_categorize_embodiment_product_composition(mocker):
 
     # Assert: Check the result and that the mock was called
     assert isinstance(result, DetailedDescriptionEmbodiment)
-    assert result.category == "product composition"
+    assert result.sub_category == "product composition"
     assert result.filename == TEST_EMBODIMENT_INPUT.filename # Ensure other fields are preserved
     mock_create.assert_awaited_once()

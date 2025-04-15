@@ -6,7 +6,7 @@ import asyncio
 import langfuse
 import pandas as pd
 from langfuse.decorators import observe
-from models.rag_typing import Chunk
+from src.models.rag_schemas import Chunk
 from pydantic import BaseModel
 from typing import List
 from src.utils.langfuse_client import get_langfuse_instance

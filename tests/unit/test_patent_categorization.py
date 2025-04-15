@@ -62,14 +62,14 @@ def categorized_embodiments():
             filename="test_patent.pdf",
             page_number=5,
             section="detailed_description",
-            category="disease rationale",
+            sub_category="disease rationale",
         ),
         DetailedDescriptionEmbodiment(
             text="This invention provides a composition comprising polymer Z.",
             filename="test_patent.pdf",
             page_number=6,
             section="detailed_description",
-            category="product composition",
+            sub_category="product composition",
         ),
     ]
 
@@ -95,9 +95,9 @@ async def test_categorize_detailed_description(detailed_description_embodiments,
         assert len(result) == len(categorized_embodiments)
         for i, embodiment in enumerate(result):
             assert isinstance(embodiment, DetailedDescriptionEmbodiment)
-            assert embodiment.category in ["disease rationale", "product composition"]
+            assert embodiment.sub_category in ["disease rationale", "product composition"]
             assert embodiment.text == categorized_embodiments[i].text
-            assert embodiment.category == categorized_embodiments[i].category
+            assert embodiment.sub_category == categorized_embodiments[i].sub_category
 
 
 @pytest.mark.asyncio
