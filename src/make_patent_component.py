@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 from openai import OpenAI
-from models.llm import (
+from src.models.llm import (
     FieldOfInvention,
     BackgroundAndNeed,
     BriefSummary,

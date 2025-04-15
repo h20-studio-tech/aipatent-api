@@ -10,7 +10,7 @@ import unstructured_client
 from unstructured_client.models import shared
 from unstructured_client.models.operations import PartitionRequest
 from supabase import create_client
-from models.pdf_workflow import FileProcessedError
+from src.models.pdf_workflow import FileProcessedError
 # from models.metadata_extraction import Extraction
 from openai import OpenAI, AsyncOpenAI
 from pydantic import BaseModel, Field

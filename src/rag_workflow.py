@@ -18,8 +18,8 @@ from typing import List, Tuple, Union
 from openai import AsyncOpenAI, OpenAI
 from pydantic import BaseModel, SecretStr
 from src.utils.langfuse_client import get_langfuse_instance
-from models.workflow import FileProcessedError
-from models.metadata_extraction import Extraction
+from src.models.workflow import FileProcessedError
+from src.models.metadata_extraction import Extraction
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 
