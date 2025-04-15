@@ -223,7 +223,7 @@ class ApprovedEmbodimentRequest(BaseModel):
         patent_id (uuid.UUID): The UUIDv4 of the patent to update.
         embodiment (Union[Embodiment, DetailedDescriptionEmbodiment]): The embodiment object to store.
     """
-    patent_id: uuid.UUID = Field(..., description="The UUIDv4 of the patent to update")
+    patent_id: str = Field(..., description="The UUIDv4 of the patent to update")
     embodiment: Union[Embodiment, DetailedDescriptionEmbodiment] = Field(..., description="The embodiment object to store")
 
     @field_validator('patent_id')
@@ -244,7 +244,7 @@ class ApproachKnowledge(BaseModel):
         answer: The answer providing knowledge about the approach
         created_at: A timestamp representing the time when the knowledge item was generated
     """
-    patent_id: uuid.UUID
+    patent_id: str
     question: str
     answer: str
     created_at: datetime
@@ -260,7 +260,7 @@ class InnovationKnowledge(BaseModel):
     """
     Request class to store innovation knowledge about a patent.
     """
-    patent_id: uuid.UUID
+    patent_id: str
     question: str
     answer: str
     created_at: datetime
@@ -276,7 +276,7 @@ class TechnologyKnowledge(BaseModel):
     """
     Request class to store technology knowledge about a patent.
     """
-    patent_id: uuid.UUID
+    patent_id: str
     question: str
     answer: str
     created_at: datetime
@@ -304,7 +304,7 @@ class ResearchNote(BaseModel):
         content: The actual note content
         created_at: Timestamp when the note was created
     """
-    patent_id: uuid.UUID = Field(..., description="Unique identifier for the associated patent")
+    patent_id: str = Field(..., description="Unique identifier for the associated patent")
     category: str = Field(..., description="'Approach', 'Innovation',", json_schema_extra=["approach", "innovation","technology"])
     content: str = Field(..., description="The actual note content")
     created_at: datetime = Field(..., description="Timestamp when the note was created")
