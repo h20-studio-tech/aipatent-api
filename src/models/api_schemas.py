@@ -255,3 +255,35 @@ class ApproachKnowledge(BaseModel):
         if v.version != 4:
             raise ValueError('patent_id must be a valid UUID4')
         return v
+    
+class InnovationKnowledge(BaseModel):
+    """
+    Request class to store innovation knowledge about a patent.
+    """
+    patent_id: uuid.UUID
+    question: str
+    answer: str
+    created_at: datetime
+
+    @field_validator('patent_id')
+    @classmethod
+    def validate_uuid4(cls, v):
+        if v.version != 4:
+            raise ValueError('patent_id must be a valid UUID4')
+        return v
+
+class TechnologyKnowledge(BaseModel):
+    """
+    Request class to store technology knowledge about a patent.
+    """
+    patent_id: uuid.UUID
+    question: str
+    answer: str
+    created_at: datetime
+
+    @field_validator('patent_id')
+    @classmethod
+    def validate_uuid4(cls, v):
+        if v.version != 4:
+            raise ValueError('patent_id must be a valid UUID4')
+        return v

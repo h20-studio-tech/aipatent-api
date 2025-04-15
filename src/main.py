@@ -6,15 +6,16 @@ import boto3.dynamodb
 import boto3.dynamodb.table
 import lancedb
 import uuid
+
 import boto3
 from botocore.exceptions import ClientError
 from datetime import datetime
-from pydantic import BaseModel, Field
-from typing import List, Optional, Union
+from typing import Union
 from fastapi import FastAPI, UploadFile, HTTPException
+from fastapi import status
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from models.pdf_workflow import FileProcessedError
-from models.rag_typing import Chunk
+from src.models.pdf_workflow import FileProcessedError
 from src.rag import multiquery_search, create_table_from_file, chunks_summary
 from contextlib import asynccontextmanager
 from src.pdf_processing import (
@@ -25,89 +26,27 @@ from src.pdf_processing import (
 )
 from src.utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
-from src.utils.ocr import Embodiment, process_patent_document, DetailedDescriptionEmbodiment
+from src.utils.ocr import process_patent_document
 from src.embodiment_generation import generate_embodiment
+from src.models.api_schemas import (
+     FileUploadResponse,
+     PatentProject,
+     PatentProjectItem,
+     PatentProjectListResponse,
+     PatentProjectResponse,
+     PatentUploadResponse,
+     MultiQueryResponse,
+     FilesResponse,
+     SyntheticEmbodimentRequest,
+     EmbodimentApproveSuccessResponse,
+     EmbodimentApproveErrorResponse,
+     ApprovedEmbodimentRequest,
+     ApproachKnowledge,
+     TechnologyKnowledge,
+     InnovationKnowledge
+)
 
 load_dotenv(".env")
-
-
-class FileUploadResponse(BaseModel):
-    filename: str = Field(..., description="The name of the uploaded file")
-    message: str = Field(..., description="Status message for the upload operation")
-    status_code: int = Field(
-        ..., description="HTTP status code indicating the result of the operation"
-    )
-
-
-class PatentProject(BaseModel):
-    name: str
-    antigen: str
-    disease: str
-
-
-class PatentProjectItem(BaseModel):
-    patent_id: str
-    name: str
-    antigen: str
-    disease: str
-    created_at: str
-    updated_at: str
-
-
-class PatentProjectListResponse(BaseModel):
-    status: str
-    projects: List[PatentProjectItem]
-
-
-class PatentProjectResponse(BaseModel):
-    patent_id: uuid.UUID
-    message: str = Field(..., description="Status message for the upload operation")
-    status_code: int = Field(
-        ..., description="HTTP status code indicating the result of the operation"
-    )
-
-
-class PatentUploadResponse(BaseModel):
-    filename: str = Field(..., description="The name of the uploaded file")
-    message: str = Field(..., description="Status message for the upload operation")
-    data: list[Union[Embodiment, DetailedDescriptionEmbodiment]] = Field(
-        ..., description="The list of embodiments in a page that contains embodiments"
-    )
-    status_code: int = Field(
-        ..., description="HTTP status code indicating the result of the operation"
-    )
-
-
-class MultiQueryResponse(BaseModel):
-    status: str
-    message: Optional[str] = None
-    data: List[Chunk]
-
-
-class Metadata(BaseModel):
-    eTag: str
-    size: int
-    mimetype: str
-    cacheControl: str
-    lastModified: datetime
-    contentLength: int
-    httpStatusCode: int
-
-
-class Document(BaseModel):
-    name: str
-    id: str
-    updated_at: datetime
-    created_at: datetime
-    last_accessed_at: datetime
-    metadata: Metadata
-    queryable: bool = False  # Flag to indicate if the file is available for querying in LanceDB
-
-
-class FilesResponse(BaseModel):
-    status: str
-    response: List[Document]
-    diagnostics: Optional[dict] = None  # Add diagnostic information
 
 
 logging.basicConfig(
@@ -533,6 +472,22 @@ except Exception as e:
 
 @app.post("/api/v1/project/", response_model=PatentProjectResponse, status_code=200)
 async def patent_project(patent: PatentProject):
+    """
+    Endpoint to create a new patent project.
+    
+    Creates a new patent project in the DynamoDB database with the provided
+    information including name, antigen, and disease targets.
+    
+    Args:
+        patent (PatentProject): The patent project details to be created
+        
+    Returns:
+        PatentProjectResponse: Contains the generated patent_id, success message,
+                              and HTTP status code
+                              
+    Raises:
+        HTTPException: If there's an error creating the project in DynamoDB
+    """
     try:
         # Get the table
         table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
@@ -626,16 +581,27 @@ async def list_patent_projects():
         logging.error(f"Unexpected error listing projects: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
     
+
 @app.post("/api/v1/embodiment/", status_code=200)
-async def synthetic_embodiment(
-    inspiration: float, 
-    source_embodiment: str, 
-    patent_title: str, 
-    disease: str, 
-    antigen: str):
+async def synthetic_embodiment(request: SyntheticEmbodimentRequest):
+    """
+    Generate a synthetic embodiment based on the provided parameters.
     
+    Args:
+        request (SyntheticEmbodimentRequest): The input parameters for generating a synthetic embodiment.
+    Returns:
+        dict: A dictionary containing the generated embodiment content.
+    Raises:
+        HTTPException: If an error occurs during embodiment generation.
+    """
     try:
-        res =  await generate_embodiment(inspiration, source_embodiment, patent_title, disease, antigen)
+        res = await generate_embodiment(
+            request.inspiration,
+            request.source_embodiment,
+            request.patent_title,
+            request.disease,
+            request.antigen
+        )
         content = res.content
         return {"content": content}
     except Exception as e:
@@ -643,33 +609,150 @@ async def synthetic_embodiment(
         raise HTTPException(status_code=500, detail=f"Error generating synthetic embodiment: {str(e)}")
 
 
-
-class ApprovedEmbodiment(BaseModel):
-    type: str
-    content: dict  # Arbitrary structure to hold embodiment data
-    # Can contain any additional fields as needed
-
-@app.post("/api/v1/embodiment/approve/")
-async def embodiment_approve(
-    patent_id: str,
-    embodiment: ApprovedEmbodiment,
-):
+@app.post(
+    "/api/v1/embodiment/approve/",
+    response_model=Union[EmbodimentApproveSuccessResponse, EmbodimentApproveErrorResponse]
+)
+async def embodiment_approve(request: ApprovedEmbodimentRequest):
+    """
+    Approve and store an embodiment for a given patent.
+    
+    Args:
+        request (ApprovedEmbodimentRequest): The request body containing the patent ID and the embodiment to store.
+    Returns:
+        Union[EmbodimentApproveSuccessResponse, EmbodimentApproveErrorResponse]: Status and update response from the database.
+    """
     try:
         table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
-        # Use list_append to add the embodiment to the embodiments list
-        # If the list doesn't exist yet, it will be created
         response = table.update_item(
             Key={
-                "patent_id": patent_id
+                "patent_id": request.patent_id
             },
             UpdateExpression="SET embodiments = list_append(if_not_exists(embodiments, :empty_list), :embodiment)",
             ExpressionAttributeValues={
-                ":embodiment": [embodiment.model_dump()],  # Convert Pydantic model to dict
+                ":embodiment": [request.embodiment.model_dump()],  # Convert Pydantic model to dict
                 ":empty_list": []
             },
             ReturnValues="UPDATED_NEW"
         )
-        return {"status": "success", "message": "Embodiment added to patent", "data": response.get("Attributes")}
+        return EmbodimentApproveSuccessResponse(
+            message="Embodiment added to patent",
+            data=response.get("Attributes")
+        )
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        return EmbodimentApproveErrorResponse(
+            message=str(e)
+        )
+
     
+    
+@app.post("/api/v1/knowledge/approach/")
+async def store_approach_knowledge(request: ApproachKnowledge):
+    """
+    Store approach knowledge for a given patent and update the patent object in DynamoDB.
+    Args:
+        request (ApproachKnowledge): The request body containing the patent ID and the approach knowledge to store.
+    Returns:
+        dict: Status and update response from the database.
+    """
+
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        response = table.update_item(
+            Key={
+                "patent_id": str(request.patent_id)
+            },
+            UpdateExpression="SET approach_knowledge = list_append(if_not_exists(approach_knowledge, :empty_list), :knowledge)",
+            ExpressionAttributeValues={
+                ":knowledge": [request.model_dump()],
+                ":empty_list": []
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "status": "success",
+                "message": "Approach knowledge added to patent",
+                "data": response.get("Attributes")
+            }
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": str(e)
+            }
+        )
+    
+
+@app.post("/api/v1/knowledge/innovation/")
+async def store_innovation_knowledge(request: InnovationKnowledge):
+    """
+    Store innovation knowledge for a given patent and update the patent object in DynamoDB.
+    """
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        response = table.update_item(
+            Key={
+                "patent_id": str(request.patent_id)
+            },
+            UpdateExpression="SET innovation_knowledge = list_append(if_not_exists(innovation_knowledge, :empty_list), :knowledge)",
+            ExpressionAttributeValues={
+                ":knowledge": [request.model_dump()],
+                ":empty_list": []
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "status": "success",
+                "message": "Innovation knowledge added to patent",
+                "data": response.get("Attributes")
+            }
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": str(e)
+            }
+        )
+
+@app.post("/api/v1/knowledge/technology/")
+async def store_technology_knowledge(request: TechnologyKnowledge):
+    """
+    Store technology knowledge for a given patent and update the patent object in DynamoDB.
+    """
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        response = table.update_item(
+            Key={
+                "patent_id": str(request.patent_id)
+            },
+            UpdateExpression="SET technology_knowledge = list_append(if_not_exists(technology_knowledge, :empty_list), :knowledge)",
+            ExpressionAttributeValues={
+                ":knowledge": [request.model_dump()],
+                ":empty_list": []
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "status": "success",
+                "message": "Technology knowledge added to patent",
+                "data": response.get("Attributes")
+            }
+        )
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "status": "error",
+                "message": str(e)
+            }
+        )
