@@ -23,7 +23,7 @@ async def generate_embodiment(inspiration: float,
     
     response = instructor_client.chat.completions.create(
         messages=[{"role": "user", "content": prompt}],
-        model="o3-mini",
+        model="gpt-4.5-preview",
         response_model=SyntheticEmbodiment
     )
     
