@@ -42,9 +42,13 @@ from src.models.api_schemas import (
      EmbodimentApproveErrorResponse,
      ApprovedEmbodimentRequest,
      ApproachKnowledge,
-     TechnologyKnowledge,
      InnovationKnowledge,
-     ResearchNote
+     TechnologyKnowledge,
+     ResearchNote,
+     ApproachKnowledgeListResponse,
+     InnovationKnowledgeListResponse,
+     TechnologyKnowledgeListResponse,
+     ResearchNoteListResponse,
 )
 
 load_dotenv(".env")
@@ -792,3 +796,60 @@ async def store_research_note(request: ResearchNote):
                 "message": str(e)
             }
         )
+
+
+@app.get("/api/v1/knowledge/approach/{patent_id}", response_model=ApproachKnowledgeListResponse)
+async def get_approach_knowledge(patent_id: str):
+    """
+    Retrieve approach knowledge items for a given patent.
+    """
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        response = table.get_item(Key={"patent_id": patent_id})
+        item = response.get("Item", {})
+        data = item.get("approach_knowledge", [])
+        return ApproachKnowledgeListResponse(status="success", data=data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/v1/knowledge/innovation/{patent_id}", response_model=InnovationKnowledgeListResponse)
+async def get_innovation_knowledge(patent_id: str):
+    """
+    Retrieve innovation knowledge items for a given patent.
+    """
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        response = table.get_item(Key={"patent_id": patent_id})
+        item = response.get("Item", {})
+        data = item.get("innovation_knowledge", [])
+        return InnovationKnowledgeListResponse(status="success", data=data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/v1/knowledge/technology/{patent_id}", response_model=TechnologyKnowledgeListResponse)
+async def get_technology_knowledge(patent_id: str):
+    """
+    Retrieve technology knowledge items for a given patent.
+    """
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        response = table.get_item(Key={"patent_id": patent_id})
+        item = response.get("Item", {})
+        data = item.get("technology_knowledge", [])
+        return TechnologyKnowledgeListResponse(status="success", data=data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/v1/knowledge/research-note/{patent_id}", response_model=ResearchNoteListResponse)
+async def get_research_notes(patent_id: str):
+    """
+    Retrieve research notes for a given patent.
+    """
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        response = table.get_item(Key={"patent_id": patent_id})
+        item = response.get("Item", {})
+        data = item.get("research_notes", [])
+        return ResearchNoteListResponse(status="success", data=data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

@@ -2,7 +2,6 @@ import uuid
 from datetime import datetime
 from pydantic import BaseModel, Field
 from typing import List, Optional, Any, Union
-from pydantic import field_validator
 from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment
 from src.models.rag_schemas import Chunk
 from enum import Enum
@@ -315,3 +314,32 @@ class ResearchNote(BaseModel):
     #     if v.version != 4:
     #         raise ValueError('patent_id must be a valid UUID4')
     #     return v
+
+# Response models for fetching stored knowledge
+class ApproachKnowledgeListResponse(BaseModel):
+    """
+    Response model for listing approach knowledge items.
+    """
+    status: str = Field(..., description="Status of the response (success/error)")
+    data: List[ApproachKnowledge] = Field(..., description="List of approach knowledge items")
+
+class InnovationKnowledgeListResponse(BaseModel):
+    """
+    Response model for listing innovation knowledge items.
+    """
+    status: str = Field(..., description="Status of the response (success/error)")
+    data: List[InnovationKnowledge] = Field(..., description="List of innovation knowledge items")
+
+class TechnologyKnowledgeListResponse(BaseModel):
+    """
+    Response model for listing technology knowledge items.
+    """
+    status: str = Field(..., description="Status of the response (success/error)")
+    data: List[TechnologyKnowledge] = Field(..., description="List of technology knowledge items")
+
+class ResearchNoteListResponse(BaseModel):
+    """
+    Response model for listing research notes.
+    """
+    status: str = Field(..., description="Status of the response (success/error)")
+    data: List[ResearchNote] = Field(..., description="List of research notes")
