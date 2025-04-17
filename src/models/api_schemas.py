@@ -343,3 +343,34 @@ class ResearchNoteListResponse(BaseModel):
     """
     status: str = Field(..., description="Status of the response (success/error)")
     data: List[ResearchNote] = Field(..., description="List of research notes")
+
+class DropTablesResponse(BaseModel):
+    """
+    Response model for dropping all LanceDB tables.
+    """
+    status: str = Field(..., description="Status of the drop operation")
+    tables: List[str] = Field(..., description="Names of tables that were dropped")
+
+# Response model for deleting Supabase files
+class DeleteFileResponse(BaseModel):
+    """
+    Response model for deleting Supabase files.
+    """
+    status: str = Field(..., description="Status of the deletion operation")
+    filename: str = Field(..., description="Name of the deleted file")
+
+# Response model for deleting all Supabase files
+class DeleteAllFilesResponse(BaseModel):
+    """
+    Response model for deleting all Supabase files.
+    """
+    status: str = Field(..., description="Status of the deletion operation")
+    filenames: List[str] = Field(..., description="Names of deleted files")
+
+# Response model for dropping a single LanceDB table
+class DropTableResponse(BaseModel):
+    """
+    Response model for dropping a single LanceDB table.
+    """
+    status: str = Field(..., description="Status of the drop operation")
+    table: str = Field(..., description="Name of the dropped table")

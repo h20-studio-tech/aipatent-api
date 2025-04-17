@@ -104,6 +104,21 @@ def supabase_upload(file: bytes, filename: str, partition: bool):
     except Exception as e:
         logging.error(f"supabase_upload error during processing: {e}")
 
+def supabase_delete(filename: str, partition: bool = False) -> dict:
+    """
+    Delete a file from Supabase storage.
+    """
+    bucket_name = os.getenv("SUPABASE_BUCKET_NAME")
+    folder = "partitions" if partition else "files"
+    path = f"{folder}/{filename}"
+    try:
+        res = supabase.storage.from_(bucket_name).remove([path])
+        logging.info(f"Deleted file {path} from Supabase storage.")
+        return res
+    except Exception as e:
+        logging.error(f"Error deleting file {path} from Supabase storage: {e}")
+        raise
+
 async def extract_metadata(text: str, chunk_id: str) -> dict:
     """
     Asynchronously extract metadata (keywords, methods, hypothetical questions)

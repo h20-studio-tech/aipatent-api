@@ -7,7 +7,6 @@ import boto3.dynamodb.table
 import lancedb
 import uuid
 
-import boto3
 from botocore.exceptions import ClientError
 from datetime import datetime
 from typing import Union
@@ -23,6 +22,7 @@ from src.pdf_processing import (
     process_file,
     supabase_files,
     lancedb_tables,
+    supabase_delete,
 )
 from src.utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
@@ -49,7 +49,11 @@ from src.models.api_schemas import (
      InnovationKnowledgeListResponse,
      TechnologyKnowledgeListResponse,
      ResearchNoteListResponse,
-)
+     DropTablesResponse,
+     DeleteFileResponse,
+     DeleteAllFilesResponse,
+     DropTableResponse,
+ )
 
 load_dotenv(".env")
 
@@ -851,5 +855,72 @@ async def get_research_notes(patent_id: str):
         item = response.get("Item", {})
         data = item.get("research_notes", [])
         return ResearchNoteListResponse(status="success", data=data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/v1/lancedb/tables/", response_model=DropTablesResponse)
+async def drop_all_lancedb_tables():
+    """
+    Drop all tables in LanceDB.
+    """
+    try:
+        db = db_connection.get("db")
+        if db is None:
+            raise HTTPException(status_code=500, detail="LanceDB connection not initialized")
+        tables = await db.table_names()
+        dropped = []
+        for tbl in tables:
+            await db.drop_table(tbl)
+            dropped.append(tbl)
+        return DropTablesResponse(status="success", tables=dropped)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/v1/documents/{filename}", response_model=DeleteFileResponse)
+async def delete_file(filename: str):
+    """
+    Delete a file from Supabase storage.
+    """
+    try:
+        supabase_delete(filename)
+        return DeleteFileResponse(status="success", filename=filename)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/v1/documents/", response_model=DeleteAllFilesResponse)
+async def delete_all_files():
+    """
+    Delete all files from Supabase storage.
+    """
+    try:
+        files = supabase_files()
+        deleted = []
+        for file in files:
+            name = file.get("name")
+            supabase_delete(name)
+            deleted.append(name)
+        return DeleteAllFilesResponse(status="success", filenames=deleted)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/v1/lancedb/tables/{table_name}", response_model=DropTableResponse)
+async def drop_table(table_name: str):
+    """
+    Drop a specific LanceDB table.
+    """
+    try:
+        db = db_connection.get("db")
+        if db is None:
+            raise HTTPException(status_code=500, detail="LanceDB connection not initialized")
+        await db.drop_table(table_name)
+        return DropTableResponse(status="success", table=table_name)
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
