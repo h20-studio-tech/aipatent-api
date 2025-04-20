@@ -53,6 +53,7 @@ from src.models.api_schemas import (
      DeleteFileResponse,
      DeleteAllFilesResponse,
      DropTableResponse,
+     EmbodimentListResponse
  )
 
 load_dotenv(".env")
@@ -855,6 +856,20 @@ async def get_research_notes(patent_id: str):
         item = response.get("Item", {})
         data = item.get("research_notes", [])
         return ResearchNoteListResponse(status="success", data=data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/v1/knowledge/embodiments/{patent_id}", response_model=EmbodimentListResponse)
+async def get_embodiments(patent_id: str):
+    """
+    Retrieve stored embodiments for a given patent.
+    """
+    try:
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
+        response = table.get_item(Key={"patent_id": patent_id})
+        item = response.get("Item", {})
+        data = item.get("embodiments", [])
+        return EmbodimentListResponse(status="success", data=data)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

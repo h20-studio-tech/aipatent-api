@@ -374,3 +374,11 @@ class DropTableResponse(BaseModel):
     """
     status: str = Field(..., description="Status of the drop operation")
     table: str = Field(..., description="Name of the dropped table")
+
+# Response model for fetching stored embodiments
+class EmbodimentListResponse(BaseModel):
+    """
+    Response model for fetching stored embodiments for a patent.
+    """
+    status: str = Field(..., description="Status of the fetch operation")
+    data: List[Any] = Field(..., description="List of stored embodiments")
