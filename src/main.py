@@ -236,6 +236,39 @@ app.add_middleware(
     allow_origin_regex=None,
 )
 
+aws_region = os.getenv("AWS_REGION", "us-east-1")
+aws_access_key = os.getenv("ACCESS_KEY_ID")
+aws_secret_key = os.getenv("SECRET_ACCESS_KEY")
+
+# Log the credentials being used for DynamoDB
+logging.info(f"DynamoDB using key ID that starts with: {aws_access_key[:4] if aws_access_key else 'None'}")
+
+# Always use explicit credentials for DynamoDB to ensure correct account access
+dynamodb = boto3.resource(
+    "dynamodb",
+    region_name=aws_region,
+    aws_access_key_id=aws_access_key,
+    aws_secret_access_key=aws_secret_key,
+)
+
+# Test DynamoDB connection
+try:
+    # Get account info for DynamoDB
+    sts_client = boto3.client(
+        'sts',
+        region_name=aws_region,
+        aws_access_key_id=aws_access_key,
+        aws_secret_access_key=aws_secret_key,
+    )
+    dynamodb_account = sts_client.get_caller_identity()['Account']
+    logging.info(f"DynamoDB connected to AWS account: {dynamodb_account}")
+    
+    # Verify table exists
+    table = dynamodb.Table("patents")
+    table.meta.client.describe_table(TableName="patents")
+    logging.info("Successfully verified 'patents' table exists")
+except Exception as e:
+    logging.error(f"DynamoDB connection test failed: {e}")
 
 @app.get("/")
 async def root():
@@ -457,41 +490,22 @@ async def patent(patent_id: int, file: UploadFile):
             status_code=500, detail=f"Error during patent processing: {e}"
         )
 
-
-# Create DynamoDB client at module level for reuse
-aws_region = os.getenv("AWS_REGION", "us-east-1")
-aws_access_key = os.getenv("ACCESS_KEY_ID")
-aws_secret_key = os.getenv("SECRET_ACCESS_KEY")
-
-# Log the credentials being used for DynamoDB
-logging.info(f"DynamoDB using key ID that starts with: {aws_access_key[:4] if aws_access_key else 'None'}")
-
-# Always use explicit credentials for DynamoDB to ensure correct account access
-dynamodb = boto3.resource(
-    "dynamodb",
-    region_name=aws_region,
-    aws_access_key_id=aws_access_key,
-    aws_secret_access_key=aws_secret_key,
-)
-
-# Test DynamoDB connection
-try:
-    # Get account info for DynamoDB
-    sts_client = boto3.client(
-        'sts',
-        region_name=aws_region,
-        aws_access_key_id=aws_access_key,
-        aws_secret_access_key=aws_secret_key,
-    )
-    dynamodb_account = sts_client.get_caller_identity()['Account']
-    logging.info(f"DynamoDB connected to AWS account: {dynamodb_account}")
+@app.get("/api/v1/source-embodiments/{patent_id}", response_model=list)
+async def list_source_embodiments(patent_id: str):
+    """
+    Retrieve the list of source embodiments for a given patent_id.
+    Returns an empty list if none are found.
+    """
+    try:
+        table = dynamodb.Table("patents")
+        response = table.get_item(Key={"patent_id": str(patent_id)})
+        item = response.get("Item", {})
+        source_embodiments = item.get("source_embodiments", [])
+        return source_embodiments
+    except Exception as e:
+        logging.error(f"Failed to retrieve source embodiments for patent_id={patent_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving source embodiments: {e}")
     
-    # Verify table exists
-    table = dynamodb.Table("patents")
-    table.meta.client.describe_table(TableName="patents")
-    logging.info("Successfully verified 'patents' table exists")
-except Exception as e:
-    logging.error(f"DynamoDB connection test failed: {e}")
 
 
 @app.post("/api/v1/project/", response_model=PatentProjectResponse, status_code=200)
