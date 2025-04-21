@@ -445,7 +445,7 @@ async def query_search(query: str, target_files: list[str]):
 
 
 @app.post("/api/v1/patent/{patent_id}/", response_model=PatentUploadResponse, status_code=200)
-async def patent(patent_id: int, file: UploadFile):
+async def patent(patent_id: str, file: UploadFile):
     """
     Endpoint to process a patent document and extract embodiments.
 
@@ -467,7 +467,7 @@ async def patent(patent_id: int, file: UploadFile):
         patent_embodiments = await process_patent_document(content, filename)
         # Store extracted embodiments to DynamoDB
         try:
-            table = dynamodb.Table("patents")
+            table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
             # Update the patent item with the extracted embodiments
             table.update_item(
                 Key={"patent_id": str(patent_id)},
@@ -497,7 +497,7 @@ async def list_source_embodiments(patent_id: str):
     Returns an empty list if none are found.
     """
     try:
-        table = dynamodb.Table("patents")
+        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
         response = table.get_item(Key={"patent_id": str(patent_id)})
         item = response.get("Item", {})
         source_embodiments = item.get("source_embodiments", [])
