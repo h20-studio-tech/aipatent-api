@@ -411,12 +411,13 @@ async def query_search(query: str, target_files: list[str]):
         )
 
 
-@app.post("/api/v1/patent/", response_model=PatentUploadResponse, status_code=200)
-async def patent(file: UploadFile):
+@app.post("/api/v1/patent/{patent_id}/", response_model=PatentUploadResponse, status_code=200)
+async def patent(patent_id: int, file: UploadFile):
     """
     Endpoint to process a patent document and extract embodiments.
 
     Args:
+        patent_id (int): The ID of the patent to update.
         file (UploadFile): The patent document file to process.
 
     Returns:
@@ -431,6 +432,19 @@ async def patent(file: UploadFile):
     filename = normalize_filename(filename)
     try:
         patent_embodiments = await process_patent_document(content, filename)
+        # Store extracted embodiments to DynamoDB
+        try:
+            table = dynamodb.Table("patents")
+            # Update the patent item with the extracted embodiments
+            table.update_item(
+                Key={"patent_id": str(patent_id)},
+                UpdateExpression="SET source_embodiments = :embs",
+                ExpressionAttributeValues={":embs": [embodiment.model_dump() for embodiment in patent_embodiments]},
+            )
+            logging.info(f"Stored {len(patent_embodiments)} source embodiments for patent_id={patent_id}")
+        except Exception as db_e:
+            logging.error(f"Failed to store embodiments for patent_id={patent_id}: {db_e}")
+            
         return PatentUploadResponse(
             filename=filename,
             message="Patent document processed successfully",
