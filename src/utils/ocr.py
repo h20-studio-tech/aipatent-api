@@ -107,7 +107,8 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                 if ("detailed description" in line_lower or
                     "detailed description of the invention" in line_lower or
                     "detailed description and preferred embodiments" in line_lower or
-                    "detailed description of the embodiments" in line_lower) and "detailed description" not in detected_sections:
+                    "detailed description of the embodiments" in line_lower or
+                    "description of the invention") and "detailed description" not in detected_sections:
                     # Only consider Detailed Description after Summary has been detected
                     if "summary of invention" in detected_sections:
                         detected_section = "detailed description"
