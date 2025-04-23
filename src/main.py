@@ -26,6 +26,7 @@ from src.pdf_processing import (
 )
 from src.utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
+from supabase import create_client, Client
 from src.utils.ocr import process_patent_document
 from src.embodiment_generation import generate_embodiment
 from src.models.api_schemas import (
@@ -53,8 +54,10 @@ from src.models.api_schemas import (
      DeleteFileResponse,
      DeleteAllFilesResponse,
      DropTableResponse,
-     EmbodimentListResponse
+     EmbodimentListResponse,
+     PatentFilesListResponse
  )
+from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment
 
 load_dotenv(".env")
 
@@ -66,7 +69,9 @@ logging.basicConfig(
 )
 
 db_connection = {}
-
+url: str = os.getenv('SUPABASE_URL')
+key: str = os.getenv('SUPABASE_SECRET_KEY')
+supabase: Client = create_client(url, key)
 
 def get_temporary_credentials(duration=3600):
     """Retrieve temporary AWS credentials using STS."""
@@ -444,10 +449,11 @@ async def query_search(query: str, target_files: list[str]):
         )
 
 
+
 @app.post("/api/v1/patent/{patent_id}/", response_model=PatentUploadResponse, status_code=200)
 async def patent(patent_id: str, file: UploadFile):
     """
-    Endpoint to process a patent document and extract embodiments.
+    Endpoint to process a patent document and extract embodiments, it returns the embodiments if the file was previously processed.
 
     Args:
         patent_id (int): The ID of the patent to update.
@@ -464,20 +470,84 @@ async def patent(patent_id: str, file: UploadFile):
 
     filename = normalize_filename(filename)
     try:
-        patent_embodiments = await process_patent_document(content, filename)
-        # Store extracted embodiments to DynamoDB
-        try:
-            table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
-            # Update the patent item with the extracted embodiments
-            table.update_item(
-                Key={"patent_id": str(patent_id)},
-                UpdateExpression="SET source_embodiments = :embs",
-                ExpressionAttributeValues={":embs": [embodiment.model_dump() for embodiment in patent_embodiments]},
+        # check if exists in db
+        exist_in_db  = (
+            supabase.table("patent_files")
+            .select("id")
+            .eq("id", str(patent_id))
+            .execute()
+        ) 
+        if exist_in_db.data:
+            logging.info(f"Patent with ID {patent_id} exists.")
+            embodiments_response = (
+                supabase.table("embodiments")
+                .select("*") # Select all fields to get sub_category if it exists
+                .eq("file_id", str(patent_id))
+                .order("emb_number")
+                .execute()
             )
-            logging.info(f"Stored {len(patent_embodiments)} source embodiments for patent_id={patent_id}")
+            
+            # Process the returned data into Pydantic models
+            parsed_embodiments = []
+            if embodiments_response.data:
+                for record in embodiments_response.data:
+                    # Basic check for essential fields, adapt if needed
+                    if not all(k in record for k in ('text', 'page_number', 'section', 'emb_number')):
+                        print(f"Skipping record due to missing essential fields: {record.get('file_id')}")
+                        continue
+
+                    if record.get('sub_category'): # Check if sub_category exists and has a value
+                        try:
+                            record_for_desc_emb = {k: v for k, v in record.items() if k not in ('emb_number', 'file_id')}
+                            parsed_embodiments.append(DetailedDescriptionEmbodiment(**record_for_desc_emb, filename=filename))
+                        except Exception as e:
+                            print(f"Error parsing DetailedDescriptionEmbodiment for record {record.get('file_id', 'N/A')}: {e}")
+                    else:
+                        # Ensure sub_category isn't passed to Embodiment if it exists but is None/empty
+                        record_for_embodiment = {k: v for k, v in record.items() if k not in ('sub_category', 'file_id', 'emb_number')}
+                        try:
+                            parsed_embodiments.append(Embodiment(**record_for_embodiment, filename=filename))
+                        except Exception as e:
+                            print(f"Error parsing Embodiment for record {record.get('file_id')}: {e}")
+            
+            patent_embodiments = parsed_embodiments # Assign the list of parsed Pydantic objects
+
+        else:
+            logging.info(f"Patent with ID {patent_id} does not exist.")
+            # process the doc because it does not exist in db
+            patent_embodiments = await process_patent_document(content, filename)
+            
+        # Store extracted embodiments to Postgres
+        try:
+            response = (supabase.table("patent_files")
+            .insert({"id": str(patent_id), "filename": filename})
+            .execute())
+            logging.info(f'supabase patent_files insert completed with response {response}')
+            
+            embodiments_insert_response = (supabase.table("embodiments")
+            .insert(
+                [
+                    {
+                        "file_id": str(patent_id), 
+                        "emb_number": index,
+                        "text": embodiment.text,
+                        "page_number": embodiment.page_number,
+                        "section" : embodiment.section,
+                         **(
+                              {"sub_category": embodiment.sub_category}
+                              if isinstance(embodiment, DetailedDescriptionEmbodiment) 
+                              else {}
+                          ),
+                    } for index, embodiment in enumerate(patent_embodiments, start=1)
+                ]
+            )
+            .execute())
+            logging.info(f'supabase embodiments insert completed with response {embodiments_insert_response}')
+
+            
         except Exception as db_e:
             logging.error(f"Failed to store embodiments for patent_id={patent_id}: {db_e}")
-            
+              
         return PatentUploadResponse(
             filename=filename,
             message="Patent document processed successfully",
@@ -489,6 +559,48 @@ async def patent(patent_id: str, file: UploadFile):
         raise HTTPException(
             status_code=500, detail=f"Error during patent processing: {e}"
         )
+        
+@app.get("/api/v1/patent-files/", response_model=PatentFilesListResponse, status_code=200)
+async def list_patent_files():
+    """
+    Endpoint to list all patent files in the database, ordered by upload time (newest first).
+    
+    Returns:
+        PatentFilesListResponse: A Pydantic model containing the list of patent files and metadata.
+    
+    Raises:
+        HTTPException: If an error occurs during database query.
+    """
+    try:
+        response = (
+            supabase.table("patent_files")
+            .select("*")
+            .order("uploaded_at", desc=True)  # Use the index for efficient sorting
+            .execute()
+        )
+        
+        if response.data:
+            return PatentFilesListResponse(
+                data=response.data,
+                count=len(response.data),
+                message="Patent files retrieved successfully",
+                status="success",
+                status_code=200
+            )
+        else:
+            return PatentFilesListResponse(
+                data=[],
+                count=0,
+                message="No patent files found",
+                status="success",
+                status_code=200
+            )
+    except Exception as e:
+        logging.error(f"Error retrieving patent files: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Error retrieving patent files: {e}"
+        )
 
 @app.get("/api/v1/source-embodiments/{patent_id}", response_model=list)
 async def list_source_embodiments(patent_id: str):
@@ -497,15 +609,18 @@ async def list_source_embodiments(patent_id: str):
     Returns an empty list if none are found.
     """
     try:
-        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
-        response = table.get_item(Key={"patent_id": str(patent_id)})
-        item = response.get("Item", {})
-        source_embodiments = item.get("source_embodiments", [])
+        response = (
+            supabase.table("embodiments")
+            .select("*")
+            .eq("file_id", str(patent_id))
+            .order("emb_number")
+            .execute()
+        )
+        source_embodiments = response.data if response.data else []
         return source_embodiments
     except Exception as e:
         logging.error(f"Failed to retrieve source embodiments for patent_id={patent_id}: {e}")
-        raise HTTPException(status_code=500, detail=f"Error retrieving source embodiments: {e}")
-    
+        raise HTTPException(status_code=500, detail=f"Error retrieving source embodiments: {e}")    
 
 
 @app.post("/api/v1/project/", response_model=PatentProjectResponse, status_code=200)

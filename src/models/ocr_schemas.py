@@ -26,9 +26,7 @@ class DetailedDescriptionEmbodiment(BaseModel):
     # Define all fields explicitly instead of using inheritance
     text: str = Field(..., description="The embodiment")
     filename: str = Field(..., description="The source file of the embodiment")
-    page_number: int = Field(
-        ..., description="The page number of the embodiment in the source file"
-    )
+    page_number: int = Field(..., description="The page number of the embodiment in the source file")
     section: str = Field(..., description="The section of the embodiment in the source file")
     sub_category: str = Field(..., 
                           description="The category of the embodiment",
