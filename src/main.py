@@ -54,7 +54,8 @@ from src.models.api_schemas import (
      DeleteFileResponse,
      DeleteAllFilesResponse,
      DropTableResponse,
-     EmbodimentListResponse
+     EmbodimentListResponse,
+     PatentFilesListResponse
  )
 from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment
 
@@ -558,6 +559,48 @@ async def patent(patent_id: str, file: UploadFile):
         raise HTTPException(
             status_code=500, detail=f"Error during patent processing: {e}"
         )
+        
+@app.get("/api/v1/patent-files/", response_model=PatentFilesListResponse, status_code=200)
+async def list_patent_files():
+    """
+    Endpoint to list all patent files in the database, ordered by upload time (newest first).
+    
+    Returns:
+        PatentFilesListResponse: A Pydantic model containing the list of patent files and metadata.
+    
+    Raises:
+        HTTPException: If an error occurs during database query.
+    """
+    try:
+        response = (
+            supabase.table("patent_files")
+            .select("*")
+            .order("uploaded_at", desc=True)  # Use the index for efficient sorting
+            .execute()
+        )
+        
+        if response.data:
+            return PatentFilesListResponse(
+                data=response.data,
+                count=len(response.data),
+                message="Patent files retrieved successfully",
+                status="success",
+                status_code=200
+            )
+        else:
+            return PatentFilesListResponse(
+                data=[],
+                count=0,
+                message="No patent files found",
+                status="success",
+                status_code=200
+            )
+    except Exception as e:
+        logging.error(f"Error retrieving patent files: {e}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Error retrieving patent files: {e}"
+        )
 
 @app.get("/api/v1/source-embodiments/{patent_id}", response_model=list)
 async def list_source_embodiments(patent_id: str):
@@ -566,15 +609,18 @@ async def list_source_embodiments(patent_id: str):
     Returns an empty list if none are found.
     """
     try:
-        table = dynamodb.Table(os.getenv("DYNAMODB_TABLE"))
-        response = table.get_item(Key={"patent_id": str(patent_id)})
-        item = response.get("Item", {})
-        source_embodiments = item.get("source_embodiments", [])
+        response = (
+            supabase.table("embodiments")
+            .select("*")
+            .eq("file_id", str(patent_id))
+            .order("emb_number")
+            .execute()
+        )
+        source_embodiments = response.data if response.data else []
         return source_embodiments
     except Exception as e:
         logging.error(f"Failed to retrieve source embodiments for patent_id={patent_id}: {e}")
-        raise HTTPException(status_code=500, detail=f"Error retrieving source embodiments: {e}")
-    
+        raise HTTPException(status_code=500, detail=f"Error retrieving source embodiments: {e}")    
 
 
 @app.post("/api/v1/project/", response_model=PatentProjectResponse, status_code=200)

@@ -102,7 +102,21 @@ class PatentUploadResponse(BaseModel):
     status_code: int = Field(
         ..., description="HTTP status code indicating the result of the operation"
     )
+# New models for patent_files list endpoint
+class PatentFile(BaseModel):
+    """Individual patent file information from database."""
+    id: str = Field(..., description="Unique identifier for the patent file")
+    filename: str = Field(..., description="Name of the patent file")
+    mime_type: str = Field(default="application/pdf", description="MIME type of the patent file")
+    uploaded_at: datetime = Field(..., description="Timestamp when the patent was uploaded")
 
+class PatentFilesListResponse(BaseModel):
+    """Response model for listing patent files."""
+    status: str = Field(default="success", description="Status of the request")
+    message: str = Field(default="Patent files retrieved successfully", description="Status message")
+    data: list[PatentFile] = Field(..., description="List of patent files")
+    count: int = Field(..., description="Total number of patent files")
+    status_code: int = Field(default=200, description="Status code of the response")
 class MultiQueryResponse(BaseModel):
     """
     Response model for multi-query search operations.
