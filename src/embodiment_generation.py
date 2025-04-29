@@ -16,6 +16,7 @@ async def generate_embodiment(inspiration: float,
                               antigen: str) -> dict:
     prompt = langfuse.get_prompt("generate_embodiment").compile(
         inspiration=inspiration,
+        knowledge=knowledge,
         source_embodiment=source_embodiment,
         patent_title=patent_title,
         disease=disease,
@@ -24,7 +25,7 @@ async def generate_embodiment(inspiration: float,
     
     response = instructor_client.chat.completions.create(
         messages=[{"role": "user", "content": prompt}],
-        model="gpt-4.5-preview",
+        model="o3",
         response_model=SyntheticEmbodiment
     )
     
