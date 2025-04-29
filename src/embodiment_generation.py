@@ -8,11 +8,12 @@ class SyntheticEmbodiment(BaseModel):
     content: str
     
 instructor_client = instructor.from_openai(OpenAI())
-async def generate_embodiment(inspiration: float, 
+async def generate_embodiment(inspiration: float,
+                              knowledge: str,  
                               source_embodiment: str, 
-                              patent_title, 
-                              disease, 
-                              antigen) -> dict:
+                              patent_title: str, 
+                              disease: str, 
+                              antigen: str) -> dict:
     prompt = langfuse.get_prompt("generate_embodiment").compile(
         inspiration=inspiration,
         source_embodiment=source_embodiment,

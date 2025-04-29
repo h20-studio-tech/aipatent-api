@@ -199,6 +199,7 @@ class SyntheticEmbodimentRequest(BaseModel):
         antigen (str): Antigen relevant to the embodiment.
     """
     inspiration: float = Field(..., description="Degree of inspiration to apply (e.g., creativity factor)")
+    knowledge : list[dict] = Field(..., description="list of knowledge components")
     source_embodiment: str = Field(..., description="The base embodiment text to draw from")
     patent_title: str = Field(..., description="Title of the patent for context")
     disease: str = Field(..., description="Disease relevant to the embodiment")
