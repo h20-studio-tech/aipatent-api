@@ -361,7 +361,8 @@ async def get_embodiments(page: ProcessedPage) -> list[Embodiment]:
 
     logger.info(f"Extracting embodiments from page {page_number} of {filename}")
     completion = await client.chat.completions.create(
-        model="o3-mini",
+        model='o4-mini',
+        reasoning_effort='high',
         messages=[
             {
                 "role": "user",
@@ -378,7 +379,10 @@ async def get_embodiments(page: ProcessedPage) -> list[Embodiment]:
                     
                     Extract any Patent Embodiments from the text below
                     
-                    Text: {{ page_text }}
+                    Text: 
+                    <text>
+                    {{ page_text }}
+                    </text>
                     
                     
                     Rules
@@ -412,7 +416,8 @@ async def find_embodiments(pages: list[ProcessedPage]) -> list[Embodiment]:
 async def categorize_embodiment(embodiment: Embodiment) -> DetailedDescriptionEmbodiment: 
     # Get just the category from the API
     response = await client.chat.completions.create(
-        model='gpt-4.5-preview',
+        model='o4-mini',
+        reasoning_effort='high',
         messages=[
                 {
                     "role":"user",
