@@ -38,6 +38,10 @@ class DetailedDescriptionEmbodiment(BaseModel):
 
 class EmbodimentSummary(BaseModel):
     summary: str = Field(..., description="the embodiment summmary")
+    
+class EmbodimentSpellCheck(BaseModel):
+    text: str = Field(..., description="the embodiment text")
+
 
 class Embodiments(BaseModel):
     content: list[Embodiment] | list = Field(

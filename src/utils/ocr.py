@@ -15,6 +15,7 @@ from src.models.ocr_schemas import (
     ProcessedPage, 
     Embodiment,
     EmbodimentSummary,
+    EmbodimentSpellCheck,
     DetailedDescriptionEmbodiment,
     PatentSectionWithConfidence,
     CategoryResponse
@@ -520,6 +521,22 @@ async def summarize_embodiments(embodiments: list[Embodiment | DetailedDescripti
     results = await asyncio.gather(*tasks)
     return results
 
+embodiment_spell_check_prompt = get_prompt('embodiment_spell_check')
+async def embodiment_spell_check(embodiment: Union[Embodiment, DetailedDescriptionEmbodiment]) -> Union[Embodiment, DetailedDescriptionEmbodiment]:
+    prompt = embodiment_spell_check_prompt.compile(embodiment=embodiment.text)
+    res = await client.chat.completions.create(
+        model='gpt-4.1-mini',
+        messages=[{'role': 'system', 'content': prompt}],
+        response_model=EmbodimentSpellCheck
+    )
+    embodiment.text = res.text
+    return embodiment
+
+async def spell_check_embodiments(embodiments: list[Embodiment | DetailedDescriptionEmbodiment]) -> list[Embodiment | DetailedDescriptionEmbodiment]:
+    tasks = [asyncio.create_task(embodiment_spell_check(embodiment)) for embodiment in embodiments]
+    results = await asyncio.gather(*tasks)
+    return results
+
 async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodiment | DetailedDescriptionEmbodiment]:
     try:
         # Process PDF pages
@@ -572,7 +589,11 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         summarized_embodiments = await summarize_embodiments(embodiments_with_detailed_description_categorized)
         logger.info(f"Summarized {len(summarized_embodiments)} embodiments")
         
-        return summarized_embodiments
+        # Spell check all embodiments
+        spell_checked_embodiments = await spell_check_embodiments(summarized_embodiments)
+        logger.info(f"Spell checked {len(spell_checked_embodiments)} embodiments")
+        
+        return spell_checked_embodiments
         
     except Exception as e: 
         raise RuntimeError(f"Error processing patent document: {str(e)}")
