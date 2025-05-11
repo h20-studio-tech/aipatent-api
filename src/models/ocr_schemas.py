@@ -21,6 +21,8 @@ class Embodiment(BaseModel):
     filename: str = Field(..., description="The source file of the embodiment")
     page_number: int = Field(..., description="The page number of the embodiment in the source file")
     section: str = Field(..., description="The section of the embodiment in the source file")
+    # Allow initial creation without summary
+    summary: str = Field("", description="the embodiment summary")
 
 class DetailedDescriptionEmbodiment(BaseModel):
     # Define all fields explicitly instead of using inheritance
@@ -31,6 +33,11 @@ class DetailedDescriptionEmbodiment(BaseModel):
     sub_category: str = Field(..., 
                           description="The category of the embodiment",
                           json_schema_extra=["disease rationale", "product composition"])
+    # Allow initial creation without summary
+    summary: str = Field("", description="the embodiment summary")
+
+class EmbodimentSummary(BaseModel):
+    summary: str = Field(..., description="the embodiment summmary")
 
 class Embodiments(BaseModel):
     content: list[Embodiment] | list = Field(

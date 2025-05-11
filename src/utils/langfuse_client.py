@@ -1,11 +1,14 @@
 import langfuse
 from dotenv import load_dotenv
 from typing import Dict, Any, Optional
+from pprint import pprint
 
 load_dotenv('.env')
 # Instantiate Langfuse once
 langfuse = langfuse.Langfuse()
 
+# p = langfuse.api.prompts.list()
+# pprint([f'\n{pr}\n' for pr in p])
 def get_langfuse_instance():
     return langfuse
 

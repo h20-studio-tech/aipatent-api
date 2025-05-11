@@ -492,7 +492,7 @@ async def patent(patent_id: str, file: UploadFile):
             if embodiments_response.data:
                 for record in embodiments_response.data:
                     # Basic check for essential fields, adapt if needed
-                    if not all(k in record for k in ('text', 'page_number', 'section', 'emb_number')):
+                    if not all(k in record for k in ('text', 'page_number', 'section', 'emb_number', 'summary')):
                         print(f"Skipping record due to missing essential fields: {record.get('file_id')}")
                         continue
 
@@ -533,6 +533,7 @@ async def patent(patent_id: str, file: UploadFile):
                         "text": embodiment.text,
                         "page_number": embodiment.page_number,
                         "section" : embodiment.section,
+                        "summary": embodiment.summary,
                          **(
                               {"sub_category": embodiment.sub_category}
                               if isinstance(embodiment, DetailedDescriptionEmbodiment) 

@@ -9,15 +9,16 @@ from openai import AsyncOpenAI
 import re
 from src.utils.logging_helper import create_logger
 from src.utils.langfuse_client import get_prompt
+from typing import Union
 from src.models.ocr_schemas import (
     Embodiments, 
     ProcessedPage, 
-    Embodiment, 
+    Embodiment,
+    EmbodimentSummary,
     DetailedDescriptionEmbodiment,
     PatentSectionWithConfidence,
     CategoryResponse
     )
-
 
 client = instructor.from_openai(AsyncOpenAI())
 logger = create_logger("ocr.py")
@@ -300,7 +301,7 @@ def process_pdf_pages(pdf: tuple[list[Page], str]) -> list[ProcessedPage]:
             )
             try:
                 # Try OCR if PDFPlumber fails
-                image = page.to_image(resolution=400)
+                image = page.to_image(width=3840)
                 page_ocr = pytesseract.image_to_string(image.original)
                 if page_ocr == "":
                     logger.error(f"OCR failed to extract text from page {page.page_number}")
@@ -459,7 +460,7 @@ async def categorize_embodiment(embodiment: Embodiment) -> DetailedDescriptionEm
         filename=embodiment.filename,
         page_number=embodiment.page_number,
         section=embodiment.section,
-        sub_category=response.sub_category
+        sub_category=response.sub_category,
     )
 
 
@@ -503,6 +504,22 @@ async def categorize_detailed_description(embodiments: list[Embodiment]) -> list
     
     return results
 
+embodiment_summarization_prompt = get_prompt('embodiment_summary')
+async def summarize_embodiment(embodiment: Union[DetailedDescriptionEmbodiment, Embodiment]) -> Union[DetailedDescriptionEmbodiment, Embodiment]:
+    prompt = embodiment_summarization_prompt.compile(embodiment=embodiment.text)
+    res = await client.chat.completions.create(
+        model='gpt-4.1',
+        messages=[{'role': 'system', 'content': prompt}],
+        response_model=EmbodimentSummary
+    )
+    embodiment.summary = res.summary
+    return embodiment
+
+async def summarize_embodiments(embodiments: list[Embodiment | DetailedDescriptionEmbodiment]) -> list[Embodiment | DetailedDescriptionEmbodiment]:
+    tasks = [asyncio.create_task(summarize_embodiment(embodiment)) for embodiment in embodiments]
+    results = await asyncio.gather(*tasks)
+    return results
+
 async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodiment | DetailedDescriptionEmbodiment]:
     try:
         # Process PDF pages
@@ -541,7 +558,7 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
             
         categorized_detailed_description = await categorize_detailed_description(detailed_description_embodiments)
         logger.info(f"Categorized {len(categorized_detailed_description)} detailed description embodiments")
-            
+        
         #enforce that they are instances of DetailedDescriptionEmbodiment
         for i, embodiment in enumerate(categorized_detailed_description):
             if not isinstance(embodiment, DetailedDescriptionEmbodiment):
@@ -551,7 +568,11 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         non_detailed_embodiments = [embodiment for embodiment in embodiments if embodiment.section != "detailed description"]
         embodiments_with_detailed_description_categorized = non_detailed_embodiments + categorized_detailed_description
         
-        return embodiments_with_detailed_description_categorized
+        # Summarize all embodiments
+        summarized_embodiments = await summarize_embodiments(embodiments_with_detailed_description_categorized)
+        logger.info(f"Summarized {len(summarized_embodiments)} embodiments")
+        
+        return summarized_embodiments
         
     except Exception as e: 
         raise RuntimeError(f"Error processing patent document: {str(e)}")
