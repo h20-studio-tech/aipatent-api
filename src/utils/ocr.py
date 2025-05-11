@@ -10,6 +10,7 @@ import re
 from src.utils.logging_helper import create_logger
 from src.utils.langfuse_client import get_prompt
 from typing import Union
+from langfuse.decorators import observe
 from src.models.ocr_schemas import (
     Embodiments, 
     ProcessedPage, 
@@ -522,6 +523,8 @@ async def summarize_embodiments(embodiments: list[Embodiment | DetailedDescripti
     return results
 
 embodiment_spell_check_prompt = get_prompt('embodiment_spell_check')
+
+@observe(name='embodiment-spellcheck')
 async def embodiment_spell_check(embodiment: Union[Embodiment, DetailedDescriptionEmbodiment]) -> Union[Embodiment, DetailedDescriptionEmbodiment]:
     prompt = embodiment_spell_check_prompt.compile(embodiment=embodiment.text)
     res = await client.chat.completions.create(
