@@ -528,11 +528,12 @@ embodiment_spell_check_prompt = get_prompt('embodiment_spell_check')
 async def embodiment_spell_check(embodiment: Union[Embodiment, DetailedDescriptionEmbodiment]) -> Union[Embodiment, DetailedDescriptionEmbodiment]:
     prompt = embodiment_spell_check_prompt.compile(embodiment=embodiment.text)
     res = await client.chat.completions.create(
-        model='gpt-4.1-mini',
+        model='o4-mini',
+        reasoning_effort='high',
         messages=[{'role': 'system', 'content': prompt}],
         response_model=EmbodimentSpellCheck
     )
-    embodiment.text = res.text
+    embodiment.text = res.checked_text
     return embodiment
 
 async def spell_check_embodiments(embodiments: list[Embodiment | DetailedDescriptionEmbodiment]) -> list[Embodiment | DetailedDescriptionEmbodiment]:
