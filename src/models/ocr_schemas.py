@@ -40,7 +40,7 @@ class EmbodimentSummary(BaseModel):
     summary: str = Field(..., description="the embodiment summmary")
     
 class EmbodimentSpellCheck(BaseModel):
-    text = str = Field(..., description=='the source text of the embodiment')
+    text: str = Field(..., description='the source text of the embodiment')
     checked_text: str = Field(..., description="the spell-checked embodiment text")
 
 
