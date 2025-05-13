@@ -2,7 +2,7 @@ from openai import OpenAI
 from src.utils.langfuse_client import get_langfuse_instance
 import instructor 
 from pydantic import BaseModel
-langfuse = get_langfuse_instance()
+
 
 class SyntheticEmbodiment(BaseModel):
     content: str
@@ -14,6 +14,7 @@ async def generate_embodiment(inspiration: float,
                               patent_title: str, 
                               disease: str, 
                               antigen: str) -> dict:
+    langfuse = get_langfuse_instance()
     prompt = langfuse.get_prompt("generate_embodiment").compile(
         inspiration=inspiration,
         knowledge=knowledge,
