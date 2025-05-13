@@ -2,12 +2,14 @@ from openai import OpenAI
 from src.utils.langfuse_client import get_langfuse_instance
 import instructor 
 from pydantic import BaseModel
+from langfuse.decorators import observe
 
 
 class SyntheticEmbodiment(BaseModel):
     content: str
     
 instructor_client = instructor.from_openai(OpenAI())
+@observe(name='embodiment_generation')
 async def generate_embodiment(inspiration: float,
                               knowledge: str,  
                               source_embodiment: str, 
