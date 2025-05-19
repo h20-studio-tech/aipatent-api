@@ -1,29 +1,70 @@
 import instructor
 import asyncio
-import pytesseract
-import pdfplumber
-from time import time
-from io import BytesIO
-from pdfplumber.page import Page
-from openai import AsyncOpenAI
+from openai.types.shared.reasoning_effort import ReasoningEffort
+import asyncio
+import base64
+import logging
+import os
 import re
-from src.utils.logging_helper import create_logger
-from src.utils.langfuse_client import get_prompt
-from typing import Union
+from io import BytesIO
+from typing import List, Tuple, Optional, Dict, Any
+
+import instructor
+import pdfplumber
+import pytesseract
+from dotenv import load_dotenv
 from langfuse.decorators import observe
+from langfuse.openai import openai
+from openai import OpenAI
+from pdfplumber.page import Page
+from PIL import Image
+
 from src.models.ocr_schemas import (
-    Embodiments, 
-    ProcessedPage, 
+    DetailedDescriptionEmbodiment,
     Embodiment,
+    Embodiments,
+    HeaderDetectionPage,
+    ProcessedPage,
+    PatentSectionWithConfidence,
+    CategoryResponse,
     EmbodimentSummary,
     EmbodimentSpellCheck,
-    DetailedDescriptionEmbodiment,
-    PatentSectionWithConfidence,
-    CategoryResponse
-    )
+)
+from src.utils.langfuse_client import get_prompt
+from src.utils.logging_helper import create_logger
 
-client = instructor.from_openai(AsyncOpenAI())
+# Configure logging
 logger = create_logger("ocr.py")
+
+# Load environment variables
+load_dotenv()
+
+# Initialize OpenAI client
+client = openai.OpenAI(
+    organization=os.getenv("OPENAI_ORG_ID"),
+    api_key=os.getenv("OPENAI_API_KEY"),
+)
+
+# Add instructor patch for response_model
+client = instructor.patch(client)
+
+# Configure Tesseract path if needed
+# pytesseract.pytesseract.tesseract_cmd = r'<path_to_tesseract>'
+
+
+def pil_image_to_base64(pil_img: Image.Image) -> str:
+    """Convert a PIL Image to a base64 string in the format expected by OpenAI's API.
+    
+    Args:
+        pil_img: PIL Image to convert
+        
+    Returns:
+        Base64-encoded string with data URL prefix
+    """
+    buffered = BytesIO()
+    pil_img.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+    return f"data:image/png;base64,{img_str}"
 
 
 def pdf_pages(pdf_data: bytes, filename: str) -> tuple[list[Page], str]:
@@ -303,17 +344,20 @@ def process_pdf_pages(pdf: tuple[list[Page], str]) -> list[ProcessedPage]:
             )
             try:
                 # Try OCR if PDFPlumber fails
-                image = page.to_image(width=3840)
+                image = page.to_image(width=1920)
                 page_ocr = pytesseract.image_to_string(image.original)
                 if page_ocr == "":
                     logger.error(f"OCR failed to extract text from page {page.page_number}")
                 else:
+                    # Convert PIL image to base64 string in OpenAI-compatible format
+                    base64_img = pil_image_to_base64(image.original)
                     processed_pages.append(
                         ProcessedPage(
                             text=page_ocr, 
                             filename=pdf_name, 
                             page_number=page.page_number,
-                            section=""  # Empty section to be filled by segment_pages
+                            section="",  # Empty section to be filled by segment_pages
+                            image=base64_img  # Store this as base64 for LLM
                         )
                     )
                     logger.info(
@@ -335,6 +379,53 @@ def process_pdf_pages(pdf: tuple[list[Page], str]) -> list[ProcessedPage]:
             )
     return processed_pages
 
+@observe(name='description-subheaders-detection')
+async def detect_description_header(segmented_page: ProcessedPage) -> HeaderDetectionPage:
+    prompt = """
+    You are a header detection system for a biological patent ETL application.
+
+    Analyze the image and identify if there is a clearly visible sub-section header.
+    Focus on text that appears to be a title or heading, typically at the top of the page or section.
+    
+    Return:
+    - has_header: True if a clear header is found, False otherwise
+    - header: The extracted header text if found, otherwise None
+    """
+    
+    if not segmented_page.image:
+        return HeaderDetectionPage(has_header=False, header=None)
+    
+    try:
+        response = await client.chat.completions.create(
+            model='o4-mini',
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": segmented_page.image}
+                    }
+                ]
+            }],
+            reasoning_effort='high',
+            response_model=HeaderDetection
+        )
+        return HeaderDetectionPage(
+            has_header=response.has_header,
+            header=response.header,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            section=segmented_page.section,
+            image=segmented_page.image
+        )
+    except Exception as e:
+        logger.error(f"Error in detect_description_header: {str(e)}")
+        return HeaderDetection(has_header=False, header=None)
+
+async def detect_description_headers(segmented_pages: list[ProcessedPage]) -> list[HeaderDetectionPage]: 
+    return [await detect_description_header(page) for page in segmented_pages]
 
 examples = [
     """
