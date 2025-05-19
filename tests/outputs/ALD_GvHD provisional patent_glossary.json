@@ -1,0 +1,16 @@
+{
+  "text": "BACKGROUND\n\nAlcoholic liver disease (ALD) encompasses the liver manifestations of alcohol overconsumption, including fatty liver, alcoholic hepatitis, and chronic hepatitis with liver fibrosis or cirrhosis. The most severe form of alcoholic liver disease is alcoholic hepatitis; mortality ranges from 20% to 40% at 1-6 months, and as many as 75% of patients die within 90 days of a diagnosis of severe alcoholic hepatitis. See Duan et al., 2019, Nature 575: 505-511. Therapy with corticosteroids is only marginally effective. Early liver transplantation is the only curative therapy, but is offered only at select centers and to a limited group of patients. See Duan et al., cited above.\n\nGraft-versus-host disease (GVHD) affects the skin, liver, and gastrointestinal tract and occurs when donor T cells recognize recipient tissue as foreign and trigger tissue inflammation and injury. Preventive and therapeutic strategies for GVHD are active areas of investigation. See Garrett, 2020, New England Journal of Medicine 382(11): 1004-1060. Accordingly, a need exists for improved methods of treating or preventing ALD and GVHD.",
+  "filename": "ALD_GvHD provisional patent.pdf",
+  "page_number": 2,
+  "section": "detailed description -> definitions",
+  "definitions": [
+    {
+      "term": "Alcoholic liver disease (ALD)",
+      "definition": "Encompasses the liver manifestations of alcohol overconsumption, including fatty liver, alcoholic hepatitis, and chronic hepatitis with liver fibrosis or cirrhosis."
+    },
+    {
+      "term": "Graft-versus-host disease (GVHD)",
+      "definition": "Affects the skin, liver, and gastrointestinal tract and occurs when donor T cells recognize recipient tissue as foreign and trigger tissue inflammation and injury."
+    }
+  ]
+}

@@ -1,5 +1,13 @@
+import sys
+import os
 import asyncio
+from rich.console import Console
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+from rich import box
 from src.utils.ocr import summarize_embodiment, Embodiment
+
 
 # List of test embodiment texts
 texts = [
@@ -11,19 +19,38 @@ texts = [
     "In some embodiments, the hyperimmunized egg product has higher levels of IgY antibodies to Aderococcus faeciem, interococcus jaecalis or Enterecoccus faecalis cytolysin toxin compared to a control egg product or an egg product from a chicken that has been immunized with favterococcus faecium, Enterococcus faecalis or Enterococcus jaecadis cvtolysin toxin using standard immunization techniques."
 ]
 
+def print_boxed(title, content, width=80):
+    lines = content.splitlines() or ['']
+    maxlen = min(width, max((len(line) for line in lines), default=0))
+    border = f"+{'-' * (maxlen + 2)}+"
+    print(border)
+    print(f"| {title.ljust(maxlen)} |")
+    print(border)
+    for line in lines:
+        print(f"| {line.ljust(maxlen)} |")
+    print(border)
+
 async def main():
-    print("Running summarization and computing scores for test cases...\n")
+    console = Console()
+    console.rule("[bold cyan]Integration Summary Scores")
     for i, text in enumerate(texts, 1):
         emb = Embodiment(text=text, filename="test.pdf", page_number=i, section="detailed description", summary="")
         result = await summarize_embodiment(emb)
         src_len = len(text)
         sum_len = len(result.summary)
         score = sum_len / src_len if src_len > 0 else 0
-        print(f"Case {i}:")
-        print(f"  Source length: {src_len}")
-        print(f"  Summary length: {sum_len}")
-        print(f"  Score (sum/src): {score:.2f}\n")
-        print(f"  Summary: {result.summary}\n")
+
+        header = Text(f"Case {i} | Source: {src_len} | Summary: {sum_len} | Ratio: {score:.2f}", style="bold magenta")
+        table = Table.grid(expand=True)
+        table.add_column(justify="left", ratio=2)
+        table.add_column(justify="left", ratio=2)
+        table.add_row(
+            Panel(text, title="Input Text", border_style="cyan", box=box.ROUNDED),
+            Panel(result.summary, title="Summary", border_style="green", box=box.ROUNDED),
+        )
+        console.print(header)
+        console.print(table)
+        console.rule()
 
 if __name__ == "__main__":
     asyncio.run(main())

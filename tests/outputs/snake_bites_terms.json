@@ -1,0 +1,162 @@
+[
+  {
+    "text": "DETAILED DESCRIPTION OF THE INVENTION\n1. Definitions\nAs used herein, the singular forms \"a\", \"an\" and \"the\" are intended to include the\nplural forms as well, unless the context clearly indicates otherwise.\n5 As used herein, \u201cabout\u201d is a term of approximation and is intended to include minor\nvariations in the literally stated amounts, as would be understood by those skilled in the art.\nSuch variations include, for example, standard deviations associated with techniques\ncommonly used to measure the amounts of the constituent elements or components of an alloy\nor composite material, or other properties and characteristics. All of the values characterized\n10 by the above-described modifier \"about,\" are also intended to include the exact numerical\nvalues disclosed herein. Moreover, all ranges include the upper and lower limits.\nAny compositions described herein are intended to encompass compositions which\nconsist of, consist essentially of, as well as comprise, the various constituents identified\nherein, unless explicitly indicated to the contrary.\n15 As used herein, the recitation of a numerical range for a variable is intended to convey\nthat the variable can be equal to any value(s) within that range, as well as any and all sub-\nranges encompassed by the broader range. Thus, the variable can be equal to any integer\nvalue or values within the numerical range, including the end-points of the range. As an\nexample, a variable which is described as having values between 0 and 10, can be 0, 4, 2-6,\n20 2.75, 3.3 - 4.4, etc.\nIn the specification and claims, the singular forms include plural referents unless the\ncontext clearly dictates otherwise. As used herein, unless specifically indicated otherwise, the\nword \"or\" is used in the \"inclusive\" sense of \"and/or\" and not the \"exclusive\" sense of\n\"either/or.\"\n25 Unless indicated otherwise, each of the individual features or embodiments of the\npresent specification are combinable with any other individual feature or embodiment that are\ndescribed herein, without limitation. Such combinations are specifically contemplated as\nbeing within the scope of the present invention, regardless of whether they are explicitly\ndescribed as a combination herein.\n- 9 -",
+    "filename": "snake_bites.pdf",
+    "page_number": 9,
+    "section": "detailed description -> definitions",
+    "definitions": [
+      {
+        "term": "\"a\", \"an\" and \"the\" (singular forms)",
+        "definition": "Intended to include the plural forms as well, unless the context clearly indicates otherwise."
+      },
+      {
+        "term": "about",
+        "definition": "A term of approximation intended to include minor variations in the literally stated amounts (e.g., standard deviations from measurement techniques); all values characterized by \"about\" include the exact numerical values disclosed herein, and all ranges include the upper and lower limits."
+      },
+      {
+        "term": "compositions described herein",
+        "definition": "Intended to encompass compositions which consist of, consist essentially of, as well as comprise, the various constituents identified herein, unless explicitly indicated to the contrary."
+      },
+      {
+        "term": "recitation of a numerical range for a variable",
+        "definition": "Intended to convey that the variable can be equal to any value(s) within that range, as well as any and all sub-ranges encompassed by the broader range, including integer values, end-points, and fractional values."
+      },
+      {
+        "term": "or",
+        "definition": "Used in the inclusive sense of \"and/or\" and not the exclusive sense of \"either/or.\""
+      },
+      {
+        "term": "combinations of individual features or embodiments",
+        "definition": "Each individual feature or embodiment is combinable with any other described feature or embodiment without limitation; such combinations are within the scope of the invention regardless of whether explicitly described."
+      }
+    ]
+  },
+  {
+    "text": "Unless defined otherwise, all technical and scientific terms used herein have the same\nmeaning as commonly understood by one of ordinary skill in the art to which this invention\nbelongs. Although any methods and materials similar or equivalent to those described herein\ncan be used in the practice or testing of the present invention, the preferred methods and\nmaterials are described.\nAs used herein, the terms \u201cvictim\u201d and \u201csubject\u201d includes members of the animal\nkingdom including but not limited to human beings.\nAs used herein, \u201ctissue\u201d includes, but is not limited to an animal tissues, which may be\nconnective, muscle, nervous or epithelial issues, and may include a single tissue or a\ncollection of tissues that form a common function.\nAs used herein, \u201ctransdermally\u201d refers to any type of delivery of an active ingredient\nthat crosses any portion of skin (but not necessarily all of the layers of skin), rather than\nmerely being topically applied to an outer layer of the skin. Transdermally can include\nsystemic delivery (i.e., where the active ingredient is transported across, or substantially\nthrough, the dermis such that the active ingredient is delivery into the bloodstream and\nsystemically), as well as intradermal delivery (i.e., where the active ingredient is transported\npartially through the dermis, e.g., across the outer layer (stratum corneum) of the skin, where\nthe active ingredient is delivered into the skin. That is, transdermal delivery as used herein\nincludes delivery of an active ingredient that is transported across at least a portion of skin.\nAs used herein, an \u201cactive ingredient\u201d refers to a molecule for treating a disease state,\nand includes small molecules, and macromolecules such as proteins, e.g., immunoglobulins,\nsuch as IgG and IgY, DNA, and RNA.\nAs used herein, a \u201cdrug\u201d refers to an active ingredient.\nAs used herein, a \u201cmatrix\u201d refers to a material in which something is enclosed or\nembedded.\nAs used herein, the term \u201chyperimmunization\u201d means repeated exposure to one or\nmore antigens such that an immune response is elevated and maintained above the natural\nunexposed state.",
+    "filename": "snake_bites.pdf",
+    "page_number": 10,
+    "section": "detailed description -> definitions",
+    "definitions": [
+      {
+        "term": "victim",
+        "definition": "Members of the animal kingdom including but not limited to human beings."
+      },
+      {
+        "term": "subject",
+        "definition": "Members of the animal kingdom including but not limited to human beings."
+      },
+      {
+        "term": "tissue",
+        "definition": "Animal tissues, which may be connective, muscle, nervous or epithelial tissues, and may include a single tissue or a collection of tissues that form a common function."
+      },
+      {
+        "term": "transdermally",
+        "definition": "Any type of delivery of an active ingredient that crosses any portion of skin (but not necessarily all layers), including systemic delivery into the bloodstream and intradermal delivery into the skin."
+      },
+      {
+        "term": "active ingredient",
+        "definition": "A molecule for treating a disease state, including small molecules and macromolecules such as proteins (e.g., immunoglobulins like IgG and IgY), DNA, and RNA."
+      },
+      {
+        "term": "drug",
+        "definition": "An active ingredient."
+      },
+      {
+        "term": "matrix",
+        "definition": "A material in which something is enclosed or embedded."
+      },
+      {
+        "term": "hyperimmunization",
+        "definition": "Repeated exposure to one or more antigens such that an immune response is elevated and maintained above the natural unexposed state."
+      }
+    ]
+  },
+  {
+    "text": "As used herein, a \u201chyperimmune state\u201d refers to an elevated immune response in an\nanimal, such as an equine or ovine, or an egg producing animal, that has been\nhyperimmunized.\nAs used herein, the term \u201cegg\u201d as used herein refers to a whole egg (table,\n5 hyperimmunized or otherwise). The term \u201cegg product\u201d as used herein refers to a whole egg\nor any product or fraction obtained from a whole egg. In a particular embodiment, the egg\nproduct is an egg yolk, for example, an egg yolk powder. In another embodiment, the egg\nproduct is an egg white, for example, an egg white powder. In another embodiment, the egg\nproduct is obtained from a whole egg, for example, a whole egg powder (e.g. a spray-dried\n10 whole egg powder).\nAs used herein, the term \u201ccontrol egg\u201d refers to an egg obtained from an egg-\nproducing animal that is not maintained in a hyperimmunized state, i.e. an animal that has not\nbeen hyperimmunized. The term \u201ccontrol egg product\u201d refers to a control egg or an egg\nproduct obtained from a control egg.\n15 As used herein, the term \u201chyperimmunized egg\u201d refers to a whole egg obtained from\nan egg-producing animal maintained in a hyperimmune state, i.e. an egg-producing animal\nthat has been hyperimmunized. The term \u201chyperimmunized egg product\u201d refers to a\nhyperimmunized egg or any product obtained from a hyperimmunized egg.\nIn certain embodiments, the hyperimmunized egg product is a concentrate. As used\n20 herein the term \u201cconcentrate\u201d refers to a hyperimmunized egg product that is at least partially\npurified, such that the concentration of antibodies in the concentrate is greater than the\nconcentration of antibodies in a hyperimmunized egg.\nAs used herein, the term \u201cegg powder\u201d refers to a whole egg that has been dried. In\nsome embodiments, the egg powder is spray-dried. In some embodiments, the egg powder is\n25 lyophilized.\nAs used herein, the term \u201cegg-producing animal\u201d means any oviparous animal, and\nincludes any animal that lays an egg, such as avians, fish and reptiles.",
+    "filename": "snake_bites.pdf",
+    "page_number": 11,
+    "section": "detailed description -> definitions",
+    "definitions": [
+      {
+        "term": "hyperimmune state",
+        "definition": "an elevated immune response in an animal, such as an equine or ovine, or an egg producing animal, that has been hyperimmunized."
+      },
+      {
+        "term": "egg",
+        "definition": "a whole egg (table, hyperimmunized or otherwise)."
+      },
+      {
+        "term": "egg product",
+        "definition": "a whole egg or any product or fraction obtained from a whole egg."
+      },
+      {
+        "term": "control egg",
+        "definition": "an egg obtained from an egg-producing animal that is not maintained in a hyperimmunized state, i.e. an animal that has not been hyperimmunized."
+      },
+      {
+        "term": "control egg product",
+        "definition": "a control egg or an egg product obtained from a control egg."
+      },
+      {
+        "term": "hyperimmunized egg",
+        "definition": "a whole egg obtained from an egg-producing animal maintained in a hyperimmune state, i.e. an egg-producing animal that has been hyperimmunized."
+      },
+      {
+        "term": "hyperimmunized egg product",
+        "definition": "a hyperimmunized egg or any product obtained from a hyperimmunized egg."
+      },
+      {
+        "term": "concentrate",
+        "definition": "a hyperimmunized egg product that is at least partially purified, such that the concentration of antibodies in the concentrate is greater than the concentration of antibodies in a hyperimmunized egg."
+      },
+      {
+        "term": "egg powder",
+        "definition": "a whole egg that has been dried. In some embodiments, the egg powder is spray-dried. In some embodiments, the egg powder is lyophilized."
+      },
+      {
+        "term": "egg-producing animal",
+        "definition": "any oviparous animal, and includes any animal that lays an egg, such as avians, fish and reptiles."
+      }
+    ]
+  },
+  {
+    "text": "As used herein, the term \u201cavian\u201d refers to an animal that is a member of the class Aves. Avians include, but are not limited to, chickens, turkeys, geese, ducks, pheasants, quail, pigeons and ostriches.\nAs used herein, the term \u201cequine\u201d refers to a mammal that is a member of the family Equidae (order Perissodactyla) such as horses.\nAs used herein, the term \u201covine\u201d refers to a mammal that is a member of the genus Bovidae, such as sheep.\nAs used herein, the term \u201csupranormal levels\u201d means levels in excess of those found in eggs of egg-producing animals that are not hyperimmunized. For example, supranormal levels of an antibody to a particular antigen are levels of the antibody in excess of those found in eggs of egg-producing animals that are not hyperimmunized with the particular antigen.\nAs used herein, the term \"administer\" means any method of providing a subject with a substance, including orally, intranasally, parenterally (intravenously, intramuscularly, or subcutaneously), rectally, topically or intraocularly.\nAs used herein, the term \u201cantigen\u201d refers to a substance that is able to induce a humoral antibody and/or cell-mediated immune response rather than immunological tolerance. The term signifies the ability to stimulate an immune response as well as react with the products of it, e.g., an antibody.\nAs used herein, an \u201cantibody\u201d is a protein that includes at least one complementarity determining region that binds to a specific target antigen, e.g. antigen A, B, C, D, Co1, Co2, H, or ET-50 disclosed herein. For example, an antibody can include a heavy (H) chain variable region (abbreviated herein as VH), and a light (L) chain variable region (abbreviated herein as VL). In another example, an antibody includes two heavy (H) chain variable regions and two light (L) chain variable regions. In a particular embodiment, the antibody is a polyclonal antibody. The term \"polyclonal antibody\", as used herein, refers to a population of antibody molecules that that are capable of immunoreacting with different epitopes on a particular antigen. In a particular embodiment, the antibody is an IgY antibody.",
+    "filename": "snake_bites.pdf",
+    "page_number": 12,
+    "section": "detailed description -> definitions",
+    "definitions": [
+      {
+        "term": "avian",
+        "definition": "an animal that is a member of the class Aves, including but not limited to chickens, turkeys, geese, ducks, pheasants, quail, pigeons and ostriches."
+      },
+      {
+        "term": "equine",
+        "definition": "a mammal that is a member of the family Equidae (order Perissodactyla), such as horses."
+      },
+      {
+        "term": "ovine",
+        "definition": "a mammal that is a member of the genus Bovidae, such as sheep."
+      },
+      {
+        "term": "supranormal levels",
+        "definition": "levels in excess of those found in eggs of egg-producing animals that are not hyperimmunized (e.g., levels of an antibody to a particular antigen that exceed those in eggs of non-hyperimmunized animals)."
+      },
+      {
+        "term": "administer",
+        "definition": "any method of providing a subject with a substance, including orally, intranasally, parenterally (intravenously, intramuscularly, or subcutaneously), rectally, topically or intraocularly."
+      },
+      {
+        "term": "antigen",
+        "definition": "a substance that is able to induce a humoral antibody and/or cell-mediated immune response rather than immunological tolerance, and capable of stimulating an immune response as well as reacting with its products (e.g., an antibody)."
+      },
+      {
+        "term": "antibody",
+        "definition": "a protein that includes at least one complementarity determining region that binds to a specific target antigen and can include heavy (VH) and light (VL) chain variable regions; in some embodiments, composed of two heavy and two light chain variable regions."
+      },
+      {
+        "term": "polyclonal antibody",
+        "definition": "a population of antibody molecules capable of immunoreacting with different epitopes on a particular antigen."
+      }
+    ]
+  }
+]

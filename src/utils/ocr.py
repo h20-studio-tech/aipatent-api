@@ -6,21 +6,23 @@ from time import time
 from io import BytesIO
 from pdfplumber.page import Page
 from openai import AsyncOpenAI
-import re
 from src.utils.logging_helper import create_logger
 from src.utils.langfuse_client import get_prompt
 from typing import Union
 from langfuse.decorators import observe
 from src.models.ocr_schemas import (
-    Embodiments, 
-    ProcessedPage, 
+    Embodiments,
+    ProcessedPage,
     Embodiment,
     EmbodimentSummary,
     EmbodimentSpellCheck,
     DetailedDescriptionEmbodiment,
     PatentSectionWithConfidence,
-    CategoryResponse
+    CategoryResponse,
+    Glossary,
+    GlossaryPageFlag
     )
+import re
 
 client = instructor.from_openai(AsyncOpenAI())
 logger = create_logger("ocr.py")
@@ -111,7 +113,7 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                     "detailed description of the invention" in line_lower or
                     "detailed description and preferred embodiments" in line_lower or
                     "detailed description of the embodiments" in line_lower or
-                    "description of the invention") and "detailed description" not in detected_sections:
+                    "description of the invention" in line_lower) and "detailed description" not in detected_sections:
                     # Only consider Detailed Description after Summary has been detected
                     if "summary of invention" in detected_sections:
                         detected_section = "detailed description"
@@ -249,9 +251,9 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                 except Exception as prompt_error:
                     # Make the OpenAI API call using the compiled prompt
                     response = await client.chat.completions.create(
-                        model="gpt-4.5-preview-2025-02-27",    
+                        model="o4-mini",
+                        reasoning_effort="high",    
                         messages=[patent_classifier_prompt],
-                        temperature=0.2,
                         response_model=PatentSectionWithConfidence,
                     )
                     
@@ -261,7 +263,7 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                     # 1. The confidence exceeds the threshold
                     # 2. We haven't seen this section before
                     # 3. This section comes after the current one in the expected order
-                    confidence_threshold = 0.7
+                    confidence_threshold = 0.8
                     current_idx = section_order.index(current_section)
                     suggested_idx = section_order.index(suggested_section)
                     
@@ -541,6 +543,71 @@ async def spell_check_embodiments(embodiments: list[Embodiment | DetailedDescrip
     results = await asyncio.gather(*tasks)
     return results
 
+@observe()
+async def extract_glossary_subsection(segmented_pages: list[ProcessedPage]) -> Glossary | None:
+    """
+    Use the Instructor library to extract glossary definitions
+    from the first 40% of detailed description pages.
+    Returns a Glossary if definitions are found, otherwise None.
+    """
+    detailed = [p for p in segmented_pages if p.section.lower() == "detailed description"]
+    if not detailed:
+        return None
+    for page in detailed:
+        prompt = (
+            "Extract key terms and their definitions from the following patent text. "
+            "Respond matching the Glossary Pydantic schema."
+            f"\n\nText:\n{page.text}"
+        )
+        try:
+            res: Glossary = await client.chat.completions.create(
+                model="o4-mini",
+                reasoning_effort="high",
+                messages=[{"role": "system", "content": prompt}],
+                response_model=Glossary
+            )
+        except Exception as e:
+            logger.error(f"Glossary extraction error on page {page.page_number}: {e}")
+            continue
+        if res.definitions:
+            res.filename = page.filename
+            res.page_number = page.page_number
+            res.section = "detailed description -> definitions"
+            return res
+
+async def detect_glossary_pages(
+    segmented_pages: list[ProcessedPage]
+) -> list[tuple[ProcessedPage, GlossaryPageFlag]]:
+    """
+    Flag pages containing glossary definitions in the 'The term ... refers to ...' format.
+    Returns list of (page, flag) tuples.
+    """
+    flags: list[tuple[ProcessedPage, GlossaryPageFlag]] = []
+    for page in segmented_pages:
+        prompt = f"""
+        You are an expert patent document analysis assistant integrated into an automated OCR pipeline.
+        After segmenting pages into sections, identify if this Detailed Description page contains glossary-style definitions.
+        Glossary definitions typically define terms with patterns like:
+        - The term “<TERM>” refers to <DEFINITION>.
+        - As used herein, the term “<TERM>” refers to <DEFINITION>.
+        Examples include:
+        - The term “control egg” refers to an egg obtained...
+        - The term “antigen” refers to a substance...
+        - As used herein, the term “antibody” is a protein...
+        - As used herein, the term “hyperimmunization” means...
+
+        Page Text:
+        {page.text}
+        """
+        flag: GlossaryPageFlag = await client.chat.completions.create(
+            model="o4-mini",
+            reasoning_effort="high",
+            messages=[{"role": "system", "content": prompt}],
+            response_model=GlossaryPageFlag
+        )
+        flags.append((page, flag))
+    return flags
+
 async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodiment | DetailedDescriptionEmbodiment]:
     try:
         # Process PDF pages
@@ -555,6 +622,19 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         segmented_pages = await segment_pages(processed_pages)
         segmentation_total = time() - segmentation_start
         logger.info(f"Page segmentation completed in {segmentation_total:.2f} seconds")
+
+        # Detect glossary pages separately
+        glossary_flags = await detect_glossary_pages(segmented_pages)
+        flagged_pages = [pg for pg, flag in glossary_flags if flag.is_glossary_page]
+        logger.info(
+            f"Detected {len(flagged_pages)} glossary pages via LLM:"
+            f" {[p.page_number for p in flagged_pages]}"
+        )
+
+        # Extract glossary definitions via Instructor LLM
+        glossary_subsection = await extract_glossary_subsection(segmented_pages)
+        if glossary_subsection:
+            logger.info(f"Extracted {len(glossary_subsection.definitions)} glossary definitions via LLM")
 
         # Extract embodiments       
         embodiments_extraction_start = time()
@@ -601,4 +681,3 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         
     except Exception as e: 
         raise RuntimeError(f"Error processing patent document: {str(e)}")
-        

@@ -1,0 +1,48 @@
+{
+  "text": "TRANSDERMAL ADMINISTRATION OF ANTIBODIES FOR TREATMENT OF\nSNAKE BITES AND OTHER VENOMOUS OR INFECTIOUS BITES\nRELATED APPLICATION\nThis application is filed as a Provisional Application with the Indian Patent Office.\n5 FIELD OF INVENTION\nThe present invention is related to a transdermal patch and the process of developing\ntransdermal administration of a drug that is antibodies or small molecules, for the treatment of\nsnake bites and other venomous or infectious bites. The topical application of drug or\nantibody formulations is through transdermal patches containing a microneedle array\n10 provided with either IgG based anti-snake venoms or IgY based anti-snake venoms or IgG or\nIgY antibodies to any protein or antigen alone or in combination with peptide(s) or small\nmolecule(s) (synthetic/natural), aimed to treat venomous or infectious bites in humans as well\nas animals.\nBACKGROUND\n15 Snakebite is one of the major public health concerns across the globe. As per WHO\n2020, more than 100,000 deaths are reported every year and more than 400,000 people suffer\nfrom morbidity due to snakebite alone, globally. Snakebite being one of the most neglected\ntropical diseases, rural population living in tropical areas is the most affected one by\nsnakebite, where the anti-snake venoms are not available due to limitations in the logistics and\n20 cold chain maintenance. Early administration of antivenins is the only way to success in the\nsnakebite treatment without any local tissue damage or amputations.\nEnvenomation due to snake bites is one of the neglected tropical diseases, though it is\nassociated with huge mortality and morbidity every year globally. According to WHO, India\nreports highest deaths of snakebite annually compared to other nations. For example, the\n25 World Health Organization reports the Indian subcontinent was drastically affected by snake\nenvenoming with the highest mortality of an average of 58,000 annual deaths worldwide\nestimated from 2000- 2019 [WHO, Departmental News, October 2020]. Snake envenoming\nas a life-threatening disease is a major public health problem globally for which immediate",
+  "filename": "snake_bites.pdf",
+  "page_number": 2,
+  "section": "detailed description -> definitions",
+  "definitions": [
+    {
+      "term": "Transdermal patch",
+      "definition": "A device applied to the skin surface for delivering drugs or antibodies through the skin."
+    },
+    {
+      "term": "Microneedle array",
+      "definition": "A system of microscopic needles arranged in an array within a transdermal patch to facilitate skin penetration and delivery of therapeutic agents."
+    },
+    {
+      "term": "IgG",
+      "definition": "Immunoglobulin G, a class of antibodies commonly used in antivenom formulations."
+    },
+    {
+      "term": "IgY",
+      "definition": "Immunoglobulin Y, the primary antibody found in avian serum and eggs, used in antivenom formulations."
+    },
+    {
+      "term": "Anti-snake venoms",
+      "definition": "Antibody preparations, including IgG or IgY, formulated to neutralize snake venom toxins."
+    },
+    {
+      "term": "Antivenins",
+      "definition": "Therapeutic antibody products used for the treatment of envenomation from snake bites."
+    },
+    {
+      "term": "Envenomation",
+      "definition": "The introduction of venom into a body by the bite or sting of a venomous animal."
+    },
+    {
+      "term": "Neglected tropical diseases",
+      "definition": "A group of infectious diseases prevalent in tropical regions, often affecting low-income or rural populations and receiving limited resources or attention."
+    },
+    {
+      "term": "Peptides",
+      "definition": "Short chains of amino acids used alone or in combination with antibodies or small molecules in therapeutic formulations for venomous or infectious bites."
+    },
+    {
+      "term": "Small molecules",
+      "definition": "Low molecular weight organic compounds, either synthetic or natural, used as therapeutic agents in drug formulations for treating venomous or infectious bites."
+    }
+  ]
+}

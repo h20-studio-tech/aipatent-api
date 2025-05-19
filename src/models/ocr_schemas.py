@@ -5,7 +5,25 @@ class CategoryResponse(BaseModel):
                         description="The category of the embodiment",
                         json_schema_extra=["disease rationale", "product composition"])
 
+class GlossaryDefinition(BaseModel):
+    term: str = Field(..., description="The defined key term")
+    definition: str = Field(..., description="The definition of the key term")
+
 class ProcessedPage(BaseModel):
+    text: str = Field(
+        ..., description="The content of a page that contains embodiments"
+    )
+    filename: str = Field(..., description="The source file of the embodiment")
+    page_number: int = Field(
+        ..., description="The page number of the embodiment in the source file"
+    )
+    section: str = Field(..., description="The section of the embodiment in the source file")
+
+class Glossary(ProcessedPage):
+    definitions: list[GlossaryDefinition] = Field(
+        ..., description="List of key term definitions extracted from the glossary/definitions subsection."
+    )
+
     text: str = Field(
         ..., description="The content of a page that contains embodiments"
     )
@@ -77,3 +95,8 @@ class PatentSectionWithConfidence(BaseModel):
         if not (0 <= v <= 1):
             raise ValueError('Confidence must be between 0 and 1')
         return v
+
+class GlossaryPageFlag(BaseModel):
+    is_glossary_page: bool = Field(
+        ..., description="True if the page contains glossary definitions"
+    )
