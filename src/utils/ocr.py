@@ -1,31 +1,67 @@
+import os
 import instructor
 import asyncio
-import pytesseract
-import pdfplumber
-from time import time
+import base64
+import re
+import json
 from io import BytesIO
 from pdfplumber.page import Page
 from openai import AsyncOpenAI
 from src.utils.logging_helper import create_logger
 from src.utils.langfuse_client import get_prompt
 from typing import Union
+from time import time
+
+import pdfplumber
+import pytesseract
+from dotenv import load_dotenv
 from langfuse.decorators import observe
+from PIL import Image
+
 from src.models.ocr_schemas import (
-    Embodiments,
-    ProcessedPage,
+    Embodiments, 
+    ProcessedPage, 
     Embodiment,
+    HeaderDetectionPage,
+    PatentSectionWithConfidence,
+    CategoryResponse,
     EmbodimentSummary,
     EmbodimentSpellCheck,
     DetailedDescriptionEmbodiment,
-    PatentSectionWithConfidence,
-    CategoryResponse,
     Glossary,
     GlossaryPageFlag
     )
-import re
 
-client = instructor.from_openai(AsyncOpenAI())
+# Configure logging
 logger = create_logger("ocr.py")
+
+# Load environment variables
+load_dotenv()
+
+# Initialize OpenAI client
+openai = AsyncOpenAI(
+)
+
+# Add instructor patch for response_model
+client = instructor.from_openai(openai)
+
+# Configure Tesseract path if needed
+# pytesseract.pytesseract.tesseract_cmd = r'<path_to_tesseract>'
+
+
+def pil_image_to_base64(pil_img: Image.Image) -> str:
+    """Convert a PIL Image to a base64 string in the format expected by OpenAI's API.
+    
+    Args:
+        pil_img: PIL Image to convert
+        
+    Returns:
+        Base64-encoded string with data URL prefix
+    """
+    buffered = BytesIO()
+    pil_img.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+    return f"data:image/png;base64,{img_str}"
 
 
 def pdf_pages(pdf_data: bytes, filename: str) -> tuple[list[Page], str]:
@@ -77,6 +113,11 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
             r"(?:see|per|from).*(?:the|in|at|on).*(?:summary|detailed description|claims)"
         ]
         
+        # Limit header keyword search to the first part of the page to avoid
+        # matching in-body cross-references. Characters after this limit will be
+        # ignored when looking for section headers.
+        HEADER_SEARCH_LIMIT = 400
+        
         # Find section header candidates - check the entire page, not just the beginning
         section_found = False
         detected_section = None
@@ -108,12 +149,16 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
             if is_header:
                 logger.info(f"Found potential header (line {i+1}): '{line}'")
                 
-                
-                if ("detailed description" in line_lower or
-                    "detailed description of the invention" in line_lower or
-                    "detailed description and preferred embodiments" in line_lower or
-                    "detailed description of the embodiments" in line_lower or
-                    "description of the invention" in line_lower) and "detailed description" not in detected_sections:
+                # Strict regex for Detailed Description header variants
+                detailed_desc_patterns = [
+                    r"\bdetailed\s+description\b",
+                    r"\bdetailed\s+description\s+of\s+the\s+invention\b",
+                    r"\bdetailed\s+description\s+and\s+preferred\s+embodiments\b",
+                    r"\bdetailed\s+description\s+of\s+the\s+embodiments\b",
+                    r"\bdescription\s+of\s+the\s+invention\b"
+                ]
+                matched_detailed_header = any(re.search(pat, line_lower) for pat in detailed_desc_patterns)
+                if matched_detailed_header and "detailed description" not in detected_sections:
                     # Only consider Detailed Description after Summary has been detected
                     if "summary of invention" in detected_sections:
                         detected_section = "detailed description"
@@ -156,7 +201,8 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                         r"detailed\s+description\s+of\s+the\s+invention", 
                         r"description\s+of\s+embodiments", 
                         r"description\s+of\s+the\s+embodiments",
-                        r"detailed\s+description\s+of\s+the\s+embodiments"
+                        r"detailed\s+description\s+of\s+the\s+embodiments",
+                        r"detailed\s+description\s+and\s+preferred\s+embodiments"
                     ]
                     
                     # Look for these patterns as standalone headers, checking context
@@ -164,26 +210,45 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                         matches = list(re.finditer(pattern, filtered_text))
                         for match in matches:
                             start_pos = match.start()
+                            # Ignore matches that are far into the page body
+                            if start_pos > HEADER_SEARCH_LIMIT:
+                                logger.debug(
+                                    f"Ignoring detailed description match beyond limit at position {start_pos}: '{match.group(0)}'"
+                                )
+                                continue
                             matched_phrase = match.group(0)
                             
+                            # Extract the entire line containing the match to examine word count
+                            line_start = filtered_text.rfind("\n", 0, start_pos) + 1
+                            line_end = filtered_text.find("\n", start_pos)
+                            if line_end == -1:
+                                line_end = len(filtered_text)
+                            line_content = filtered_text[line_start:line_end].strip()
+                            word_count = len(line_content.split())
+                            # Heuristic: true headers are usually short (<= 8 words)
+                            if word_count > 8:
+                                logger.debug(
+                                    f"Skipping long potential header ({word_count} words): '{line_content}'"
+                                )
+                                continue
+                            
                             # Check if this looks like a header (beginning of text, after newline, or after period)
-                            is_potential_header = (start_pos < 50 or filtered_text[start_pos-1:start_pos] in ["\n", "."])
+                            is_potential_header = (
+                                start_pos < 50 or filtered_text[start_pos-1:start_pos] in ["\n", "."]
+                            )
                             
                             if is_potential_header:
                                 logger.info(f"Found potential detailed description header: '{matched_phrase}'")
                                 
-                                # Check if no text after this pattern on the same line
-                                line_end = filtered_text[start_pos:].find("\n")
-                                if line_end == -1:  # End of text
-                                    line_end = len(filtered_text[start_pos:])
-                                line_content = filtered_text[start_pos:start_pos+line_end].strip()
-                                
+                                # Check if no trailing text after this pattern on the same line
                                 if any(line_content.endswith(suffix) for suffix in ["description", "embodiments", "invention"]):
                                     detected_section = "detailed description"
                                     section_found = True
                                     detection_method = "keyword match"
                                     matched_text = matched_phrase
-                                    logger.info(f"DETECTED 'detailed description' via keyword match: '{matched_phrase}'")
+                                    logger.info(
+                                        f"DETECTED 'detailed description' via keyword match (validated): '{matched_phrase}'"
+                                    )
                                     break
                         if section_found:
                             break
@@ -193,10 +258,28 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                     claim_matches = list(re.finditer(r"claims", filtered_text))
                     for match in claim_matches:
                         start_pos = match.start()
+                        # Ignore matches beyond search limit
+                        if start_pos > HEADER_SEARCH_LIMIT:
+                            logger.debug(
+                                f"Ignoring claims match beyond limit at position {start_pos}: '{match.group(0)}'"
+                            )
+                            continue
                         matched_phrase = match.group(0)
                         
                         # Check if this looks like a header
-                        is_potential_header = (start_pos < 50 or filtered_text[start_pos-1:start_pos] in ["\n", "."])
+                        line_start = filtered_text.rfind("\n", 0, start_pos) + 1
+                        line_end = filtered_text.find("\n", start_pos)
+                        if line_end == -1:
+                            line_end = len(filtered_text)
+                        line_content = filtered_text[line_start:line_end].strip()
+                        if len(line_content.split()) > 4:
+                            logger.debug(
+                                f"Skipping long potential claims header: '{line_content}'"
+                            )
+                            continue
+                        is_potential_header = (
+                            start_pos < 50 or filtered_text[start_pos-1:start_pos] in ["\n", "."]
+                        )
                         if is_potential_header:
                             logger.info(f"Found potential claims header: '{matched_phrase}'")
                             
@@ -206,30 +289,12 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                                 section_found = True
                                 detection_method = "keyword match"
                                 matched_text = matched_phrase
-                                logger.info(f"DETECTED 'claims' via keyword match: '{matched_phrase}'")
+                                logger.info(
+                                    f"DETECTED 'claims' via keyword match (validated): '{matched_phrase}'"
+                                )
                                 break
-                
                 if section_found:
                     break
-        
-        # Special case: If this is the last page and "claims" haven't been detected,
-        # check more aggressively for claims indicators (numbered paragraphs starting with numbers)
-        if not section_found and "claims" not in detected_sections:
-            # Check if this page has a structure that looks like claims (numbered paragraphs)
-            has_numbered_items = re.search(r"^\s*\d+\.\s+", text_lower, re.MULTILINE)
-            if has_numbered_items:
-                logger.info(f"Found numbered items on page {page.page_number}, checking if they're claims")
-                
-                # Additional verification: multiple numbered items and typical claim language
-                numbered_items = re.findall(r"^\s*\d+\.\s+", text_lower, re.MULTILINE)
-                has_claim_language = any(phrase in text_lower for phrase in ["comprising", "wherein", "consisting of"])
-                
-                if len(numbered_items) > 1 and has_claim_language:
-                    detected_section = "claims"
-                    section_found = True
-                    detection_method = "structural analysis"
-                    matched_text = f"Numbered items ({len(numbered_items)}) with claim language"
-                    logger.info(f"DETECTED 'claims' via structural analysis: {len(numbered_items)} numbered items with claim language")
         
         # Update current section if a new one was detected
         if section_found:
@@ -249,6 +314,7 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
                         "text": page.text
                     })
                 except Exception as prompt_error:
+                    logger.error(f"Error getting patent section classifier prompt: {prompt_error}")
                     # Make the OpenAI API call using the compiled prompt
                     response = await client.chat.completions.create(
                         model="o4-mini",
@@ -305,17 +371,20 @@ def process_pdf_pages(pdf: tuple[list[Page], str]) -> list[ProcessedPage]:
             )
             try:
                 # Try OCR if PDFPlumber fails
-                image = page.to_image(width=3840)
+                image = page.to_image(width=1920)
                 page_ocr = pytesseract.image_to_string(image.original)
                 if page_ocr == "":
                     logger.error(f"OCR failed to extract text from page {page.page_number}")
                 else:
+                    # Convert PIL image to base64 string in OpenAI-compatible format
+                    base64_img = pil_image_to_base64(image.original)
                     processed_pages.append(
                         ProcessedPage(
                             text=page_ocr, 
                             filename=pdf_name, 
                             page_number=page.page_number,
-                            section=""  # Empty section to be filled by segment_pages
+                            section="",  # Empty section to be filled by segment_pages
+                            image=base64_img  # Store this as base64 for LLM
                         )
                     )
                     logger.info(
@@ -324,12 +393,20 @@ def process_pdf_pages(pdf: tuple[list[Page], str]) -> list[ProcessedPage]:
             except Exception as e:
                 logger.error(f"OCR failed with error: {e}")
         else:
+            try:
+                img_obj = page.to_image(width=1920)
+                base64_img = pil_image_to_base64(img_obj.original)
+            except Exception as img_err:
+                logger.error(f"Failed to render image for page {page.page_number}: {img_err}")
+                base64_img = None
+
             processed_pages.append(
                 ProcessedPage(
                     text=page_text, 
                     filename=pdf_name, 
                     page_number=page.page_number,
-                    section=""  # Empty section to be filled by segment_pages
+                    section="",  # Empty section to be filled by segment_pages
+                    image=base64_img
                 )
             )
             logger.info(
@@ -337,6 +414,100 @@ def process_pdf_pages(pdf: tuple[list[Page], str]) -> list[ProcessedPage]:
             )
     return processed_pages
 
+@observe(name='description-subheaders-detection')
+async def detect_description_header(segmented_page: ProcessedPage) -> HeaderDetectionPage:
+    # Log the start of detection for this page
+    logger.info(
+        f"Starting header detection for {segmented_page.filename} page {segmented_page.page_number}"
+    )
+    
+    prompt = """
+    You are a header detection system for a biological patent ETL application.
+
+    Analyze the image and identify if there is a clearly visible sub-section header.
+    Focus on text that appears to be a title or heading, typically at the top of the page or section.
+    
+    - Ignore any 'example' headers
+    - Ignore any step headers like step 1, step 2, etc.
+    
+    Return:
+    - has_header: True if a clear header is found, False otherwise
+    - header: The extracted header text if found, otherwise None
+    """
+    
+    if not segmented_page.image:
+        logger.warning(
+            f"No image available for {segmented_page.filename} page {segmented_page.page_number}; skipping header detection."
+        )
+        # Using the field names expected in actual application model
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            text=getattr(segmented_page, 'text', None) or getattr(segmented_page, 'text_content', None),
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            section=segmented_page.section,   
+            image=None
+        )
+    
+    try:
+        response = await client.chat.completions.create(
+            model='o3',
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": segmented_page.image}
+                    }
+                ]
+            }],
+            response_model=HeaderDetection
+        )
+        logger.info(
+            f"Header detection finished for {segmented_page.filename} page {segmented_page.page_number}: "
+            f"has_header={response.has_header}, header='{response.header}'"
+        )
+        
+        # Using the field names expected in actual application model
+        return HeaderDetectionPage(
+            header=response.header,
+            has_header=response.has_header,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image
+        )
+    except Exception as e:
+        logger.error(
+            f"Error in detect_description_header for {segmented_page.filename} page {segmented_page.page_number}: {str(e)}"
+        )
+        
+        # Using the field names expected in actual application model
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image
+        )
+
+
+async def detect_description_headers(segmented_pages: list[ProcessedPage]) -> list[HeaderDetectionPage]:
+    """Run header detection over a list of pages with progress logging."""
+    total = len(segmented_pages)
+    logger.info(f"Beginning header detection over {total} page(s) concurrently")
+
+    # Run header detection concurrently
+    tasks = [detect_description_header(page) for page in segmented_pages]
+    results = await asyncio.gather(*tasks)
+
+    logger.info("Header detection batch complete")
+    return results
 
 examples = [
     """
@@ -543,6 +714,48 @@ async def spell_check_embodiments(embodiments: list[Embodiment | DetailedDescrip
     results = await asyncio.gather(*tasks)
     return results
 
+async def add_headers_to_embodiments(
+    dd_embs: list[DetailedDescriptionEmbodiment],
+    header_pages: list[HeaderDetectionPage],
+) -> list[DetailedDescriptionEmbodiment]:
+    """Attach detected page headers to their corresponding detailed-description embodiments.
+    
+    Each embodiment is matched by `(filename, page_number)` to the result from
+    `detect_description_headers`.
+    
+    Carry-forward rule for orphan pages:
+        If a page has *no* detected header, assign the most recent header that
+        appeared on an earlier page of the same file. This prevents orphan
+        embodiments and mirrors how authors sometimes place a header once and
+        continue content on subsequent pages.
+    """
+    # Direct look-ups for pages with explicit headers
+    page_lookup: dict[tuple[str, int], str] = {
+        (hp.filename, hp.page_number): hp.header  # type: ignore[arg-type]
+        for hp in header_pages
+        if hp.has_header and hp.header  # ensure header text present
+    }
+
+    # Track last seen header per file for carry-forward
+    last_header: dict[str, str] = {}
+
+    # Sort embodiments to ensure forward iteration by page order within each file
+    dd_embs_sorted = sorted(dd_embs, key=lambda e: (e.filename, e.page_number))
+
+    for emb in dd_embs_sorted:
+        key = (emb.filename, emb.page_number)
+
+        if key in page_lookup:
+            # Direct match – use it and update last header cache
+            emb.header = page_lookup[key]
+            last_header[emb.filename] = page_lookup[key]
+        else:
+            # No header detected on this page – use carry-forward if available
+            if emb.header is None and emb.filename in last_header:
+                emb.header = last_header[emb.filename]
+
+    return dd_embs
+
 @observe()
 async def extract_glossary_subsection(segmented_pages: list[ProcessedPage]) -> Glossary | None:
     """
@@ -623,6 +836,12 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         segmentation_total = time() - segmentation_start
         logger.info(f"Page segmentation completed in {segmentation_total:.2f} seconds")
 
+        # Detect headers on detailed description pages
+        header_detection_pages = await detect_description_headers(
+            [page for page in segmented_pages if page.section == "detailed description"]
+        )
+        logger.info(f"Header detection completed for {len(header_detection_pages)} pages")
+
         # Detect glossary pages separately
         glossary_flags = await detect_glossary_pages(segmented_pages)
         flagged_pages = [pg for pg, flag in glossary_flags if flag.is_glossary_page]
@@ -640,6 +859,7 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         embodiments_extraction_start = time()
         embodiments = await find_embodiments(segmented_pages)
         embodiments_extraction_total = time() - embodiments_extraction_start
+        logger.info(f"Embodiments extraction completed in {embodiments_extraction_total:.2f} seconds")
         
         # Validate that all embodiments are of the correct type
         if embodiments and len(embodiments) > 0:
@@ -659,6 +879,12 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
             
         categorized_detailed_description = await categorize_detailed_description(detailed_description_embodiments)
         logger.info(f"Categorized {len(categorized_detailed_description)} detailed description embodiments")
+
+        # Add headers to the categorized detailed description embodiments
+        categorized_detailed_description = await add_headers_to_embodiments(
+            categorized_detailed_description, header_detection_pages
+        )
+        logger.info("Added headers to categorized detailed description embodiments")
         
         #enforce that they are instances of DetailedDescriptionEmbodiment
         for i, embodiment in enumerate(categorized_detailed_description):
