@@ -1,9 +1,7 @@
-import os
 import instructor
 import asyncio
 import base64
 import re
-import json
 from io import BytesIO
 from pdfplumber.page import Page
 from openai import AsyncOpenAI
@@ -19,15 +17,16 @@ from langfuse.decorators import observe
 from PIL import Image
 
 from src.models.ocr_schemas import (
-    Embodiments, 
-    ProcessedPage, 
+    DetailedDescriptionEmbodiment,
     Embodiment,
+    Embodiments,
     HeaderDetectionPage,
+    HeaderDetection,
+    ProcessedPage,
     PatentSectionWithConfidence,
     CategoryResponse,
     EmbodimentSummary,
     EmbodimentSpellCheck,
-    DetailedDescriptionEmbodiment,
     Glossary,
     GlossaryPageFlag
     )
@@ -821,7 +820,8 @@ async def detect_glossary_pages(
         flags.append((page, flag))
     return flags
 
-async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodiment | DetailedDescriptionEmbodiment]:
+async def process_patent_document(
+    pdf_data: bytes, filename: str) -> list[Embodiment | DetailedDescriptionEmbodiment]:
     try:
         # Process PDF pages
         pdf_processing_start = time()
@@ -835,7 +835,7 @@ async def process_patent_document(pdf_data: bytes, filename: str) -> list[Embodi
         segmented_pages = await segment_pages(processed_pages)
         segmentation_total = time() - segmentation_start
         logger.info(f"Page segmentation completed in {segmentation_total:.2f} seconds")
-
+        
         # Detect headers on detailed description pages
         header_detection_pages = await detect_description_headers(
             [page for page in segmented_pages if page.section == "detailed description"]

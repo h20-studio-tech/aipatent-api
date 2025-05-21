@@ -1,8 +1,6 @@
-
 import types
 import sys
 
-# Stub heavy external deps so that importing src.utils.ocr works in a minimal test env
 import pytest
 
 # Now we can safely import without the real 'instructor' package
@@ -11,6 +9,7 @@ from src.models.ocr_schemas import (
     DetailedDescriptionEmbodiment,
     HeaderDetectionPage,
 )
+# Stub heavy external deps so that importing src.utils.ocr works in a minimal test env
 sys.modules.setdefault("instructor", types.ModuleType("instructor"))
 sys.modules["instructor"].from_openai = lambda x: x  # type: ignore[attr-defined]
 
