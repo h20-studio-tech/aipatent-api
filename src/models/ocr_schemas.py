@@ -10,11 +10,11 @@ class ProcessedPage(BaseModel):
     text: str = Field(
         ..., description="The content of a page that contains embodiments"
     )
-    filename: str = Field(..., description="The source file of the embodiment")
+    filename: str = Field(..., description="The source file of the page")
     page_number: int = Field(
-        ..., description="The page number of the embodiment in the source file"
+        ..., description="The page number of the page in the source file"
     )
-    section: str = Field(..., description="The section of the embodiment in the source file")
+    section: str = Field(..., description="The section of the page in the source file")
     image: Optional[str] = Field(None, description="The base64 encoded image of the page")
 
 class Embodiment(BaseModel):
@@ -34,6 +34,11 @@ class DetailedDescriptionEmbodiment(BaseModel):
     sub_category: str = Field(..., 
                           description="The category of the embodiment",
                           json_schema_extra=["disease rationale", "product composition"])
+    # New optional header field populated when a page-level header is detected
+    header: Optional[str] = Field(
+        None,
+        description="Header text detected on the same page (if any)"
+    )
     # Allow initial creation without summary
     summary: str = Field("", description="the embodiment summary")
 
