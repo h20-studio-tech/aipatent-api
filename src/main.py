@@ -6,7 +6,7 @@ import boto3.dynamodb
 import boto3.dynamodb.table
 import lancedb
 import uuid
-
+from uuid import uuid4
 from botocore.exceptions import ClientError
 from datetime import datetime
 from typing import Union
@@ -57,7 +57,7 @@ from src.models.api_schemas import (
      EmbodimentListResponse,
      PatentFilesListResponse
  )
-from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment
+from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment, Glossary, GlossaryDefinition
 
 load_dotenv(".env")
 
@@ -510,13 +510,50 @@ async def patent(patent_id: str, file: UploadFile):
                         except Exception as e:
                             print(f"Error parsing Embodiment for record {record.get('file_id')}: {e}")
             
-            patent_embodiments = parsed_embodiments # Assign the list of parsed Pydantic objects
+            patent_embodiments = parsed_embodiments
+            glossary_rows = (
+                supabase.table("glossary_terms")
+                .select("*")
+                .eq("file_id", str(patent_id))
+                .execute()
+            )
 
+            if glossary_rows.data:
+                glossary_defs = [
+                    GlossaryDefinition(
+                        term=row["term"],
+                        definition=row["definition"],
+                        page_number=row["page_number"],
+                        filename=filename,
+                    )
+                    for row in glossary_rows.data
+                ]
+                glossary_subsection = Glossary(
+                    definitions=glossary_defs,
+                    filename=filename,
+                )
+            else:
+                glossary_subsection = None
         else:
             logging.info(f"Patent with ID {patent_id} does not exist.")
             # process the doc because it does not exist in db
-            patent_embodiments = await process_patent_document(content, filename)
+            glossary_subsection, patent_embodiments = await process_patent_document(content, filename)
             
+            if glossary_subsection and glossary_subsection.definitions:
+                supabase.table("glossary_terms").upsert(
+                    [
+                        {
+                            "id": str(uuid4()),
+                            "file_id": str(patent_id),
+                            "term": d.term.lower(),
+                            "definition": d.definition,
+                            "page_number": d.page_number,
+                        }
+                        for d in glossary_subsection.definitions
+                    ],
+                    on_conflict=("file_id", "term"),
+                    ignore_duplicates=True,
+                ).execute()
         # Store extracted embodiments to Postgres
         try:
             response = (supabase.table("patent_files")
@@ -553,6 +590,7 @@ async def patent(patent_id: str, file: UploadFile):
             filename=filename,
             message="Patent document processed successfully",
             data=patent_embodiments,
+            terms=glossary_subsection,
             status_code=200,
         )
     except Exception as e:

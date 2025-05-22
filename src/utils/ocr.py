@@ -23,6 +23,7 @@ from src.models.ocr_schemas import (
     HeaderDetectionPage,
     HeaderDetection,
     ProcessedPage,
+    GlossaryDefinition,
     PatentSectionWithConfidence,
     CategoryResponse,
     EmbodimentSummary,
@@ -765,63 +766,113 @@ async def extract_glossary_subsection(segmented_pages: list[ProcessedPage]) -> G
     detailed = [p for p in segmented_pages if p.section.lower() == "detailed description"]
     if not detailed:
         return None
-    for page in detailed:
-        prompt = (
-            "Extract key terms and their definitions from the following patent text. "
-            "Respond matching the Glossary Pydantic schema."
-            f"\n\nText:\n{page.text}"
-        )
+
+    async def process_page(page: ProcessedPage) -> Glossary | None:
+        prompt = f"""
+            Extract key terms and their definitions from the following patent text. 
+            Respond matching the Glossary Pydantic schema.
+            
+            Ignore terms that are not directly related to the scientific aspect of the patent
+            
+            Examples included of terms to be ignored:
+            - "or", "a", "an", "the", "about", "herein"
+            
+            Examples of terms to be included:              
+            Glossary definitions typically define terms with patterns like:
+            - The term "<TERM>" refers to <DEFINITION>.
+            - As used herein, the term "<TERM>" refers to <DEFINITION>.
+            
+            Examples include:
+            - The term "control egg" refers to an egg obtained...
+            - The term "antigen" refers to a substance...
+            - As used herein, the term "antibody" is a protein...
+            - As used herein, the term "hyperimmunization" means...
+            
+            Text:
+            {page.text}
+        """
         try:
             res: Glossary = await client.chat.completions.create(
-                model="o4-mini",
-                reasoning_effort="high",
+                model="o3",
                 messages=[{"role": "system", "content": prompt}],
                 response_model=Glossary
             )
+            logger.info(f"Glossary extraction completed on page {page.page_number}, extracted {len(res.definitions)} definitions")
+            if res.definitions:
+                for d in res.definitions:          # tag each definition
+                    d.page_number = page.page_number
+                res.filename = page.filename
+                return res
         except Exception as e:
             logger.error(f"Glossary extraction error on page {page.page_number}: {e}")
-            continue
-        if res.definitions:
-            res.filename = page.filename
-            res.page_number = page.page_number
-            res.section = "detailed description -> definitions"
-            return res
+        return None
+
+    # Process pages concurrently to improve performance
+    tasks = [process_page(pg) for pg in detailed]
+    results = await asyncio.gather(*tasks)
+
+    successful = [r for r in results if r]
+    if not successful:
+        return None
+
+    # deduplicate by lowercase term
+    unique: dict[str, GlossaryDefinition] = {}
+    for g in successful:
+        for d in g.definitions:
+            key = d.term.strip().lower()
+            if key not in unique:
+                unique[key] = d
+
+    aggregated = Glossary(
+        definitions=list(unique.values()),
+        filename=successful[0].filename,
+    )
+
+    logger.info(
+        "Aggregated %d unique glossary definitions from %d page(s)",
+        len(aggregated.definitions),
+        len(successful),
+    )
+    return aggregated
 
 async def detect_glossary_pages(
     segmented_pages: list[ProcessedPage]
 ) -> list[tuple[ProcessedPage, GlossaryPageFlag]]:
     """
     Flag pages containing glossary definitions in the 'The term ... refers to ...' format.
+    Processes pages concurrently for better performance.
     Returns list of (page, flag) tuples.
     """
-    flags: list[tuple[ProcessedPage, GlossaryPageFlag]] = []
-    for page in segmented_pages:
+    async def process_page(page: ProcessedPage) -> tuple[ProcessedPage, GlossaryPageFlag]:
         prompt = f"""
         You are an expert patent document analysis assistant integrated into an automated OCR pipeline.
         After segmenting pages into sections, identify if this Detailed Description page contains glossary-style definitions.
         Glossary definitions typically define terms with patterns like:
-        - The term “<TERM>” refers to <DEFINITION>.
-        - As used herein, the term “<TERM>” refers to <DEFINITION>.
+        - The term "<TERM>" refers to <DEFINITION>.
+        - As used herein, the term "<TERM>" refers to <DEFINITION>.
         Examples include:
-        - The term “control egg” refers to an egg obtained...
-        - The term “antigen” refers to a substance...
-        - As used herein, the term “antibody” is a protein...
-        - As used herein, the term “hyperimmunization” means...
+        - The term "control egg" refers to an egg obtained...
+        - The term "antigen" refers to a substance...
+        - As used herein, the term "antibody" is a protein...
+        - As used herein, the term "hyperimmunization" means...
 
         Page Text:
         {page.text}
         """
         flag: GlossaryPageFlag = await client.chat.completions.create(
-            model="o4-mini",
+            model="o3",
             reasoning_effort="high",
             messages=[{"role": "system", "content": prompt}],
             response_model=GlossaryPageFlag
         )
-        flags.append((page, flag))
-    return flags
+        return (page, flag)
+
+    # Process all pages concurrently
+    tasks = [process_page(page) for page in segmented_pages]
+    return await asyncio.gather(*tasks)
 
 async def process_patent_document(
-    pdf_data: bytes, filename: str) -> list[Embodiment | DetailedDescriptionEmbodiment]:
+    pdf_data: bytes, filename: str) -> tuple[Glossary, list[Embodiment | DetailedDescriptionEmbodiment]]:
     try:
         # Process PDF pages
         pdf_processing_start = time()
@@ -836,14 +887,17 @@ async def process_patent_document(
         segmentation_total = time() - segmentation_start
         logger.info(f"Page segmentation completed in {segmentation_total:.2f} seconds")
         
+        # Detect glossary pages separately
+        detailed_description_pages = [page for page in segmented_pages if page.section == "detailed description"]
+        
         # Detect headers on detailed description pages
         header_detection_pages = await detect_description_headers(
-            [page for page in segmented_pages if page.section == "detailed description"]
+            detailed_description_pages
         )
         logger.info(f"Header detection completed for {len(header_detection_pages)} pages")
 
-        # Detect glossary pages separately
-        glossary_flags = await detect_glossary_pages(segmented_pages)
+        
+        glossary_flags = await detect_glossary_pages(detailed_description_pages)
         flagged_pages = [pg for pg, flag in glossary_flags if flag.is_glossary_page]
         logger.info(
             f"Detected {len(flagged_pages)} glossary pages via LLM:"
@@ -851,7 +905,7 @@ async def process_patent_document(
         )
 
         # Extract glossary definitions via Instructor LLM
-        glossary_subsection = await extract_glossary_subsection(segmented_pages)
+        glossary_subsection = await extract_glossary_subsection(flagged_pages)
         if glossary_subsection:
             logger.info(f"Extracted {len(glossary_subsection.definitions)} glossary definitions via LLM")
 
@@ -903,7 +957,7 @@ async def process_patent_document(
         spell_checked_embodiments = await spell_check_embodiments(summarized_embodiments)
         logger.info(f"Spell checked {len(spell_checked_embodiments)} embodiments")
         
-        return spell_checked_embodiments
+        return glossary_subsection, spell_checked_embodiments
         
     except Exception as e: 
         raise RuntimeError(f"Error processing patent document: {str(e)}")

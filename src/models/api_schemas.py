@@ -1,11 +1,11 @@
 import uuid
 from datetime import datetime
 from pydantic import BaseModel, Field
-from typing import List, Optional, Any, Union
+from typing import List, Optional, Any, Union, Tuple
 from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment
 from src.models.rag_schemas import Chunk
 from enum import Enum
-
+from src.models.ocr_schemas import Glossary
 class FileUploadResponse(BaseModel):
     """
     Response model for file upload operations.
@@ -99,6 +99,7 @@ class PatentUploadResponse(BaseModel):
     data: list[Union[Embodiment, DetailedDescriptionEmbodiment]] = Field(
         ..., description="The list of embodiments in a page that contains embodiments"
     )
+    terms: Glossary = Field(..., description="The glossary of terms in the patent document")
     status_code: int = Field(
         ..., description="HTTP status code indicating the result of the operation"
     )

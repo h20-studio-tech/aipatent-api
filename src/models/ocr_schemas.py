@@ -9,7 +9,8 @@ class CategoryResponse(BaseModel):
 class GlossaryDefinition(BaseModel):
     term: str = Field(..., description="The defined key term")
     definition: str = Field(..., description="The definition of the key term")
-
+    page_number: int = Field(..., description="The page number of the glossary definition")
+    filename: str = Field(..., description="The source file of the glossary definition")
 class ProcessedPage(BaseModel):
     text: str = Field(
         ..., description="The content of a page that contains embodiments"
@@ -20,20 +21,11 @@ class ProcessedPage(BaseModel):
     )
     section: str = Field(..., description="The section of the page in the source file")
     image: Optional[str] = Field(None, description="The base64 encoded image of the page")
-class Glossary(ProcessedPage):
+class Glossary(BaseModel):
     definitions: list[GlossaryDefinition] = Field(
-        ..., description="List of key term definitions extracted from the glossary/definitions subsection."
+        ..., description="List of key term definitions extracted from the definitions subsection."
     )
-
-    text: str = Field(
-        ..., description="The content of a page that contains embodiments"
-    )
-    filename: str = Field(..., description="The source file of the embodiment")
-    page_number: int = Field(
-        ..., description="The page number of the embodiment in the source file"
-    )
-    section: str = Field(..., description="The section of the embodiment in the source file")
-
+    filename: str = Field(..., description="The source file of the glossary")
 
 class Embodiment(BaseModel):
     text: str = Field(..., description="The embodiment")
