@@ -539,52 +539,53 @@ async def patent(patent_id: str, file: UploadFile):
             # process the doc because it does not exist in db
             glossary_subsection, patent_embodiments = await process_patent_document(content, filename)
             
-            if glossary_subsection and glossary_subsection.definitions:
-                supabase.table("glossary_terms").upsert(
+            try:
+                # 1️⃣ Insert patent_files row
+                supabase.table("patent_files").insert(
+                    {"id": str(patent_id), "filename": filename}
+                ).execute()
+                logging.info(f"Inserted patent_files id={patent_id}")
+
+                # 2️⃣ Insert glossary terms (FK satisfied)
+                if glossary_subsection and glossary_subsection.definitions:
+                    supabase.table("glossary_terms").insert(
+                        [
+                            {
+                                "id": str(uuid4()),
+                                "file_id": str(patent_id),
+                                "term": d.term.lower(),
+                                "definition": d.definition,
+                                "page_number": d.page_number,
+                            }
+                            for d in glossary_subsection.definitions
+                        ]
+                    ).execute()
+                    logging.info(
+                        f"Inserted {len(glossary_subsection.definitions)} glossary terms for patent_id={patent_id}"
+                    )
+
+                # 3️⃣ Insert embodiments
+                supabase.table("embodiments").insert(
                     [
                         {
-                            "id": str(uuid4()),
                             "file_id": str(patent_id),
-                            "term": d.term.lower(),
-                            "definition": d.definition,
-                            "page_number": d.page_number,
+                            "emb_number": idx,
+                            "text": emb.text,
+                            "page_number": emb.page_number,
+                            "section": emb.section,
+                            "summary": emb.summary,
+                            **(
+                                {"sub_category": emb.sub_category}
+                                if isinstance(emb, DetailedDescriptionEmbodiment)
+                                else {}
+                            ),
                         }
-                        for d in glossary_subsection.definitions
-                    ],
-                    on_conflict=("file_id", "term"),
-                    ignore_duplicates=True,
+                        for idx, emb in enumerate(patent_embodiments, start=1)
+                    ]
                 ).execute()
-        # Store extracted embodiments to Postgres
-        try:
-            response = (supabase.table("patent_files")
-            .insert({"id": str(patent_id), "filename": filename})
-            .execute())
-            logging.info(f'supabase patent_files insert completed with response {response}')
-            
-            embodiments_insert_response = (supabase.table("embodiments")
-            .insert(
-                [
-                    {
-                        "file_id": str(patent_id), 
-                        "emb_number": index,
-                        "text": embodiment.text,
-                        "page_number": embodiment.page_number,
-                        "section" : embodiment.section,
-                        "summary": embodiment.summary,
-                         **(
-                              {"sub_category": embodiment.sub_category}
-                              if isinstance(embodiment, DetailedDescriptionEmbodiment) 
-                              else {}
-                          ),
-                    } for index, embodiment in enumerate(patent_embodiments, start=1)
-                ]
-            )
-            .execute())
-            logging.info(f'supabase embodiments insert completed with response {embodiments_insert_response}')
-
-            
-        except Exception as db_e:
-            logging.error(f"Failed to store embodiments for patent_id={patent_id}: {db_e}")
+                logging.info(f"Inserted {len(patent_embodiments)} embodiments for patent_id={patent_id}")
+            except Exception as db_e:
+                logging.error(f"Failed to store data for patent_id={patent_id}: {db_e}")
               
         return PatentUploadResponse(
             filename=filename,

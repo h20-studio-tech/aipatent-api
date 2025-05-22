@@ -10,7 +10,6 @@ class GlossaryDefinition(BaseModel):
     term: str = Field(..., description="The defined key term")
     definition: str = Field(..., description="The definition of the key term")
     page_number: int = Field(..., description="The page number of the glossary definition")
-    filename: str = Field(..., description="The source file of the glossary definition")
 class ProcessedPage(BaseModel):
     text: str = Field(
         ..., description="The content of a page that contains embodiments"
