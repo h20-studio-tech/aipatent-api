@@ -193,15 +193,16 @@ class SyntheticEmbodimentRequest(BaseModel):
     Request model for generating a synthetic embodiment.
     
     Attributes:
+        file_id (str): The UUIDv4 of the patent.
         inspiration (float): Degree of inspiration to apply (e.g., creativity factor).
-        source_embodiment (str): The base embodiment text to draw from.
+        knowledge (list[dict]): List of knowledge components.
         patent_title (str): Title of the patent for context.
         disease (str): Disease relevant to the embodiment.
         antigen (str): Antigen relevant to the embodiment.
     """
+    file_id: str = Field(..., description="The UUIDv4 of the patent")
     inspiration: float = Field(..., description="Degree of inspiration to apply (e.g., creativity factor)")
     knowledge : list[dict] = Field(..., description="list of knowledge components")
-    source_embodiment: str = Field(..., description="The base embodiment text to draw from")
     patent_title: str = Field(..., description="Title of the patent for context")
     disease: str = Field(..., description="Disease relevant to the embodiment")
     antigen: str = Field(..., description="Antigen relevant to the embodiment")
@@ -235,7 +236,7 @@ class ApprovedEmbodimentRequest(BaseModel):
     Request model for approving and storing an embodiment.
     
     Attributes:
-        patent_id (uuid.UUID): The UUIDv4 of the patent to update.
+        patent_id (str): The UUIDv4 of the patent to update.
         embodiment (Union[Embodiment, DetailedDescriptionEmbodiment]): The embodiment object to store.
     """
     patent_id: str = Field(..., description="The UUIDv4 of the patent to update")

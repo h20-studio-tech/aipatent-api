@@ -789,9 +789,9 @@ async def synthetic_embodiment(request: SyntheticEmbodimentRequest):
     """
     try:
         res = await generate_embodiment(
+            request.file_id,
             request.inspiration,
             request.knowledge,
-            request.source_embodiment,
             request.patent_title,
             request.disease,
             request.antigen
