@@ -595,6 +595,7 @@ async def patent(patent_id: str, file: UploadFile):
               
         return PatentUploadResponse(
             filename=filename,
+            file_id=str(patent_id),
             message="Patent document processed successfully",
             data=patent_embodiments,
             terms=glossary_subsection,

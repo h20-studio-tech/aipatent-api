@@ -95,6 +95,7 @@ class PatentUploadResponse(BaseModel):
         status_code: HTTP status code indicating the success or failure of the operation
     """
     filename: str = Field(..., description="The name of the uploaded file")
+    file_id: str = Field(..., description="Unique identifier for the uploaded file")
     message: str = Field(..., description="Status message for the upload operation")
     data: list[Union[Embodiment, DetailedDescriptionEmbodiment]] = Field(
         ..., description="The list of embodiments in a page that contains embodiments"
