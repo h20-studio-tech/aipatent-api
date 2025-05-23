@@ -168,16 +168,13 @@ async def process_file(content: bytes, filename: str, db: AsyncConnection, force
         table_name = filename.replace(".pdf", "")
         if not force_reprocess:
             try:
-                file_response = supabase.table("patent_files").select("id").eq("filename", filename).single().execute()
-                file_id = file_response.data["id"] if file_response.data else None
-                    
                 table_names = await db.table_names()
                 if table_name in table_names:
                     logging.info("File already exists in database, skipping processing")
-                    return FileProcessedError(file_id=file_id, filename=filename, is_processed=True, error="File already processed.")
+                    return FileProcessedError(is_processed=True, error="File already processed.")
             except Exception as e:
                 logging.error(f"Error checking if table exists: {str(e)}")
-                return FileProcessedError(file_id=file_id, filename=filename, is_processed=False, error="Error checking if file exists in database", original_error=e)
+                return FileProcessedError(is_processed=False, error="Error checking if file exists in database", original_error=e)
 
 
         logging.info(f"Processing file: {filename}")
