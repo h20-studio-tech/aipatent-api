@@ -12,10 +12,12 @@ class FileUploadResponse(BaseModel):
     
     Attributes:
         filename: The name of the uploaded file
+        file_id: Optional[str] = Field(None, description="Unique identifier for the uploaded file")
         message: Status message describing the result of the upload operation
         status_code: HTTP status code indicating the success or failure of the operation
     """
     filename: str = Field(..., description="The name of the uploaded file")
+    file_id: Optional[str] = Field(None, description="Unique identifier for the uploaded file")
     message: str = Field(..., description="Status message for the upload operation")
     status_code: int = Field(
         ..., description="HTTP status code indicating the result of the operation"
