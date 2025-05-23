@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from pydantic import BaseModel, Field
-from typing import List, Optional, Any, Union, Tuple
+from typing import List, Optional, Any, Union 
 from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment
 from src.models.rag_schemas import Chunk
 from enum import Enum
@@ -219,6 +219,15 @@ class EmbodimentApproveSuccessResponse(BaseModel):
     status: str = "success"
     message: str
     data: Optional[Any]
+
+class EmbodimentsListResponse(BaseModel):
+    """
+    Response model for a list of embodiments.
+    """
+    status: str = "success"
+    message: str
+    data: list
+    terms: list
 
 class EmbodimentApproveErrorResponse(BaseModel):
     """

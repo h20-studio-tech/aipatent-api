@@ -41,6 +41,8 @@ from src.models.api_schemas import (
      SyntheticEmbodimentRequest,
      EmbodimentApproveSuccessResponse,
      EmbodimentApproveErrorResponse,
+     EmbodimentsListResponse,
+     EmbodimentListResponse,
      ApprovedEmbodimentRequest,
      ApproachKnowledge,
      InnovationKnowledge,
@@ -54,7 +56,6 @@ from src.models.api_schemas import (
      DeleteFileResponse,
      DeleteAllFilesResponse,
      DropTableResponse,
-     EmbodimentListResponse,
      PatentFilesListResponse
  )
 from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment, Glossary, GlossaryDefinition
@@ -510,7 +511,7 @@ async def patent(patent_id: str, file: UploadFile):
                         except Exception as e:
                             print(f"Error parsing Embodiment for record {record.get('file_id')}: {e}")
             
-            patent_embodiments = parsed_embodiments
+            patent_embodiments: list[Embodiment | DetailedDescriptionEmbodiment] = parsed_embodiments
             glossary_rows = (
                 supabase.table("glossary_terms")
                 .select("*")
@@ -571,6 +572,11 @@ async def patent(patent_id: str, file: UploadFile):
                             "file_id": str(patent_id),
                             "emb_number": idx,
                             "text": emb.text,
+                            **(
+                                {"header": emb.header}
+                                if isinstance(emb, DetailedDescriptionEmbodiment)
+                                else {}
+                            ),
                             "page_number": emb.page_number,
                             "section": emb.section,
                             "summary": emb.summary,
@@ -642,7 +648,7 @@ async def list_patent_files():
             detail=f"Error retrieving patent files: {e}"
         )
 
-@app.get("/api/v1/source-embodiments/{patent_id}", response_model=list)
+@app.get("/api/v1/source-embodiments/{patent_id}", response_model=EmbodimentsListResponse)
 async def list_source_embodiments(patent_id: str):
     """
     Retrieve the list of source embodiments for a given patent_id.
@@ -656,8 +662,17 @@ async def list_source_embodiments(patent_id: str):
             .order("emb_number")
             .execute()
         )
+        
+        terms = supabase.table("glossary_terms").select("*").eq("file_id", str(patent_id)).execute()
+        terms = terms.data if terms.data else []
         source_embodiments = response.data if response.data else []
-        return source_embodiments
+        return EmbodimentsListResponse(
+            status="success",
+            message="Source embodiments retrieved successfully",
+            data=source_embodiments,
+            terms=terms,
+            status_code=200
+        )
     except Exception as e:
         logging.error(f"Failed to retrieve source embodiments for patent_id={patent_id}: {e}")
         raise HTTPException(status_code=500, detail=f"Error retrieving source embodiments: {e}")    
