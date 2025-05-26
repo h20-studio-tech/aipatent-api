@@ -58,8 +58,13 @@ from src.models.api_schemas import (
      DropTableResponse,
      PatentFilesListResponse
  )
-from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment, Glossary, GlossaryDefinition
-
+from src.models.ocr_schemas import (
+    Embodiment, 
+    DetailedDescriptionEmbodiment, 
+    Glossary,
+    GlossaryDefinition
+)
+from src.router.sections import router as sections_router
 load_dotenv(".env")
 
 
@@ -230,6 +235,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="aipatent", version="0.1.0", lifespan=lifespan)
+
+app.include_router(sections_router)
 
 origins = ["*"]
 
