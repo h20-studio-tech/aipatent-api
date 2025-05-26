@@ -11,5 +11,13 @@ class SectionGenerationRequest(BaseModel):
     disease: str = Field(..., description="The disease for the patent draft")
     additional: str = Field(..., description="Additional information for the patent draft")
 
+class SectionResponse(SectionGenerationRequest):
+    prediction: str = Field(..., description="The prediction for the section")
+    trace_id: str = Field(..., description="The trace id for the section")
+
 class TargetOverviewRequest(SectionGenerationRequest):
+    context: str = Field(..., description="Context for the target overview")
+    
+class TargetOverviewResponse(SectionResponse):
+    target_overview: TargetOverview = Field(..., description="The target overview")
     context: str = Field(..., description="Context for the target overview")

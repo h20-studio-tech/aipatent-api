@@ -64,7 +64,7 @@ from src.models.ocr_schemas import (
     Glossary,
     GlossaryDefinition
 )
-
+from src.router.sections import router as sections_router
 load_dotenv(".env")
 
 
