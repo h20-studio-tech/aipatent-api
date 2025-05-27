@@ -284,12 +284,12 @@ try:
 except Exception as e:
     logging.error(f"DynamoDB connection test failed: {e}")
 
-@app.get("/")
+@app.get("/", tags=["Root"])
 async def root():
     return {"message": "Hello World"}
 
 
-@app.post("/api/v1/documents/", response_model=FileUploadResponse, status_code=200)
+@app.post("/api/v1/documents/", response_model=FileUploadResponse, status_code=200, tags=["Documents"])
 async def upload_file(file: UploadFile, force_upload: bool = False):
     """
     Upload and process a document file.
@@ -380,7 +380,7 @@ async def upload_file(file: UploadFile, force_upload: bool = False):
         raise HTTPException(status_code=500, detail=f"Error during processing: {e}")
 
 
-@app.get("/api/v1/documents/", response_model=FilesResponse)
+@app.get("/api/v1/documents/", response_model=FilesResponse, tags=["Documents"])
 async def get_files():
     """
     Endpoint to retrieve a list of documents from Supabase and indicate which ones are available for querying.
@@ -430,7 +430,7 @@ async def get_files():
     )
 
 
-@app.post("/api/v1/rag/multiquery-search/", response_model=MultiQueryResponse)
+@app.post("/api/v1/rag/multiquery-search/", response_model=MultiQueryResponse, tags=["RAG"])
 async def query_search(query: str, target_files: list[str]):
     """
     Performs a search query on the specified target files and returns the formatted chunks and a summary.
@@ -459,7 +459,7 @@ async def query_search(query: str, target_files: list[str]):
 
 
 
-@app.post("/api/v1/patent/{patent_id}/", response_model=PatentUploadResponse, status_code=200)
+@app.post("/api/v1/patent/{patent_id}/", response_model=PatentUploadResponse, status_code=200, tags=["Patent"])
 async def patent(patent_id: str, file: UploadFile):
     """
     Endpoint to process a patent document and extract embodiments, it returns the embodiments if the file was previously processed.
@@ -615,7 +615,7 @@ async def patent(patent_id: str, file: UploadFile):
             status_code=500, detail=f"Error during patent processing: {e}"
         )
         
-@app.get("/api/v1/patent-files/", response_model=PatentFilesListResponse, status_code=200)
+@app.get("/api/v1/patent-files/", response_model=PatentFilesListResponse, status_code=200, tags=["Patent"])
 async def list_patent_files():
     """
     Endpoint to list all patent files in the database, ordered by upload time (newest first).
@@ -657,7 +657,7 @@ async def list_patent_files():
             detail=f"Error retrieving patent files: {e}"
         )
 
-@app.get("/api/v1/source-embodiments/{patent_id}", response_model=EmbodimentsListResponse)
+@app.get("/api/v1/source-embodiments/{patent_id}", response_model=EmbodimentsListResponse, tags=["Patent"])
 async def list_source_embodiments(patent_id: str):
     """
     Retrieve the list of source embodiments for a given patent_id.
@@ -687,7 +687,7 @@ async def list_source_embodiments(patent_id: str):
         raise HTTPException(status_code=500, detail=f"Error retrieving source embodiments: {e}")    
 
 
-@app.post("/api/v1/project/", response_model=PatentProjectResponse, status_code=200)
+@app.post("/api/v1/project/", response_model=PatentProjectResponse, status_code=200, tags=["Project"])
 async def patent_project(patent: PatentProject):
     """
     Endpoint to create a new patent project.
@@ -742,7 +742,7 @@ async def patent_project(patent: PatentProject):
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
 
-@app.get("/api/v1/projects/", response_model=PatentProjectListResponse, status_code=200)
+@app.get("/api/v1/projects/", response_model=PatentProjectListResponse, status_code=200, tags=["Project"])
 async def list_patent_projects():
     """
     List all patent projects stored in DynamoDB.
@@ -799,7 +799,7 @@ async def list_patent_projects():
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
     
 
-@app.post("/api/v1/embodiment/", status_code=200)
+@app.post("/api/v1/embodiment/", status_code=200, tags=["Embodiment"])
 async def synthetic_embodiment(request: SyntheticEmbodimentRequest):
     """
     Generate a synthetic embodiment based on the provided parameters.
@@ -829,7 +829,8 @@ async def synthetic_embodiment(request: SyntheticEmbodimentRequest):
 
 @app.post(
     "/api/v1/embodiment/approve/",
-    response_model=Union[EmbodimentApproveSuccessResponse, EmbodimentApproveErrorResponse]
+    response_model=Union[EmbodimentApproveSuccessResponse, EmbodimentApproveErrorResponse],
+    tags=["Embodiment"],
 )
 async def embodiment_approve(request: ApprovedEmbodimentRequest):
     """
@@ -864,7 +865,7 @@ async def embodiment_approve(request: ApprovedEmbodimentRequest):
 
     
     
-@app.post("/api/v1/knowledge/approach/")
+@app.post("/api/v1/knowledge/approach/", tags=["Knowledge"])
 async def store_approach_knowledge(request: ApproachKnowledge):
     """
     Store approach knowledge for a given patent and update the patent object in DynamoDB.
@@ -905,7 +906,7 @@ async def store_approach_knowledge(request: ApproachKnowledge):
         )
     
 
-@app.post("/api/v1/knowledge/innovation/")
+@app.post("/api/v1/knowledge/innovation/", tags=["Knowledge"])
 async def store_innovation_knowledge(request: InnovationKnowledge):
     """
     Store innovation knowledge for a given patent and update the patent object in DynamoDB.
@@ -940,7 +941,7 @@ async def store_innovation_knowledge(request: InnovationKnowledge):
             }
         )
 
-@app.post("/api/v1/knowledge/technology/")
+@app.post("/api/v1/knowledge/technology/", tags=["Knowledge"])
 async def store_technology_knowledge(request: TechnologyKnowledge):
     """
     Store technology knowledge for a given patent and update the patent object in DynamoDB.
@@ -975,7 +976,7 @@ async def store_technology_knowledge(request: TechnologyKnowledge):
             }
         )
         
-@app.post("/api/v1/knowledge/research-note/")
+@app.post("/api/v1/knowledge/research-note/", tags=["Knowledge"])
 async def store_research_note(request: ResearchNote):
     """
     Store research notes for a given patent and update the patent object in DynamoDB.
@@ -1011,7 +1012,7 @@ async def store_research_note(request: ResearchNote):
         )
 
 
-@app.get("/api/v1/knowledge/approach/{patent_id}", response_model=ApproachKnowledgeListResponse)
+@app.get("/api/v1/knowledge/approach/{patent_id}", response_model=ApproachKnowledgeListResponse, tags=["Knowledge"])
 async def get_approach_knowledge(patent_id: str):
     """
     Retrieve approach knowledge items for a given patent.
@@ -1025,7 +1026,7 @@ async def get_approach_knowledge(patent_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/v1/knowledge/innovation/{patent_id}", response_model=InnovationKnowledgeListResponse)
+@app.get("/api/v1/knowledge/innovation/{patent_id}", response_model=InnovationKnowledgeListResponse, tags=["Knowledge"])
 async def get_innovation_knowledge(patent_id: str):
     """
     Retrieve innovation knowledge items for a given patent.
@@ -1039,7 +1040,7 @@ async def get_innovation_knowledge(patent_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/v1/knowledge/technology/{patent_id}", response_model=TechnologyKnowledgeListResponse)
+@app.get("/api/v1/knowledge/technology/{patent_id}", response_model=TechnologyKnowledgeListResponse, tags=["Knowledge"])
 async def get_technology_knowledge(patent_id: str):
     """
     Retrieve technology knowledge items for a given patent.
@@ -1053,7 +1054,7 @@ async def get_technology_knowledge(patent_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/v1/knowledge/research-note/{patent_id}", response_model=ResearchNoteListResponse)
+@app.get("/api/v1/knowledge/research-note/{patent_id}", response_model=ResearchNoteListResponse, tags=["Knowledge"])
 async def get_research_notes(patent_id: str):
     """
     Retrieve research notes for a given patent.
@@ -1067,7 +1068,7 @@ async def get_research_notes(patent_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/v1/knowledge/embodiments/{patent_id}", response_model=EmbodimentListResponse)
+@app.get("/api/v1/knowledge/embodiments/{patent_id}", response_model=EmbodimentListResponse, tags=["Knowledge"])
 async def get_embodiments(patent_id: str):
     """
     Retrieve stored embodiments for a given patent.
@@ -1082,7 +1083,7 @@ async def get_embodiments(patent_id: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.delete("/api/v1/lancedb/tables/", response_model=DropTablesResponse)
+@app.delete("/api/v1/lancedb/tables/", response_model=DropTablesResponse, tags=["Lancedb"])
 async def drop_all_lancedb_tables():
     """
     Drop all tables in LanceDB.
@@ -1103,7 +1104,7 @@ async def drop_all_lancedb_tables():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.delete("/api/v1/documents/{filename}", response_model=DeleteFileResponse)
+@app.delete("/api/v1/documents/{filename}", response_model=DeleteFileResponse, tags=["Documents"])
 async def delete_file(filename: str):
     """
     Delete a file from Supabase storage.
@@ -1114,8 +1115,7 @@ async def delete_file(filename: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-@app.delete("/api/v1/documents/", response_model=DeleteAllFilesResponse)
+@app.delete("/api/v1/documents/", response_model=DeleteAllFilesResponse, tags=["Documents"])
 async def delete_all_files():
     """
     Delete all files from Supabase storage.
@@ -1132,7 +1132,7 @@ async def delete_all_files():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.delete("/api/v1/lancedb/tables/{table_name}", response_model=DropTableResponse)
+@app.delete("/api/v1/lancedb/tables/{table_name}", response_model=DropTableResponse, tags=["Lancedb"])
 async def drop_table(table_name: str):
     """
     Drop a specific LanceDB table.
