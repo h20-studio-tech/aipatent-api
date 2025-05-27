@@ -19,5 +19,4 @@ class TargetOverviewRequest(SectionGenerationRequest):
     context: str = Field(..., description="Context for the target overview")
     
 class TargetOverviewResponse(SectionResponse):
-    target_overview: TargetOverview = Field(..., description="The target overview")
     context: str = Field(..., description="Context for the target overview")

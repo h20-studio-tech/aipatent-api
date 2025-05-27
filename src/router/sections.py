@@ -1,19 +1,4 @@
 from fastapi import APIRouter
-from src.models.llm import (
-    BackgroundAndNeed,
-    Technology,
-    BriefSummary,
-    PrimaryInvention,
-    FieldOfInvention,
-    DescriptionOfInvention,
-    HighLevelConcept,
-    TargetOverview,
-    UnderlyingMechanism,
-    Embodiment,
-    Claims,
-    Abstract,
-    KeyTerms,
-)
 from src.make_patent_component import (
     generate_abstract,
     generate_background,
@@ -184,20 +169,6 @@ async def high_level_concept(req: SectionGenerationRequest) -> SectionResponse:
         disease=req.disease,
         additional=req.additional,
     )
-    
-"""
-background
-summary
-field_of_invention
-detailed_description
-target_overview
-disease_overview
-underlying_mechanism
-high_level_concept
-claims
-abstract
-key_terms
-"""
 
 @router.post("/claims", response_model=SectionResponse)
 async def claims(req: SectionGenerationRequest) -> SectionResponse:

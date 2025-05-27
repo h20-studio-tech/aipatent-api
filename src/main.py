@@ -236,7 +236,6 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="aipatent", version="0.1.0", lifespan=lifespan)
 
-app.include_router(sections_router)
 
 origins = ["*"]
 
@@ -248,6 +247,8 @@ app.add_middleware(
     allow_headers=["*"],
     allow_origin_regex=None,
 )
+
+app.include_router(sections_router)
 
 aws_region = os.getenv("AWS_REGION", "us-east-1")
 aws_access_key = os.getenv("ACCESS_KEY_ID")
