@@ -680,8 +680,8 @@ async def categorize_detailed_description(embodiments: list[Embodiment]) -> list
     return results
 
 embodiment_summarization_prompt = get_prompt('embodiment_summary')
-async def summarize_embodiment(embodiment: Union[DetailedDescriptionEmbodiment, Embodiment]) -> Union[DetailedDescriptionEmbodiment, Embodiment]:
-    prompt = embodiment_summarization_prompt.compile(embodiment=embodiment.text)
+async def summarize_embodiment(embodiment: Union[DetailedDescriptionEmbodiment, Embodiment], embodiments: Union[list[DetailedDescriptionEmbodiment], list[Embodiment]]) -> Union[DetailedDescriptionEmbodiment, Embodiment]:
+    prompt = embodiment_summarization_prompt.compile(embodiment=embodiment.text, embodiments=[embodiment.text for embodiment in embodiments])
     res = await client.chat.completions.create(
         model='gpt-4.1',
         messages=[{'role': 'system', 'content': prompt}],
@@ -691,7 +691,7 @@ async def summarize_embodiment(embodiment: Union[DetailedDescriptionEmbodiment, 
     return embodiment
 
 async def summarize_embodiments(embodiments: list[Embodiment | DetailedDescriptionEmbodiment]) -> list[Embodiment | DetailedDescriptionEmbodiment]:
-    tasks = [asyncio.create_task(summarize_embodiment(embodiment)) for embodiment in embodiments]
+    tasks = [asyncio.create_task(summarize_embodiment(embodiment, embodiments)) for embodiment in embodiments]
     results = await asyncio.gather(*tasks)
     return results
 
