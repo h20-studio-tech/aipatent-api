@@ -452,7 +452,8 @@ async def detect_description_header(segmented_page: ProcessedPage) -> HeaderDete
     
     try:
         response = await client.chat.completions.create(
-            model='o3',
+            model='o4-mini-2025-04-16',
+            reasoning_effort='high',
             messages=[{
                 "role": "user",
                 "content": [
@@ -537,7 +538,7 @@ async def get_embodiments(page: ProcessedPage) -> list[Embodiment]:
 
     logger.info(f"Extracting embodiments from page {page_number} of {filename}")
     completion = await client.chat.completions.create(
-        model='o4-mini',
+        model='o4-mini-2025-04-16',
         reasoning_effort='high',
         messages=[
             {
@@ -592,7 +593,7 @@ async def find_embodiments(pages: list[ProcessedPage]) -> list[Embodiment]:
 async def categorize_embodiment(embodiment: Embodiment) -> DetailedDescriptionEmbodiment: 
     # Get just the category from the API
     response = await client.chat.completions.create(
-        model='o4-mini',
+        model='o4-mini-2025-04-16',
         reasoning_effort='high',
         messages=[
                 {
@@ -683,7 +684,7 @@ embodiment_summarization_prompt = get_prompt('embodiment_summary')
 async def summarize_embodiment(embodiment: Union[DetailedDescriptionEmbodiment, Embodiment], embodiments: Union[list[DetailedDescriptionEmbodiment], list[Embodiment]]) -> Union[DetailedDescriptionEmbodiment, Embodiment]:
     prompt = embodiment_summarization_prompt.compile(embodiment=embodiment.text, embodiments=[embodiment.text for embodiment in embodiments])
     res = await client.chat.completions.create(
-        model='gpt-4.1',
+        model='o4-mini-2025-04-16',
         messages=[{'role': 'system', 'content': prompt}],
         response_model=EmbodimentSummary
     )
@@ -701,7 +702,7 @@ embodiment_spell_check_prompt = get_prompt('embodiment_spell_check')
 async def embodiment_spell_check(embodiment: Union[Embodiment, DetailedDescriptionEmbodiment]) -> Union[Embodiment, DetailedDescriptionEmbodiment]:
     prompt = embodiment_spell_check_prompt.compile(embodiment=embodiment.text)
     res = await client.chat.completions.create(
-        model='o4-mini',
+        model='o4-mini-2025-04-16',
         reasoning_effort='high',
         messages=[{'role': 'system', 'content': prompt}],
         response_model=EmbodimentSpellCheck
@@ -793,7 +794,8 @@ async def extract_glossary_subsection(segmented_pages: list[ProcessedPage]) -> G
         """
         try:
             res: Glossary = await client.chat.completions.create(
-                model="o3",
+                model="o4-mini-2025-04-16",
+                reasoning_effort='high',
                 messages=[{"role": "system", "content": prompt}],
                 response_model=Glossary
             )
@@ -860,7 +862,7 @@ async def detect_glossary_pages(
         {page.text}
         """
         flag: GlossaryPageFlag = await client.chat.completions.create(
-            model="o3",
+            model="o4-mini-2025-04-16",
             reasoning_effort="high",
             messages=[{"role": "system", "content": prompt}],
             response_model=GlossaryPageFlag

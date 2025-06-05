@@ -28,6 +28,7 @@ from src.utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from src.utils.ocr import process_patent_document
+from src.utils.abstract_extractor import extract_abstract_from_pdf
 from src.embodiment_generation import generate_embodiment
 from src.models.api_schemas import (
      FileUploadResponse,
@@ -458,18 +459,17 @@ async def query_search(query: str, target_files: list[str]):
         )
 
 
-
 @app.post("/api/v1/patent/{patent_id}/", response_model=PatentUploadResponse, status_code=200, tags=["Patent"])
 async def patent(patent_id: str, file: UploadFile):
     """
-    Endpoint to process a patent document and extract embodiments, it returns the embodiments if the file was previously processed.
+    Endpoint to process a patent document and extract embodiments and abstract, it returns the results if the file was previously processed.
 
     Args:
         patent_id (int): The ID of the patent to update.
         file (UploadFile): The patent document file to process.
 
     Returns:
-        PatentResponse: A Pydantic model containing the filename, message, data (list of embodiments), and status code.
+        PatentResponse: A Pydantic model containing the filename, message, data (list of embodiments), abstract, and status code.
 
     Raises:
         HTTPException: If an error occurs during the patent document processing.
@@ -482,12 +482,17 @@ async def patent(patent_id: str, file: UploadFile):
         # check if exists in db
         exist_in_db  = (
             supabase.table("patent_files")
-            .select("id")
+            .select("id, abstract")
             .eq("id", str(patent_id))
             .execute()
         ) 
         if exist_in_db.data:
             logging.info(f"Patent with ID {patent_id} exists.")
+            # Get the abstract from the database
+            abstract = exist_in_db.data[0].get("abstract")
+            abstract_page = None
+            abstract_pattern = None
+            
             embodiments_response = (
                 supabase.table("embodiments")
                 .select("*") # Select all fields to get sub_category if it exists
@@ -548,12 +553,24 @@ async def patent(patent_id: str, file: UploadFile):
             # process the doc because it does not exist in db
             glossary_subsection, patent_embodiments = await process_patent_document(content, filename)
             
+            # Extract abstract using our enhanced OCR-capable extractor
+            abstract_result = await extract_abstract_from_pdf(content)
+            abstract = abstract_result["abstract_text"] if abstract_result and abstract_result.get("abstract_text") else None
+            abstract_page = abstract_result.get("abstract_page") if abstract_result else None
+            abstract_pattern = abstract_result.get("abstract_pattern") if abstract_result else None
+            
+            logging.info(f"Abstract extraction result: {'Found on page ' + str(abstract_page) if abstract else 'Not found'}")
+            
             try:
-                # 1️⃣ Insert patent_files row
+                # 1️⃣ Insert patent_files row with abstract
                 supabase.table("patent_files").insert(
-                    {"id": str(patent_id), "filename": filename}
+                    {
+                        "id": str(patent_id),
+                        "filename": filename,
+                        "abstract": abstract
+                    }
                 ).execute()
-                logging.info(f"Inserted patent_files id={patent_id}")
+                logging.info(f"Inserted patent_files id={patent_id} with abstract {bool(abstract)}")
 
                 # 2️⃣ Insert glossary terms (FK satisfied)
                 if glossary_subsection and glossary_subsection.definitions:
@@ -607,6 +624,9 @@ async def patent(patent_id: str, file: UploadFile):
             message="Patent document processed successfully",
             data=patent_embodiments,
             terms=glossary_subsection,
+            abstract=abstract,
+            abstract_page=abstract_page,
+            abstract_pattern=abstract_pattern,
             status_code=200,
         )
     except Exception as e:
