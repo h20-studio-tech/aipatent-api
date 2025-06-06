@@ -656,10 +656,13 @@ async def detect_claims_header(segmented_page: ProcessedPage) -> HeaderDetection
 
 async def detect_section_headers(segmented_pages: list[ProcessedPage]) -> list[HeaderDetectionPage]:
     """Run header detection concurrently across all major patent sections."""
+    # We intentionally skip header detection for the Claims section because
+    # claims rarely contain meaningful sub-section headers and the added calls
+    # increase cost/latency.
     section_to_detector = {
         "summary of invention": detect_summary_header,
         "detailed description": detect_description_header,
-        "claims": detect_claims_header,
+        # "claims": detect_claims_header,  # disabled per design decision
     }
 
     tasks = []
@@ -914,14 +917,15 @@ async def add_headers_to_embodiments(
     for emb in dd_embs_sorted:
         key = (emb.filename, emb.page_number)
 
-        if key in page_lookup:
-            # Direct match – use it and update last header cache
-            emb.header = page_lookup[key]
-            last_header[emb.filename] = page_lookup[key]
-        else:
-            # No header detected on this page – use carry-forward if available
-            if emb.header is None and emb.filename in last_header:
-                emb.header = last_header[emb.filename]
+        if hasattr(emb, "header"):
+            if key in page_lookup:
+                # Direct match – use it and update last header cache
+                emb.header = page_lookup[key]
+                last_header[emb.filename] = page_lookup[key]
+            else:
+                # No header detected on this page – use carry-forward if available
+                if getattr(emb, "header", None) is None and emb.filename in last_header:
+                    emb.header = last_header[emb.filename]
 
     return dd_embs
 
@@ -1006,6 +1010,82 @@ async def build_section_hierarchy(
     return list(section_map.values())
 
 # --------------------
+# Subsection summarization
+# --------------------
+
+async def _summarize_text(text: str) -> str:
+    """LLM call that returns a concise 2-3 sentence summary."""
+    prompt = (
+        "You are a helpful assistant summarizing patent subsections. "
+        "Return a concise 2–3 sentence summary of the key disclosure points. "
+        "Ignore boiler-plate legal language and numbering."
+    )
+
+    # Re-use EmbodimentSummary pydantic schema for simplicity
+    try:
+        res: EmbodimentSummary = await client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": text},
+            ],
+            response_model=EmbodimentSummary,
+        )
+        return res.summary.strip()
+    except Exception as e:
+        logger.warning("Subsection summarization failed: %s", e)
+        return text[:150].strip() + ("…" if len(text) > 150 else "")
+
+def _extract_window(header_page: HeaderDetectionPage, max_chars: int = 700) -> str:
+    """Take ~max_chars of text starting from header occurrence within the page."""
+    if not header_page.text:
+        return ""
+
+    header_lower = (header_page.header or "").lower()
+    idx = header_page.text.lower().find(header_lower)
+    if idx == -1:
+        idx = 0
+    window = header_page.text[idx : idx + max_chars]
+    return window
+
+async def summarize_subsections(
+    hierarchy: list[SectionHierarchy],
+    header_pages: list[HeaderDetectionPage],
+) -> list[SectionHierarchy]:
+    """Populate each subsection.summary using a 700-char window after its header."""
+
+    # Build quick lookup from (section, header) -> header_page
+    hp_lookup: dict[tuple[str, str], HeaderDetectionPage] = {
+        (hp.section, hp.header): hp
+        for hp in header_pages
+        if hp.has_header and hp.header
+    }
+
+    tasks = []
+    mapping: dict[asyncio.Task, Subsection] = {}
+
+    for sec in hierarchy:
+        for sub in sec.subsections:
+            key = (sec.section, sub.header)
+            if key not in hp_lookup:
+                # Fallback: use first embodiment text if any
+                if sub.embodiments:
+                    sub.summary = sub.embodiments[0].text[:150] + "…"
+                continue
+
+            window = _extract_window(hp_lookup[key])
+            task = asyncio.create_task(_summarize_text(window))
+            tasks.append(task)
+            mapping[task] = sub
+
+    if tasks:
+        summaries = await asyncio.gather(*tasks)
+        for task, summary in zip(tasks, summaries):
+            mapping[task].summary = summary
+
+    return hierarchy
+
+# --------------------
 
 async def extract_glossary_subsection(segmented_pages: list[ProcessedPage]) -> Glossary | None:
     """
@@ -1019,27 +1099,27 @@ async def extract_glossary_subsection(segmented_pages: list[ProcessedPage]) -> G
 
     async def process_page(page: ProcessedPage) -> Glossary | None:
         prompt = f"""
-            Extract key terms and their definitions from the following patent text. 
-            Respond matching the Glossary Pydantic schema.
-            
-            Ignore terms that are not directly related to the scientific aspect of the patent
-            
-            Examples included of terms to be ignored:
-            - "or", "a", "an", "the", "about", "herein"
-            
-            Examples of terms to be included:              
-            Glossary definitions typically define terms with patterns like:
-            - The term "<TERM>" refers to <DEFINITION>.
-            - As used herein, the term "<TERM>" refers to <DEFINITION>.
-            
-            Examples include:
-            - The term "control egg" refers to an egg obtained...
-            - The term "antigen" refers to a substance...
-            - As used herein, the term "antibody" is a protein...
-            - As used herein, the term "hyperimmunization" means...
-            
-            Text:
-            {page.text}
+        Extract key terms and their definitions from the following patent text. 
+        Respond matching the Glossary Pydantic schema.
+        
+        Ignore terms that are not directly related to the scientific aspect of the patent
+        
+        Examples included of terms to be ignored:
+        - "or", "a", "an", "the", "about", "herein"
+        
+        Examples of terms to be included:              
+        Glossary definitions typically define terms with patterns like:
+        - The term "<TERM>" refers to <DEFINITION>.
+        - As used herein, the term "<TERM>" refers to <DEFINITION>.
+        
+        Examples include:
+        - The term "control egg" refers to an egg obtained...
+        - The term "antigen" refers to a substance...
+        - As used herein, the term "antibody" is a protein...
+        - As used herein, the term "hyperimmunization" means...
+        
+        Text:
+        {page.text}
         """
         try:
             res: Glossary = await client.chat.completions.create(
@@ -1127,7 +1207,8 @@ async def detect_glossary_pages(
     return await asyncio.gather(*tasks)
 
 async def process_patent_document(
-    pdf_data: bytes, filename: str) -> tuple[Glossary, list[Embodiment | DetailedDescriptionEmbodiment]]:
+    pdf_data: bytes, filename: str
+) -> tuple[Glossary, list[Embodiment | DetailedDescriptionEmbodiment], list[SectionHierarchy]]:
     try:
         # Process PDF pages
         pdf_processing_start = time()
@@ -1210,7 +1291,12 @@ async def process_patent_document(
         spell_checked_embodiments = await spell_check_embodiments(summarized_embodiments)
         logger.info(f"Spell checked {len(spell_checked_embodiments)} embodiments")
         
-        return glossary_subsection, spell_checked_embodiments
+        # Build section hierarchy and summarize subsections
+        sections = await build_section_hierarchy(spell_checked_embodiments, header_detection_pages)
+        sections = await summarize_subsections(sections, header_detection_pages)
+        logger.info(f"Generated hierarchical section data with {len(sections)} sections")
+
+        return glossary_subsection, spell_checked_embodiments, sections
         
     except Exception as e: 
         raise RuntimeError(f"Error processing patent document: {str(e)}")

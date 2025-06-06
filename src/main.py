@@ -551,7 +551,7 @@ async def patent(patent_id: str, file: UploadFile):
         else:
             logging.info(f"Patent with ID {patent_id} does not exist.")
             # process the doc because it does not exist in db
-            glossary_subsection, patent_embodiments = await process_patent_document(content, filename)
+            glossary_subsection, patent_embodiments, sections = await process_patent_document(content, filename)
             
             # Extract abstract using our enhanced OCR-capable extractor
             abstract_result = await extract_abstract_from_pdf(content)
@@ -627,6 +627,7 @@ async def patent(patent_id: str, file: UploadFile):
             abstract=abstract,
             abstract_page=abstract_page,
             abstract_pattern=abstract_pattern,
+            sections=sections,
             status_code=200,
         )
     except Exception as e:
