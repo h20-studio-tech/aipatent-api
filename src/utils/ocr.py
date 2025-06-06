@@ -510,6 +510,172 @@ async def detect_description_headers(segmented_pages: list[ProcessedPage]) -> li
     logger.info("Header detection batch complete")
     return results
 
+@observe(name='summary-subheaders-detection')
+async def detect_summary_header(segmented_page: ProcessedPage) -> HeaderDetectionPage:
+    """Detect subsection headers on a Summary of the Invention page."""
+    logger.info(
+        f"Starting header detection for SUMMARY page {segmented_page.filename} page {segmented_page.page_number}"
+    )
+
+    prompt = """
+    You are a header detection system for a biological patent ETL application.
+
+    Analyze the image and identify if there is a clearly visible sub-section header specific to the SUMMARY OF THE INVENTION section.
+    Ignore any 'example' headers or enumeration like step 1, step 2, etc.
+
+    Return:
+    - has_header: True if a clear header is found, False otherwise
+    - header: The extracted header text if found, otherwise None
+    """
+
+    if not segmented_page.image:
+        logger.warning(
+            f"No image available for {segmented_page.filename} page {segmented_page.page_number}; skipping header detection."
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            text=getattr(segmented_page, 'text', None) or getattr(segmented_page, 'text_content', None),
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            section=segmented_page.section,
+            image=None,
+        )
+
+    try:
+        response = await client.chat.completions.create(
+            model="o4-mini-2025-04-16",
+            reasoning_effort="high",
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": segmented_page.image}},
+                ],
+            }],
+            response_model=HeaderDetection,
+        )
+        logger.info(
+            f"Header detection finished for SUMMARY page {segmented_page.filename} page {segmented_page.page_number}: has_header={response.has_header}, header='{response.header}'"
+        )
+        return HeaderDetectionPage(
+            header=response.header,
+            has_header=response.has_header,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image,
+        )
+    except Exception as e:
+        logger.error(
+            f"Error in detect_summary_header for {segmented_page.filename} page {segmented_page.page_number}: {str(e)}"
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image,
+        )
+
+@observe(name='claims-subheaders-detection')
+async def detect_claims_header(segmented_page: ProcessedPage) -> HeaderDetectionPage:
+    """Detect subsection headers on a Claims page."""
+    logger.info(
+        f"Starting header detection for CLAIMS page {segmented_page.filename} page {segmented_page.page_number}"
+    )
+
+    prompt = """
+    You are a header detection system for a biological patent ETL application.
+
+    Analyze the image and identify if there is a clearly visible sub-section header specific to the CLAIMS section.
+    Ignore any 'example' headers or enumeration like step 1, step 2, etc.
+
+    Return:
+    - has_header: True if a clear header is found, False otherwise
+    - header: The extracted header text if found, otherwise None
+    """
+
+    if not segmented_page.image:
+        logger.warning(
+            f"No image available for {segmented_page.filename} page {segmented_page.page_number}; skipping header detection."
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            text=getattr(segmented_page, 'text', None) or getattr(segmented_page, 'text_content', None),
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            section=segmented_page.section,
+            image=None,
+        )
+
+    try:
+        response = await client.chat.completions.create(
+            model="o4-mini-2025-04-16",
+            reasoning_effort="high",
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": segmented_page.image}},
+                ],
+            }],
+            response_model=HeaderDetection,
+        )
+        logger.info(
+            f"Header detection finished for CLAIMS page {segmented_page.filename} page {segmented_page.page_number}: has_header={response.has_header}, header='{response.header}'"
+        )
+        return HeaderDetectionPage(
+            header=response.header,
+            has_header=response.has_header,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image,
+        )
+    except Exception as e:
+        logger.error(
+            f"Error in detect_claims_header for {segmented_page.filename} page {segmented_page.page_number}: {str(e)}"
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image,
+        )
+
+async def detect_section_headers(segmented_pages: list[ProcessedPage]) -> list[HeaderDetectionPage]:
+    """Run header detection concurrently across all major patent sections."""
+    section_to_detector = {
+        "summary of invention": detect_summary_header,
+        "detailed description": detect_description_header,
+        "claims": detect_claims_header,
+    }
+
+    tasks = []
+    for page in segmented_pages:
+        detector = section_to_detector.get(page.section.lower())
+        if detector:
+            tasks.append(detector(page))
+        else:
+            logger.warning(
+                f"No header detector for section '{page.section}' on page {page.page_number}; skipping."
+            )
+
+    if not tasks:
+        return []
+
+    results = await asyncio.gather(*tasks)
+    return results
+
 examples = [
     """
     In certain aspects the disclosure relates to a method for preventing or treating alcoholic liver disease in a subject in need thereof, comprising administering to the subject a therapeutically effective amount of a hyperimmunized egg product obtained from an egg‑producing animal, thereby preventing or treating the alcoholic liver disease in the subject, wherein the hyperimmunized egg product comprises a therapeutically effective amount of one or more antibodies to an antigen selected from the group consisting of Enterococcus faecalis and Enterococcus faecalis cytolysin toxin.
@@ -892,12 +1058,10 @@ async def process_patent_document(
         # Detect glossary pages separately
         detailed_description_pages = [page for page in segmented_pages if page.section == "detailed description"]
         
-        # Detect headers on detailed description pages
-        header_detection_pages = await detect_description_headers(
-            detailed_description_pages
-        )
+        # Detect headers across all major patent sections (Summary, Detailed Description, Claims)
+        major_section_pages = [p for p in segmented_pages if p.section in ["summary of invention", "detailed description", "claims"]]
+        header_detection_pages = await detect_section_headers(major_section_pages)
         logger.info(f"Header detection completed for {len(header_detection_pages)} pages")
-
         
         glossary_flags = await detect_glossary_pages(detailed_description_pages)
         flagged_pages = [pg for pg, flag in glossary_flags if flag.is_glossary_page]
