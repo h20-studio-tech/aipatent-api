@@ -29,8 +29,10 @@ from src.models.ocr_schemas import (
     EmbodimentSummary,
     EmbodimentSpellCheck,
     Glossary,
-    GlossaryPageFlag
-    )
+    GlossaryPageFlag,
+    Subsection,
+    SectionHierarchy,
+)
 
 # Configure logging
 logger = create_logger("ocr.py")
@@ -923,7 +925,88 @@ async def add_headers_to_embodiments(
 
     return dd_embs
 
-@observe()
+# --------------------
+# Section hierarchy grouping
+# --------------------
+
+async def build_section_hierarchy(
+    embodiments: list[Embodiment | DetailedDescriptionEmbodiment],
+    header_pages: list[HeaderDetectionPage],
+) -> list[SectionHierarchy]:
+    """Create hierarchical structure of sections → subsections → embodiments.
+    
+    Ensures that every detected header becomes a Subsection, even if it contains
+    no embodiments. Implements a carry-forward rule so embodiments on pages
+    without a header inherit the most recent header of the same section/file.
+    """
+    # Build mapping: section name -> SectionHierarchy
+    section_map: dict[str, SectionHierarchy] = {}
+
+    # Helper: ensure section exists
+    def get_section(section_name: str) -> SectionHierarchy:
+        key = section_name.lower()
+        if key not in section_map:
+            section_map[key] = SectionHierarchy(section=section_name, subsections=[])
+        return section_map[key]
+
+    # Build per-file carry-forward cache for headers
+    last_header: dict[tuple[str, str], str] = {}  # (filename, section) -> header
+
+    # First, create subsections for every detected header (even if empty).
+    for page in sorted(header_pages, key=lambda p: p.page_number):
+        if not page.has_header or not page.header:
+            continue
+
+        section_obj = get_section(page.section)
+
+        # Avoid duplicates – only add once per unique header text within section
+        if not any(s.header == page.header for s in section_obj.subsections):
+            section_obj.subsections.append(
+                Subsection(header=page.header, summary="", embodiments=[])
+            )
+
+        # Update carry-forward cache
+        last_header[(page.filename, page.section)] = page.header
+
+    # Convenience: map (section, header) -> Subsection for quick embodiment assignment
+    subsection_lookup: dict[tuple[str, str], Subsection] = {}
+    for sec in section_map.values():
+        for sub in sec.subsections:
+            subsection_lookup[(sec.section, sub.header)] = sub
+
+    # Attach embodiments
+    for emb in embodiments:
+        header = None
+
+        # 1. If DetailedDescriptionEmbodiment with header field populated
+        if hasattr(emb, "header") and getattr(emb, "header"):
+            header = getattr(emb, "header")
+
+        # 2. Fallback: carry-forward cache (may have been updated above)
+        if header is None:
+            key = (emb.filename, emb.section)
+            header = last_header.get(key)
+
+        # 3. If still None, skip assignment (embodiment remains ungrouped)
+        if header is None:
+            continue
+
+        # Ensure subsection exists (handles case where header cache came from previous pages yet not in header_pages list)
+        section_obj = get_section(emb.section)
+        sub_key = (section_obj.section, header)
+        subsection = subsection_lookup.get(sub_key)
+        if subsection is None:
+            subsection = Subsection(header=header, summary="", embodiments=[])
+            section_obj.subsections.append(subsection)
+            subsection_lookup[sub_key] = subsection
+
+        subsection.embodiments.append(emb)
+
+    # Return list sorted by original order of sections defined
+    return list(section_map.values())
+
+# --------------------
+
 async def extract_glossary_subsection(segmented_pages: list[ProcessedPage]) -> Glossary | None:
     """
     Use the Instructor library to extract glossary definitions
@@ -1011,6 +1094,10 @@ async def detect_glossary_pages(
     Processes pages concurrently for better performance.
     Returns list of (page, flag) tuples.
     """
+    detailed = [p for p in segmented_pages if p.section.lower() == "detailed description"]
+    if not detailed:
+        return []
+
     async def process_page(page: ProcessedPage) -> tuple[ProcessedPage, GlossaryPageFlag]:
         prompt = f"""
         You are an expert patent document analysis assistant integrated into an automated OCR pipeline.
@@ -1036,7 +1123,7 @@ async def detect_glossary_pages(
         return (page, flag)
 
     # Process all pages concurrently
-    tasks = [process_page(page) for page in segmented_pages]
+    tasks = [process_page(page) for page in detailed]
     return await asyncio.gather(*tasks)
 
 async def process_patent_document(
