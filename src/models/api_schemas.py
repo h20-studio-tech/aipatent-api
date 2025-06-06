@@ -2,7 +2,11 @@ import uuid
 from datetime import datetime
 from pydantic import BaseModel, Field
 from typing import List, Optional, Any, Union 
-from src.models.ocr_schemas import Embodiment, DetailedDescriptionEmbodiment
+from src.models.ocr_schemas import (
+    Embodiment,
+    DetailedDescriptionEmbodiment,
+    SectionHierarchy,
+)
 from src.models.rag_schemas import Chunk
 from enum import Enum
 from src.models.ocr_schemas import Glossary
@@ -105,6 +109,10 @@ class PatentUploadResponse(BaseModel):
     abstract: Optional[str] = Field(None, description="The extracted abstract from the patent document")
     abstract_page: Optional[int] = Field(None, description="The page number where the abstract was found")
     abstract_pattern: Optional[int] = Field(None, description="The pattern index that matched the abstract")
+    sections: Optional[list[SectionHierarchy]] = Field(
+        None,
+        description="Hierarchical structure of sections → subsections → embodiments",
+    )
     status_code: int = Field(
         ..., description="HTTP status code indicating the result of the operation"
     )

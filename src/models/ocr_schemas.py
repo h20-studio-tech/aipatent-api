@@ -105,3 +105,28 @@ class GlossaryPageFlag(BaseModel):
     is_glossary_page: bool = Field(
         ..., description="True if the page contains glossary definitions"
     )
+
+
+# --------------------
+# New hierarchical models
+# --------------------
+
+class Subsection(BaseModel):
+    """Represents a subsection header, its summary, and contained embodiments."""
+
+    header: str = Field(..., description="Subsection header/title")
+    summary: str = Field("", description="Summary of the subsection")
+    embodiments: list[Embodiment | DetailedDescriptionEmbodiment] = Field(
+        ..., description="Embodiments belonging to this subsection"
+    )
+
+
+class SectionHierarchy(BaseModel):
+    """A main patent section with its subsections."""
+
+    section: str = Field(
+        ..., description="Main section name (e.g., Summary of Invention, Detailed Description, Claims)"
+    )
+    subsections: list[Subsection] = Field(
+        ..., description="Subsections within the section"
+    )
