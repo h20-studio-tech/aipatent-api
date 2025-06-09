@@ -29,8 +29,10 @@ from src.models.ocr_schemas import (
     EmbodimentSummary,
     EmbodimentSpellCheck,
     Glossary,
-    GlossaryPageFlag
-    )
+    GlossaryPageFlag,
+    Subsection,
+    SectionHierarchy,
+)
 
 # Configure logging
 logger = create_logger("ocr.py")
@@ -452,7 +454,8 @@ async def detect_description_header(segmented_page: ProcessedPage) -> HeaderDete
     
     try:
         response = await client.chat.completions.create(
-            model='o3',
+            model='o4-mini-2025-04-16',
+            reasoning_effort='high',
             messages=[{
                 "role": "user",
                 "content": [
@@ -509,6 +512,175 @@ async def detect_description_headers(segmented_pages: list[ProcessedPage]) -> li
     logger.info("Header detection batch complete")
     return results
 
+@observe(name='summary-subheaders-detection')
+async def detect_summary_header(segmented_page: ProcessedPage) -> HeaderDetectionPage:
+    """Detect subsection headers on a Summary of the Invention page."""
+    logger.info(
+        f"Starting header detection for SUMMARY page {segmented_page.filename} page {segmented_page.page_number}"
+    )
+
+    prompt = """
+    You are a header detection system for a biological patent ETL application.
+
+    Analyze the image and identify if there is a clearly visible sub-section header specific to the SUMMARY OF THE INVENTION section.
+    Ignore any 'example' headers or enumeration like step 1, step 2, etc.
+
+    Return:
+    - has_header: True if a clear header is found, False otherwise
+    - header: The extracted header text if found, otherwise None
+    """
+
+    if not segmented_page.image:
+        logger.warning(
+            f"No image available for {segmented_page.filename} page {segmented_page.page_number}; skipping header detection."
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            text=getattr(segmented_page, 'text', None) or getattr(segmented_page, 'text_content', None),
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            section=segmented_page.section,
+            image=None,
+        )
+
+    try:
+        response = await client.chat.completions.create(
+            model="o4-mini-2025-04-16",
+            reasoning_effort="high",
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": segmented_page.image}},
+                ],
+            }],
+            response_model=HeaderDetection,
+        )
+        logger.info(
+            f"Header detection finished for SUMMARY page {segmented_page.filename} page {segmented_page.page_number}: has_header={response.has_header}, header='{response.header}'"
+        )
+        return HeaderDetectionPage(
+            header=response.header,
+            has_header=response.has_header,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image,
+        )
+    except Exception as e:
+        logger.error(
+            f"Error in detect_summary_header for {segmented_page.filename} page {segmented_page.page_number}: {str(e)}"
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image,
+        )
+
+@observe(name='claims-subheaders-detection')
+async def detect_claims_header(segmented_page: ProcessedPage) -> HeaderDetectionPage:
+    """Detect subsection headers on a Claims page."""
+    logger.info(
+        f"Starting header detection for CLAIMS page {segmented_page.filename} page {segmented_page.page_number}"
+    )
+
+    prompt = """
+    You are a header detection system for a biological patent ETL application.
+
+    Analyze the image and identify if there is a clearly visible sub-section header specific to the CLAIMS section.
+    Ignore any 'example' headers or enumeration like step 1, step 2, etc.
+
+    Return:
+    - has_header: True if a clear header is found, False otherwise
+    - header: The extracted header text if found, otherwise None
+    """
+
+    if not segmented_page.image:
+        logger.warning(
+            f"No image available for {segmented_page.filename} page {segmented_page.page_number}; skipping header detection."
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            text=getattr(segmented_page, 'text', None) or getattr(segmented_page, 'text_content', None),
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            section=segmented_page.section,
+            image=None,
+        )
+
+    try:
+        response = await client.chat.completions.create(
+            model="o4-mini-2025-04-16",
+            reasoning_effort="high",
+            messages=[{
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": segmented_page.image}},
+                ],
+            }],
+            response_model=HeaderDetection,
+        )
+        logger.info(
+            f"Header detection finished for CLAIMS page {segmented_page.filename} page {segmented_page.page_number}: has_header={response.has_header}, header='{response.header}'"
+        )
+        return HeaderDetectionPage(
+            header=response.header,
+            has_header=response.has_header,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image,
+        )
+    except Exception as e:
+        logger.error(
+            f"Error in detect_claims_header for {segmented_page.filename} page {segmented_page.page_number}: {str(e)}"
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            section=segmented_page.section,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            image=segmented_page.image,
+        )
+
+async def detect_section_headers(segmented_pages: list[ProcessedPage]) -> list[HeaderDetectionPage]:
+    """Run header detection concurrently across all major patent sections."""
+    # We intentionally skip header detection for the Claims section because
+    # claims rarely contain meaningful sub-section headers and the added calls
+    # increase cost/latency.
+    section_to_detector = {
+        "summary of invention": detect_summary_header,
+        "detailed description": detect_description_header,
+        # "claims": detect_claims_header,  # disabled per design decision
+    }
+
+    tasks = []
+    for page in segmented_pages:
+        detector = section_to_detector.get(page.section.lower())
+        if detector:
+            tasks.append(detector(page))
+        else:
+            logger.warning(
+                f"No header detector for section '{page.section}' on page {page.page_number}; skipping."
+            )
+
+    if not tasks:
+        return []
+
+    results = await asyncio.gather(*tasks)
+    return results
+
 examples = [
     """
     In certain aspects the disclosure relates to a method for preventing or treating alcoholic liver disease in a subject in need thereof, comprising administering to the subject a therapeutically effective amount of a hyperimmunized egg product obtained from an egg‑producing animal, thereby preventing or treating the alcoholic liver disease in the subject, wherein the hyperimmunized egg product comprises a therapeutically effective amount of one or more antibodies to an antigen selected from the group consisting of Enterococcus faecalis and Enterococcus faecalis cytolysin toxin.
@@ -537,7 +709,7 @@ async def get_embodiments(page: ProcessedPage) -> list[Embodiment]:
 
     logger.info(f"Extracting embodiments from page {page_number} of {filename}")
     completion = await client.chat.completions.create(
-        model='o4-mini',
+        model='o4-mini-2025-04-16',
         reasoning_effort='high',
         messages=[
             {
@@ -592,7 +764,7 @@ async def find_embodiments(pages: list[ProcessedPage]) -> list[Embodiment]:
 async def categorize_embodiment(embodiment: Embodiment) -> DetailedDescriptionEmbodiment: 
     # Get just the category from the API
     response = await client.chat.completions.create(
-        model='o4-mini',
+        model='o4-mini-2025-04-16',
         reasoning_effort='high',
         messages=[
                 {
@@ -683,7 +855,7 @@ embodiment_summarization_prompt = get_prompt('embodiment_summary')
 async def summarize_embodiment(embodiment: Union[DetailedDescriptionEmbodiment, Embodiment], embodiments: Union[list[DetailedDescriptionEmbodiment], list[Embodiment]]) -> Union[DetailedDescriptionEmbodiment, Embodiment]:
     prompt = embodiment_summarization_prompt.compile(embodiment=embodiment.text, embodiments=[embodiment.text for embodiment in embodiments])
     res = await client.chat.completions.create(
-        model='gpt-4.1',
+        model='o4-mini-2025-04-16',
         messages=[{'role': 'system', 'content': prompt}],
         response_model=EmbodimentSummary
     )
@@ -701,7 +873,7 @@ embodiment_spell_check_prompt = get_prompt('embodiment_spell_check')
 async def embodiment_spell_check(embodiment: Union[Embodiment, DetailedDescriptionEmbodiment]) -> Union[Embodiment, DetailedDescriptionEmbodiment]:
     prompt = embodiment_spell_check_prompt.compile(embodiment=embodiment.text)
     res = await client.chat.completions.create(
-        model='o4-mini',
+        model='o4-mini-2025-04-16',
         reasoning_effort='high',
         messages=[{'role': 'system', 'content': prompt}],
         response_model=EmbodimentSpellCheck
@@ -745,18 +917,176 @@ async def add_headers_to_embodiments(
     for emb in dd_embs_sorted:
         key = (emb.filename, emb.page_number)
 
-        if key in page_lookup:
-            # Direct match – use it and update last header cache
-            emb.header = page_lookup[key]
-            last_header[emb.filename] = page_lookup[key]
-        else:
-            # No header detected on this page – use carry-forward if available
-            if emb.header is None and emb.filename in last_header:
-                emb.header = last_header[emb.filename]
+        if hasattr(emb, "header"):
+            if key in page_lookup:
+                # Direct match – use it and update last header cache
+                emb.header = page_lookup[key]
+                last_header[emb.filename] = page_lookup[key]
+            else:
+                # No header detected on this page – use carry-forward if available
+                if getattr(emb, "header", None) is None and emb.filename in last_header:
+                    emb.header = last_header[emb.filename]
 
     return dd_embs
 
-@observe()
+# --------------------
+# Section hierarchy grouping
+# --------------------
+
+async def build_section_hierarchy(
+    embodiments: list[Embodiment | DetailedDescriptionEmbodiment],
+    header_pages: list[HeaderDetectionPage],
+) -> list[SectionHierarchy]:
+    """Create hierarchical structure of sections → subsections → embodiments.
+    
+    Ensures that every detected header becomes a Subsection, even if it contains
+    no embodiments. Implements a carry-forward rule so embodiments on pages
+    without a header inherit the most recent header of the same section/file.
+    """
+    # Build mapping: section name -> SectionHierarchy
+    section_map: dict[str, SectionHierarchy] = {}
+
+    # Helper: ensure section exists
+    def get_section(section_name: str) -> SectionHierarchy:
+        key = section_name.lower()
+        if key not in section_map:
+            section_map[key] = SectionHierarchy(section=section_name, subsections=[])
+        return section_map[key]
+
+    # Build per-file carry-forward cache for headers
+    last_header: dict[tuple[str, str], str] = {}  # (filename, section) -> header
+
+    # First, create subsections for every detected header (even if empty).
+    for page in sorted(header_pages, key=lambda p: p.page_number):
+        if not page.has_header or not page.header:
+            continue
+
+        section_obj = get_section(page.section)
+
+        # Avoid duplicates – only add once per unique header text within section
+        if not any(s.header == page.header for s in section_obj.subsections):
+            section_obj.subsections.append(
+                Subsection(header=page.header, summary="", embodiments=[])
+            )
+
+        # Update carry-forward cache
+        last_header[(page.filename, page.section)] = page.header
+
+    # Convenience: map (section, header) -> Subsection for quick embodiment assignment
+    subsection_lookup: dict[tuple[str, str], Subsection] = {}
+    for sec in section_map.values():
+        for sub in sec.subsections:
+            subsection_lookup[(sec.section, sub.header)] = sub
+
+    # Attach embodiments
+    for emb in embodiments:
+        header = None
+
+        # 1. If DetailedDescriptionEmbodiment with header field populated
+        if hasattr(emb, "header") and getattr(emb, "header"):
+            header = getattr(emb, "header")
+
+        # 2. Fallback: carry-forward cache (may have been updated above)
+        if header is None:
+            key = (emb.filename, emb.section)
+            header = last_header.get(key)
+
+        # 3. If still None, skip assignment (embodiment remains ungrouped)
+        if header is None:
+            continue
+
+        # Ensure subsection exists (handles case where header cache came from previous pages yet not in header_pages list)
+        section_obj = get_section(emb.section)
+        sub_key = (section_obj.section, header)
+        subsection = subsection_lookup.get(sub_key)
+        if subsection is None:
+            subsection = Subsection(header=header, summary="", embodiments=[])
+            section_obj.subsections.append(subsection)
+            subsection_lookup[sub_key] = subsection
+
+        subsection.embodiments.append(emb)
+
+    # Return list sorted by original order of sections defined
+    return list(section_map.values())
+
+# --------------------
+# Subsection summarization
+# --------------------
+
+async def _summarize_text(text: str) -> str:
+    """LLM call that returns a concise 2-3 sentence summary."""
+    prompt = (
+        "You are a helpful assistant summarizing patent subsections. "
+        "Return a concise 2–3 sentence summary of the key disclosure points. "
+        "Ignore boiler-plate legal language and numbering."
+    )
+
+    # Re-use EmbodimentSummary pydantic schema for simplicity
+    try:
+        res: EmbodimentSummary = await client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": text},
+            ],
+            response_model=EmbodimentSummary,
+        )
+        return res.summary.strip()
+    except Exception as e:
+        logger.warning("Subsection summarization failed: %s", e)
+        return text[:150].strip() + ("…" if len(text) > 150 else "")
+
+def _extract_window(header_page: HeaderDetectionPage, max_chars: int = 700) -> str:
+    """Take ~max_chars of text starting from header occurrence within the page."""
+    if not header_page.text:
+        return ""
+
+    header_lower = (header_page.header or "").lower()
+    idx = header_page.text.lower().find(header_lower)
+    if idx == -1:
+        idx = 0
+    window = header_page.text[idx : idx + max_chars]
+    return window
+
+async def summarize_subsections(
+    hierarchy: list[SectionHierarchy],
+    header_pages: list[HeaderDetectionPage],
+) -> list[SectionHierarchy]:
+    """Populate each subsection.summary using a 700-char window after its header."""
+
+    # Build quick lookup from (section, header) -> header_page
+    hp_lookup: dict[tuple[str, str], HeaderDetectionPage] = {
+        (hp.section, hp.header): hp
+        for hp in header_pages
+        if hp.has_header and hp.header
+    }
+
+    tasks = []
+    mapping: dict[asyncio.Task, Subsection] = {}
+
+    for sec in hierarchy:
+        for sub in sec.subsections:
+            key = (sec.section, sub.header)
+            if key not in hp_lookup:
+                # Fallback: use first embodiment text if any
+                if sub.embodiments:
+                    sub.summary = sub.embodiments[0].text[:150] + "…"
+                continue
+
+            window = _extract_window(hp_lookup[key])
+            task = asyncio.create_task(_summarize_text(window))
+            tasks.append(task)
+            mapping[task] = sub
+
+    if tasks:
+        summaries = await asyncio.gather(*tasks)
+        for task, summary in zip(tasks, summaries):
+            mapping[task].summary = summary
+
+    return hierarchy
+
+# --------------------
+
 async def extract_glossary_subsection(segmented_pages: list[ProcessedPage]) -> Glossary | None:
     """
     Use the Instructor library to extract glossary definitions
@@ -769,31 +1099,32 @@ async def extract_glossary_subsection(segmented_pages: list[ProcessedPage]) -> G
 
     async def process_page(page: ProcessedPage) -> Glossary | None:
         prompt = f"""
-            Extract key terms and their definitions from the following patent text. 
-            Respond matching the Glossary Pydantic schema.
-            
-            Ignore terms that are not directly related to the scientific aspect of the patent
-            
-            Examples included of terms to be ignored:
-            - "or", "a", "an", "the", "about", "herein"
-            
-            Examples of terms to be included:              
-            Glossary definitions typically define terms with patterns like:
-            - The term "<TERM>" refers to <DEFINITION>.
-            - As used herein, the term "<TERM>" refers to <DEFINITION>.
-            
-            Examples include:
-            - The term "control egg" refers to an egg obtained...
-            - The term "antigen" refers to a substance...
-            - As used herein, the term "antibody" is a protein...
-            - As used herein, the term "hyperimmunization" means...
-            
-            Text:
-            {page.text}
+        Extract key terms and their definitions from the following patent text. 
+        Respond matching the Glossary Pydantic schema.
+        
+        Ignore terms that are not directly related to the scientific aspect of the patent
+        
+        Examples included of terms to be ignored:
+        - "or", "a", "an", "the", "about", "herein"
+        
+        Examples of terms to be included:              
+        Glossary definitions typically define terms with patterns like:
+        - The term "<TERM>" refers to <DEFINITION>.
+        - As used herein, the term "<TERM>" refers to <DEFINITION>.
+        
+        Examples include:
+        - The term "control egg" refers to an egg obtained...
+        - The term "antigen" refers to a substance...
+        - As used herein, the term "antibody" is a protein...
+        - As used herein, the term "hyperimmunization" means...
+        
+        Text:
+        {page.text}
         """
         try:
             res: Glossary = await client.chat.completions.create(
-                model="o3",
+                model="o4-mini-2025-04-16",
+                reasoning_effort='high',
                 messages=[{"role": "system", "content": prompt}],
                 response_model=Glossary
             )
@@ -843,6 +1174,10 @@ async def detect_glossary_pages(
     Processes pages concurrently for better performance.
     Returns list of (page, flag) tuples.
     """
+    detailed = [p for p in segmented_pages if p.section.lower() == "detailed description"]
+    if not detailed:
+        return []
+
     async def process_page(page: ProcessedPage) -> tuple[ProcessedPage, GlossaryPageFlag]:
         prompt = f"""
         You are an expert patent document analysis assistant integrated into an automated OCR pipeline.
@@ -860,7 +1195,7 @@ async def detect_glossary_pages(
         {page.text}
         """
         flag: GlossaryPageFlag = await client.chat.completions.create(
-            model="o3",
+            model="o4-mini-2025-04-16",
             reasoning_effort="high",
             messages=[{"role": "system", "content": prompt}],
             response_model=GlossaryPageFlag
@@ -868,11 +1203,12 @@ async def detect_glossary_pages(
         return (page, flag)
 
     # Process all pages concurrently
-    tasks = [process_page(page) for page in segmented_pages]
+    tasks = [process_page(page) for page in detailed]
     return await asyncio.gather(*tasks)
 
 async def process_patent_document(
-    pdf_data: bytes, filename: str) -> tuple[Glossary, list[Embodiment | DetailedDescriptionEmbodiment]]:
+    pdf_data: bytes, filename: str
+) -> tuple[Glossary, list[Embodiment | DetailedDescriptionEmbodiment], list[SectionHierarchy]]:
     try:
         # Process PDF pages
         pdf_processing_start = time()
@@ -890,12 +1226,10 @@ async def process_patent_document(
         # Detect glossary pages separately
         detailed_description_pages = [page for page in segmented_pages if page.section == "detailed description"]
         
-        # Detect headers on detailed description pages
-        header_detection_pages = await detect_description_headers(
-            detailed_description_pages
-        )
+        # Detect headers across all major patent sections (Summary, Detailed Description, Claims)
+        major_section_pages = [p for p in segmented_pages if p.section in ["summary of invention", "detailed description", "claims"]]
+        header_detection_pages = await detect_section_headers(major_section_pages)
         logger.info(f"Header detection completed for {len(header_detection_pages)} pages")
-
         
         glossary_flags = await detect_glossary_pages(detailed_description_pages)
         flagged_pages = [pg for pg, flag in glossary_flags if flag.is_glossary_page]
@@ -957,7 +1291,12 @@ async def process_patent_document(
         spell_checked_embodiments = await spell_check_embodiments(summarized_embodiments)
         logger.info(f"Spell checked {len(spell_checked_embodiments)} embodiments")
         
-        return glossary_subsection, spell_checked_embodiments
+        # Build section hierarchy and summarize subsections
+        sections = await build_section_hierarchy(spell_checked_embodiments, header_detection_pages)
+        sections = await summarize_subsections(sections, header_detection_pages)
+        logger.info(f"Generated hierarchical section data with {len(sections)} sections")
+
+        return glossary_subsection, spell_checked_embodiments, sections
         
     except Exception as e: 
         raise RuntimeError(f"Error processing patent document: {str(e)}")
