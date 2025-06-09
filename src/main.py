@@ -482,7 +482,7 @@ async def patent(patent_id: str, file: UploadFile):
         # check if exists in db
         exist_in_db  = (
             supabase.table("patent_files")
-            .select("id, abstract")
+            .select("id, abstract, sections")
             .eq("id", str(patent_id))
             .execute()
         ) 
@@ -548,6 +548,7 @@ async def patent(patent_id: str, file: UploadFile):
                 )
             else:
                 glossary_subsection = None
+            sections = exist_in_db.data[0].get("sections")
         else:
             logging.info(f"Patent with ID {patent_id} does not exist.")
             # process the doc because it does not exist in db
@@ -615,6 +616,14 @@ async def patent(patent_id: str, file: UploadFile):
                     ]
                 ).execute()
                 logging.info(f"Inserted {len(patent_embodiments)} embodiments for patent_id={patent_id}")
+                # 4️⃣ Insert section hierarchy JSON
+                if sections:
+                    # Convert Pydantic models to dicts for JSONB insertion
+                    sections_data = [sec.model_dump() for sec in sections]
+                    supabase.table("patent_files").update(
+                        {"sections": sections_data}
+                    ).eq("id", str(patent_id)).execute()
+                    logging.info(f"Inserted {len(sections_data)} sections for patent_id={patent_id}")
             except Exception as db_e:
                 logging.error(f"Failed to store data for patent_id={patent_id}: {db_e}")
               
