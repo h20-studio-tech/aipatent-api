@@ -705,11 +705,18 @@ async def list_source_embodiments(patent_id: str):
         terms = supabase.table("glossary_terms").select("*").eq("file_id", str(patent_id)).execute()
         terms = terms.data if terms.data else []
         source_embodiments = response.data if response.data else []
+        
+        file = (supabase.table("patent_files").select("*").eq("id", str(patent_id)).execute()).data if (supabase.table("patent_files").select("*").eq("id", str(patent_id)).execute()).data else []
+        abstract = file[0].get("abstract", "") if file else ""
+        sections = file[0].get("sections", []) if file else []
+        
         return EmbodimentsListResponse(
             status="success",
             message="Source embodiments retrieved successfully",
             data=source_embodiments,
             terms=terms,
+            abstract=abstract,
+            sections=sections,
             status_code=200
         )
     except Exception as e:

@@ -102,20 +102,20 @@ class PatentUploadResponse(BaseModel):
     filename: str = Field(..., description="The name of the uploaded file")
     file_id: str = Field(..., description="Unique identifier for the uploaded file")
     message: str = Field(..., description="Status message for the upload operation")
-    data: list[Union[Embodiment, DetailedDescriptionEmbodiment]] = Field(
-        ..., description="The list of embodiments in a page that contains embodiments"
+    status_code: int = Field(
+        ..., description="HTTP status code indicating the result of the operation"
     )
-    terms: Glossary = Field(..., description="The glossary of terms in the patent document")
     abstract: Optional[str] = Field(None, description="The extracted abstract from the patent document")
     abstract_page: Optional[int] = Field(None, description="The page number where the abstract was found")
     abstract_pattern: Optional[int] = Field(None, description="The pattern index that matched the abstract")
+    data: list[Union[Embodiment, DetailedDescriptionEmbodiment]] = Field(
+        ..., description="The list of embodiments in a page that contains embodiments"
+    )
     sections: Optional[list[SectionHierarchy]] = Field(
         None,
         description="Hierarchical structure of sections → subsections → embodiments",
     )
-    status_code: int = Field(
-        ..., description="HTTP status code indicating the result of the operation"
-    )
+    terms: Glossary = Field(..., description="The glossary of terms in the patent document")
 # New models for patent_files list endpoint
 class PatentFile(BaseModel):
     """Individual patent file information from database."""
@@ -239,8 +239,10 @@ class EmbodimentsListResponse(BaseModel):
     """
     status: str = "success"
     message: str
-    data: list
+    abstract: str
+    sections: list
     terms: list
+    data: list
 
 class EmbodimentApproveErrorResponse(BaseModel):
     """
