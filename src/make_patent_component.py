@@ -574,7 +574,13 @@ def generate_embodiment(
 
 
 def generate_disease_overview(
-    disease: str, additional:str, context: str, model: str = model
+    innovation: str, 
+    technology: str,
+    approach: str, 
+    antigen: str, 
+    disease: str,
+    additional:str, 
+    context: str, model: str = model
 ) -> DiseaseOverview:
     client = OpenAI()
     if not disease:
@@ -585,7 +591,13 @@ def generate_disease_overview(
         id=trace_id,
         name="generate_disease_overview",
         input=values_to_json(
-            disease=disease
+            innovation=innovation,
+            technology=technology,
+            approach=approach,
+            antigen=antigen,
+            disease=disease,
+            additional=additional,
+            context=context
         ),
         tags=["evaluation"],
     )
