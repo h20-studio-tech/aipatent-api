@@ -604,6 +604,10 @@ def generate_disease_overview(
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_disease_overview")
     prompt = raw_prompt.compile(
+        innovation=innovation,
+        technology=technology,
+        approach=approach,
+        antigen=antigen,
         disease=disease,
         additional=additional,
         context=context
