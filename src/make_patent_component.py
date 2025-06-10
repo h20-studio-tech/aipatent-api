@@ -580,7 +580,7 @@ def generate_disease_overview(
     antigen: str, 
     disease: str,
     additional:str, 
-    context: str, model: str = model
+    model: str = model
 ) -> DiseaseOverview:
     client = OpenAI()
     if not disease:
@@ -597,7 +597,6 @@ def generate_disease_overview(
             antigen=antigen,
             disease=disease,
             additional=additional,
-            context=context
         ),
         tags=["evaluation"],
     )
@@ -610,14 +609,12 @@ def generate_disease_overview(
         antigen=antigen,
         disease=disease,
         additional=additional,
-        context=context
     )
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
             disease=disease,
             additional=additional,
-            context=context
         ),
         output=raw_prompt,
     )
