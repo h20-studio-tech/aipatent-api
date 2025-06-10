@@ -116,6 +116,7 @@ async def disease_overview(req: SectionGenerationRequest) -> SectionResponse:
         antigen=req.antigen,
         disease=req.disease,
         additional=req.additional,
+        context=req.context,
     )
     return SectionResponse(
         prediction=res.prediction,
@@ -126,6 +127,7 @@ async def disease_overview(req: SectionGenerationRequest) -> SectionResponse:
         antigen=req.antigen,
         disease=req.disease,
         additional=req.additional,
+        context=req.context,
     )
     
 @router.post("/underlying_mechanism", response_model=SectionResponse)
