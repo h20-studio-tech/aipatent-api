@@ -1295,6 +1295,9 @@ async def process_patent_document(
         sections = await build_section_hierarchy(spell_checked_embodiments, header_detection_pages)
         sections = await summarize_subsections(sections, header_detection_pages)
         logger.info(f"Generated hierarchical section data with {len(sections)} sections")
+        
+        for embodiment in spell_checked_embodiments:
+            embodiment.filename = filename
 
         return glossary_subsection, spell_checked_embodiments, sections
         

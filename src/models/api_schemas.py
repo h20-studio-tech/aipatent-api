@@ -116,6 +116,7 @@ class PatentUploadResponse(BaseModel):
         description="Hierarchical structure of sections → subsections → embodiments",
     )
     terms: Glossary = Field(..., description="The glossary of terms in the patent document")
+    
 # New models for patent_files list endpoint
 class PatentFile(BaseModel):
     """Individual patent file information from database."""
@@ -238,8 +239,12 @@ class EmbodimentsListResponse(BaseModel):
     Response model for a list of embodiments.
     """
     status: str = "success"
+    filename: str = Field(..., description="The name of the uploaded file")
+    file_id: str = Field(..., description="Unique identifier for the uploaded file")
     message: str
     abstract: str
+    abstract_page: int
+    abstract_pattern: int
     sections: list
     terms: list
     data: list

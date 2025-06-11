@@ -711,11 +711,15 @@ async def list_source_embodiments(patent_id: str):
         sections = file[0].get("sections", []) if file else []
         
         return EmbodimentsListResponse(
+            filename=file[0].get("filename", "") if file else "",
+            file_id=patent_id,
             status="success",
             message="Source embodiments retrieved successfully",
             data=source_embodiments,
             terms=terms,
             abstract=abstract,
+            abstract_page=file[0].get("abstract_page", "") if file else "",
+            abstract_pattern=file[0].get("abstract_pattern", "") if file else "",
             sections=sections,
             status_code=200
         )
