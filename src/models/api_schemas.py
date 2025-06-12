@@ -243,8 +243,6 @@ class EmbodimentsListResponse(BaseModel):
     file_id: str = Field(..., description="Unique identifier for the uploaded file")
     message: str
     abstract: str
-    abstract_page: int
-    abstract_pattern: int
     sections: list
     terms: list
     data: list
