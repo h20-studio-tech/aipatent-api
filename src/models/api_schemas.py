@@ -190,6 +190,7 @@ class Document(BaseModel):
     queryable: bool = False  # Flag to indicate if the file is available for querying in LanceDB
 
 
+
 class FilesResponse(BaseModel):
     """
     Response model for file listing operations.
