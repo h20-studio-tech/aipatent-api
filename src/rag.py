@@ -5,7 +5,10 @@ import instructor
 import asyncio
 import langfuse
 import pandas as pd
-from langfuse.decorators import observe
+try:
+    from langfuse.decorators import observe
+except Exception:  # pragma: no cover - fallback for test envs
+    from src.utils.langfuse_stub import observe
 from src.models.rag_schemas import Chunk
 from pydantic import BaseModel
 from typing import List
