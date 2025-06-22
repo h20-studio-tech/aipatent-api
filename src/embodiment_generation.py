@@ -1,7 +1,10 @@
 from openai import AsyncOpenAI
 import instructor 
 from pydantic import BaseModel
-from langfuse.decorators import observe
+try:
+    from langfuse.decorators import observe
+except Exception:  # pragma: no cover - fallback for test envs
+    from src.utils.langfuse_stub import observe
 import os
 import asyncio
 from uuid import uuid4
