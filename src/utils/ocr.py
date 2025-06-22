@@ -1,3 +1,4 @@
+import os
 import instructor
 import asyncio
 import base64
@@ -52,7 +53,9 @@ openai = AsyncOpenAI()
 client = instructor.from_openai(openai)
 
 # Configure Tesseract path if needed
-# pytesseract.pytesseract.tesseract_cmd = r'<path_to_tesseract>'
+tesseract_path = os.getenv("TESSERACT_PATH")
+if tesseract_path:
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 
 def pil_image_to_base64(pil_img: Image.Image) -> str:
