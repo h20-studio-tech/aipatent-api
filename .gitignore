@@ -20,3 +20,11 @@ replit.nix
 .ide-agent-tasks/files-retrieval-enhancement.md
 experiments/
 experiments/ald_gvhd_patent_embodiments.csv
+processing_stats.json
+patent.json
+pages_5_38_chunks.json
+pages_5_38_chunks.csv
+labeled_chunks_dataset.json
+labeled_chunks_dataset.jsonl
+labeled_all_chunks_concurrent.jsonl
+invention_principles.json

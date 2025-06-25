@@ -57,7 +57,8 @@ from src.models.api_schemas import (
      DeleteFileResponse,
      DeleteAllFilesResponse,
      DropTableResponse,
-     PatentFilesListResponse
+     PatentFilesListResponse,
+     RawSectionsResponse
  )
 from src.models.ocr_schemas import (
     Embodiment, 
@@ -549,10 +550,18 @@ async def patent(patent_id: str, file: UploadFile):
             else:
                 glossary_subsection = None
             sections = exist_in_db.data[0].get("sections")
+            # Fetch raw sections from Supabase for already-processed patent
+            raw_sections_rows = (
+                supabase.table("raw_sections").select("section_type, text")
+                
+                .eq("file_id", str(patent_id))
+                .execute()
+            )
+            raw_sections = {row["section_type"]: row["text"] for row in raw_sections_rows.data} if raw_sections_rows.data else {}
         else:
             logging.info(f"Patent with ID {patent_id} does not exist.")
             # process the doc because it does not exist in db
-            glossary_subsection, patent_embodiments, sections = await process_patent_document(content, filename)
+            glossary_subsection, patent_embodiments, sections, raw_sections = await process_patent_document(content, filename)
             
             # Extract abstract using our enhanced OCR-capable extractor
             abstract_result = await extract_abstract_from_pdf(content)
@@ -624,6 +633,19 @@ async def patent(patent_id: str, file: UploadFile):
                         {"sections": sections_data}
                     ).eq("id", str(patent_id)).execute()
                     logging.info(f"Inserted {len(sections_data)} sections for patent_id={patent_id}")
+                    # 5️⃣ Upsert raw sections
+                    if raw_sections:
+                        supabase.table("raw_sections").upsert(
+                            [
+                                {
+                                    "file_id": str(patent_id),
+                                    "section_type": sec,
+                                    "text": txt,
+                                }
+                                for sec, txt in raw_sections.items()
+                            ]
+                        ).execute()
+                        logging.info(f"Upserted {len(raw_sections)} raw sections for patent_id={patent_id}")
             except Exception as db_e:
                 logging.error(f"Failed to store data for patent_id={patent_id}: {db_e}")
               
@@ -645,13 +667,41 @@ async def patent(patent_id: str, file: UploadFile):
             status_code=500, detail=f"Error during patent processing: {e}"
         )
         
+@app.get("/api/v1/raw-sections/{patent_id}", response_model=RawSectionsResponse, tags=["Patent"])
+async def get_raw_sections(patent_id: str):
+    """Retrieve the raw text for each patent section previously extracted and stored."""
+    try:
+        # Fetch filename for friendly response details (ignore errors if not found)
+        file_resp = (
+            supabase.table("patent_files")
+            .select("filename")
+            .eq("id", str(patent_id))
+            .maybe_single()
+            .execute()
+        )
+        filename = file_resp.data["filename"] if file_resp and file_resp.data else ""
+
+        rows = (
+            supabase.table("raw_sections").select("section_type, text")
+            
+            .eq("file_id", str(patent_id))
+            .execute()
+        )
+        sections = {row["section_type"]: row["text"] for row in rows.data} if rows.data else {}
+        return RawSectionsResponse(file_id=str(patent_id), filename=filename, sections=sections)
+    except Exception as e:
+        logging.error(f"Failed to retrieve raw sections for patent_id={patent_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving raw sections: {e}")
+
 @app.get("/api/v1/patent-files/", response_model=PatentFilesListResponse, status_code=200, tags=["Patent"])
 async def list_patent_files():
     """
     Endpoint to list all patent files in the database, ordered by upload time (newest first).
     
     Returns:
-        PatentFilesListResponse: A Pydantic model containing the list of patent files and metadata.
+        PatentFilesListResponse,
+      RawSectionsResponse,
+      RawSectionsResponse: A Pydantic model containing the list of patent files and metadata.
     
     Raises:
         HTTPException: If an error occurs during database query.

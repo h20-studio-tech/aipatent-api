@@ -114,7 +114,7 @@ def export_dataset(
     """Write annotations to a JSONL file."""
     with open(file_path, "w", encoding="utf-8") as f:
         for ann in annotations:
-            record = ann.dict()
+            record = ann.model_dump()
             record["source_section"] = source_section
             f.write(json.dumps(record) + "\n")
 

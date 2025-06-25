@@ -109,7 +109,9 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
             detected_sections.add(current_section)
             # Update the page's section
             page.section = current_section
-            logger.info(f"First page default section: {current_section}")
+            logger.info(
+                f"First page default section: {current_section}"
+            )
             segmented_pages.append(page)
             continue
 
@@ -215,7 +217,6 @@ async def segment_pages(pages: list[ProcessedPage]) -> list[ProcessedPage]:
 
             # Look for section keywords in order, respecting the expected sequence
             current_idx = section_order.index(current_section)
-
             # Only look for sections that come after the current one
             for next_idx in range(current_idx + 1, len(section_order)):
                 next_section = section_order[next_idx]
@@ -571,19 +572,101 @@ async def detect_description_header(
         )
 
 
-async def detect_description_headers(
-    segmented_pages: list[ProcessedPage],
-) -> list[HeaderDetectionPage]:
-    """Run header detection over a list of pages with progress logging."""
-    total = len(segmented_pages)
-    logger.info(f"Beginning header detection over {total} page(s) concurrently")
+@observe(name="description-subheaders-detection-text")
+async def detect_description_header_from_text(
+    segmented_page: ProcessedPage,
+) -> HeaderDetectionPage:
+    """
+    Detect headers from markdown text content instead of images.
+    This is faster and more reliable when markdown content is available.
+    """
+    logger.info(
+        f"Starting text-based header detection for {segmented_page.filename} page {segmented_page.page_number}"
+    )
 
-    # Run header detection concurrently
-    tasks = [detect_description_header(page) for page in segmented_pages]
-    results = await asyncio.gather(*tasks)
+    content = segmented_page.text
+    
+    if not content:
+        logger.warning(
+            f"No text content available for {segmented_page.filename} page {segmented_page.page_number}; skipping header detection."
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            section=segmented_page.section,
+            image=segmented_page.image,
+        )
 
-    logger.info("Header detection batch complete")
-    return results
+    # Split content into lines and look for headers
+    lines = content.strip().split('\n')
+    
+    # Header patterns to look for
+    header_patterns = [
+        # Look for lines that are likely headers (short, capitalized, not starting with numbers)
+        r'^[A-Z][A-Za-z\s\-\(\)]{5,80}$',  # Capitalized lines 5-80 chars
+        r'^#{1,6}\s+(.+)$',  # Markdown headers
+        r'^[A-Z][A-Za-z\s\-\(\)]{5,80}:$',
+    ]
+    
+    exclusion_patterns = [
+        r'^\d+\.',  # Numbered lists
+        r'^step\s+\d+',  # Step headers
+        r'^example\s+\d+',  # Example headers
+        r'^figure\s+\d+',  # Figure references
+        r'^table\s+\d+',  # Table references
+        r'^\s*$',  # Empty lines
+        r'^[a-z]',  # Lines starting with lowercase
+        r'^\d+\s+',  # Lines starting with numbers
+        r'WO\s+\d{4}',  # Patent document references
+        r'PCT/US\d{4}',  # PCT references
+        r'^\s*\d+\s*$',  # Just page numbers
+    ]
+    
+    detected_header = None
+    
+    # Look through the first few lines for headers
+    for i, line in enumerate(lines[:10]):  # Check first 10 lines
+        line = line.strip()
+        if not line:
+            continue
+            
+        # Skip if matches exclusion patterns
+        if any(re.match(pattern, line, re.IGNORECASE) for pattern in exclusion_patterns):
+            continue
+            
+        # Check if matches header patterns
+        for pattern in header_patterns:
+            match = re.match(pattern, line)
+            if match:
+                # For markdown headers, extract the text after #
+                if pattern.startswith('^#{1,6}'):
+                    detected_header = match.group(1).strip()
+                else:
+                    detected_header = line.rstrip(':').strip()
+                break
+                
+        if detected_header:
+            break
+    
+    has_header = detected_header is not None
+    
+    logger.info(
+        f"Text-based header detection finished for {segmented_page.filename} page {segmented_page.page_number}: "
+        f"has_header={has_header}, header='{detected_header}'"
+    )
+
+    return HeaderDetectionPage(
+        header=detected_header,
+        has_header=has_header,
+        text=segmented_page.text,
+        filename=segmented_page.filename,
+        page_number=segmented_page.page_number,
+        section=segmented_page.section,
+        image=segmented_page.image,
+    )
 
 
 @observe(name="summary-subheaders-detection")
@@ -742,31 +825,217 @@ async def detect_claims_header(segmented_page: ProcessedPage) -> HeaderDetection
         )
 
 
+async def detect_description_headers(
+    segmented_pages: list[ProcessedPage],
+) -> list[HeaderDetectionPage]:
+    """Run header detection over a list of pages with progress logging."""
+    total = len(segmented_pages)
+    logger.info(f"Beginning header detection over {total} page(s) concurrently")
+
+    tasks = []
+    for page in segmented_pages:
+        tasks.append(detect_description_header(page))
+    
+    results = await asyncio.gather(*tasks)
+
+    logger.info("Header detection batch complete")
+    return results
+
+
+@observe(name="summary-subheaders-detection-text")
+async def detect_summary_header_from_text(segmented_page: ProcessedPage) -> HeaderDetectionPage:
+    """Detect subsection headers on a Summary of the Invention page using text content."""
+    logger.info(
+        f"Starting text-based header detection for SUMMARY page {segmented_page.filename} page {segmented_page.page_number}"
+    )
+
+    content = segmented_page.text
+    
+    if not content:
+        logger.warning(
+            f"No text content available for {segmented_page.filename} page {segmented_page.page_number}; skipping header detection."
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            section=segmented_page.section,
+            image=segmented_page.image,
+        )
+
+    # Use the same header detection logic as the detailed description
+    lines = content.strip().split('\n')
+    
+    # Header patterns specific to summary sections
+    header_patterns = [
+        r'^[A-Z][A-Za-z\s\-\(\)]{5,80}$',  # Capitalized lines 5-80 chars
+        r'^#{1,6}\s+(.+)$',  # Markdown headers
+        r'^[A-Z][A-Za-z\s\-\(\)]{5,80}:$',
+    ]
+    
+    exclusion_patterns = [
+        r'^\d+\.',  # Numbered lists
+        r'^step\s+\d+',  # Step headers
+        r'^example\s+\d+',  # Example headers
+        r'^figure\s+\d+',  # Figure references
+        r'^table\s+\d+',  # Table references
+        r'^\s*$',  # Empty lines
+        r'^[a-z]',  # Lines starting with lowercase
+        r'^\d+\s+',  # Lines starting with numbers
+        r'WO\s+\d{4}',  # Patent document references
+        r'PCT/US\d{4}',  # PCT references
+        r'^\s*\d+\s*$',  # Just page numbers
+    ]
+    
+    detected_header = None
+    
+    # Look through the first few lines for headers
+    for i, line in enumerate(lines[:10]):
+        line = line.strip()
+        if not line:
+            continue
+            
+        if any(re.match(pattern, line, re.IGNORECASE) for pattern in exclusion_patterns):
+            continue
+            
+        for pattern in header_patterns:
+            match = re.match(pattern, line)
+            if match:
+                if pattern.startswith('^#{1,6}'):
+                    detected_header = match.group(1).strip()
+                else:
+                    detected_header = line.rstrip(':').strip()
+                break
+                
+        if detected_header:
+            break
+    
+    has_header = detected_header is not None
+    
+    logger.info(
+        f"Text-based header detection finished for SUMMARY page {segmented_page.filename} page {segmented_page.page_number}: "
+        f"has_header={has_header}, header='{detected_header}'"
+    )
+
+    return HeaderDetectionPage(
+        header=detected_header,
+        has_header=has_header,
+        text=segmented_page.text,
+        filename=segmented_page.filename,
+        page_number=segmented_page.page_number,
+        section=segmented_page.section,
+        image=segmented_page.image,
+    )
+
+
+@observe(name="claims-subheaders-detection-text")
+async def detect_claims_header_from_text(segmented_page: ProcessedPage) -> HeaderDetectionPage:
+    """Detect subsection headers on a Claims page using text content."""
+    logger.info(
+        f"Starting text-based header detection for CLAIMS page {segmented_page.filename} page {segmented_page.page_number}"
+    )
+
+    content = segmented_page.text
+    
+    if not content:
+        logger.warning(
+            f"No text content available for {segmented_page.filename} page {segmented_page.page_number}; skipping header detection."
+        )
+        return HeaderDetectionPage(
+            header=None,
+            has_header=False,
+            text=segmented_page.text,
+            filename=segmented_page.filename,
+            page_number=segmented_page.page_number,
+            section=segmented_page.section,
+            image=segmented_page.image,
+        )
+
+    # Use the same header detection logic
+    lines = content.strip().split('\n')
+    
+    # Header patterns specific to claims sections
+    header_patterns = [
+        r'^[A-Z][A-Za-z\s\-\(\)]{5,80}$',  # Capitalized lines 5-80 chars
+        r'^#{1,6}\s+(.+)$',  # Markdown headers
+        r'^[A-Z][A-Za-z\s\-\(\)]{5,80}:$',
+    ]
+    
+    exclusion_patterns = [
+        r'^\d+\.',  # Numbered lists (but claims often start with numbers, so be careful)
+        r'^step\s+\d+',  # Step headers
+        r'^example\s+\d+',  # Example headers
+        r'^figure\s+\d+',  # Figure references
+        r'^table\s+\d+',  # Table references
+        r'^\s*$',  # Empty lines
+        r'^[a-z]',  # Lines starting with lowercase
+        r'WO\s+\d{4}',  # Patent document references
+        r'PCT/US\d{4}',  # PCT references
+        r'^\s*\d+\s*$',  # Just page numbers
+        r'^claim\s+\d+',  # Individual claim numbers
+    ]
+    
+    detected_header = None
+    
+    # Look through the first few lines for headers
+    for i, line in enumerate(lines[:10]):
+        line = line.strip()
+        if not line:
+            continue
+            
+        if any(re.match(pattern, line, re.IGNORECASE) for pattern in exclusion_patterns):
+            continue
+            
+        for pattern in header_patterns:
+            match = re.match(pattern, line)
+            if match:
+                if pattern.startswith('^#{1,6}'):
+                    detected_header = match.group(1).strip()
+                else:
+                    detected_header = line.rstrip(':').strip()
+                break
+                
+        if detected_header:
+            break
+    
+    has_header = detected_header is not None
+    
+    logger.info(
+        f"Text-based header detection finished for CLAIMS page {segmented_page.filename} page {segmented_page.page_number}: "
+        f"has_header={has_header}, header='{detected_header}'"
+    )
+
+    return HeaderDetectionPage(
+        header=detected_header,
+        has_header=has_header,
+        text=segmented_page.text,
+        filename=segmented_page.filename,
+        page_number=segmented_page.page_number,
+        section=segmented_page.section,
+        image=segmented_page.image,
+    )
+
+
 async def detect_section_headers(
     segmented_pages: list[ProcessedPage],
 ) -> list[HeaderDetectionPage]:
     """Run header detection concurrently across all major patent sections."""
-    # We intentionally skip header detection for the Claims section because
     # claims rarely contain meaningful sub-section headers and the added calls
     # increase cost/latency.
-    section_to_detector = {
-        "summary of invention": detect_summary_header,
-        "detailed description": detect_description_header,
-        # "claims": detect_claims_header,  # disabled per design decision
-    }
-
+    
     tasks = []
     for page in segmented_pages:
-        detector = section_to_detector.get(page.section.lower())
-        if detector:
-            tasks.append(detector(page))
-        else:
-            logger.warning(
-                f"No header detector for section '{page.section}' on page {page.page_number}; skipping."
-            )
-
-    if not tasks:
-        return []
+        section = page.section.lower()
+        
+        if section == "summary of invention":
+            tasks.append(detect_summary_header(page))
+        elif section == "detailed description":
+            tasks.append(detect_description_header(page))
+        elif section == "claims":
+            continue
+            continue
 
     results = await asyncio.gather(*tasks)
     return results
@@ -1370,6 +1639,27 @@ async def detect_glossary_pages(
     return await asyncio.gather(*tasks)
 
 
+
+# --------------------
+# Raw section aggregation
+# --------------------
+
+def extract_raw_sections(segmented_pages: list[ProcessedPage]) -> dict[str, str]:
+    """Aggregate raw text for each main section.
+
+    Args:
+        segmented_pages: Pages that already have the `.section` field populated.
+
+    Returns:
+        Dict mapping section name (lower-case) to concatenated raw text.
+    """
+    sections: dict[str, list[str]] = {}
+    for page in segmented_pages:
+        sec = page.section.lower()
+        sections.setdefault(sec, []).append(page.text)
+    # Join each section's pages with blank lines between
+    return {k: "\n\n".join(v) for k, v in sections.items()}
+
 async def process_patent_document(
     pdf_data: bytes, filename: str
 ) -> tuple[
@@ -1388,6 +1678,9 @@ async def process_patent_document(
         segmented_pages = await segment_pages(processed_pages)
         segmentation_total = time() - segmentation_start
         logger.info(f"Page segmentation completed in {segmentation_total:.2f} seconds")
+
+        # Aggregate raw text per main section early so it is available for storage
+        raw_sections = extract_raw_sections(segmented_pages)
 
         # Detect glossary pages separately
         detailed_description_pages = [
@@ -1414,6 +1707,12 @@ async def process_patent_document(
 
         # Extract glossary definitions via Instructor LLM
         glossary_subsection = await extract_glossary_subsection(flagged_pages)
+        # Add glossary definitions as a "key terms" raw section
+        if glossary_subsection and glossary_subsection.definitions:
+            key_terms_text = "\n".join(
+                [f"{d.term}: {d.definition}" for d in glossary_subsection.definitions]
+            )
+            raw_sections["key terms"] = key_terms_text
         if glossary_subsection:
             logger.info(
                 f"Extracted {len(glossary_subsection.definitions)} glossary definitions via LLM"
@@ -1509,7 +1808,7 @@ async def process_patent_document(
         for embodiment in spell_checked_embodiments:
             embodiment.filename = filename
 
-        return glossary_subsection, spell_checked_embodiments, sections
+        return glossary_subsection, spell_checked_embodiments, sections, raw_sections
 
     except Exception as e:
         raise RuntimeError(f"Error processing patent document: {str(e)}")

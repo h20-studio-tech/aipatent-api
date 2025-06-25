@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from pydantic import BaseModel, Field
-from typing import List, Optional, Any, Union 
+from typing import List, Optional, Any, Union, Dict 
 from src.models.ocr_schemas import (
     Embodiment,
     DetailedDescriptionEmbodiment,
@@ -115,7 +115,10 @@ class PatentUploadResponse(BaseModel):
         None,
         description="Hierarchical structure of sections → subsections → embodiments",
     )
-    terms: Glossary = Field(..., description="The glossary of terms in the patent document")
+    terms: Optional[Glossary] = Field(
+        None,
+        description="The glossary of terms in the patent document (may be absent)",
+    )
     
 # New models for patent_files list endpoint
 class PatentFile(BaseModel):
@@ -427,3 +430,11 @@ class EmbodimentListResponse(BaseModel):
     """
     status: str = Field(..., description="Status of the fetch operation")
     data: List[Any] = Field(..., description="List of stored embodiments")
+
+
+class RawSectionsResponse(BaseModel):
+    """Response model for retrieving raw section text for a patent."""
+    status: str = Field(default="success", description="Status of the response (success/error)")
+    file_id: str = Field(..., description="Unique identifier for the patent file")
+    filename: Optional[str] = Field(None, description="Filename of the patent document")
+    sections: Dict[str, str] = Field(..., description="Mapping of section name to raw text")
