@@ -8,6 +8,7 @@ from pdfplumber.page import Page
 from openai import AsyncOpenAI
 from src.utils.logging_helper import create_logger
 from src.utils.langfuse_client import get_prompt
+from src.principle_page_extraction import process_pages
 from typing import Union
 from time import time
 
@@ -1718,9 +1719,15 @@ async def process_patent_document(
                 f"Extracted {len(glossary_subsection.definitions)} glossary definitions via LLM"
             )
 
-        # Extract embodiments
+        # Extract embodiments using the new page-based pipeline
         embodiments_extraction_start = time()
-        embodiments = await find_embodiments(segmented_pages)
+        principle_sections = {
+            "abstract": raw_sections.get("abstract", ""),
+            "summary": raw_sections.get("summary of invention", ""),
+            "description": raw_sections.get("detailed description", ""),
+            "claims": raw_sections.get("claims", "").split("\n\n"),
+        }
+        embodiments = await process_pages(segmented_pages, principle_sections, max_concurrency=50)
         embodiments_extraction_total = time() - embodiments_extraction_start
         logger.info(
             f"Embodiments extraction completed in {embodiments_extraction_total:.2f} seconds"
