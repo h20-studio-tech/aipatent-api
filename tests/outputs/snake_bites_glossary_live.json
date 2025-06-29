@@ -1,0 +1,478 @@
+{
+  "definitions": [
+    {
+      "term": "victim",
+      "definition": "includes members of the animal kingdom including but not limited to human beings",
+      "page_number": 10
+    },
+    {
+      "term": "subject",
+      "definition": "includes members of the animal kingdom including but not limited to human beings",
+      "page_number": 10
+    },
+    {
+      "term": "tissue",
+      "definition": "includes, but is not limited to, animal tissues, which may be connective, muscle, nervous or epithelial tissues, and may include a single tissue or a collection of tissues that form a common function",
+      "page_number": 10
+    },
+    {
+      "term": "transdermally",
+      "definition": "refers to any type of delivery of an active ingredient that crosses any portion of skin (but not necessarily all of the layers of skin), including systemic delivery (transported across or substantially through the dermis into the bloodstream) and intradermal delivery (transported partially through the dermis, e.g., across the outer layer (stratum corneum) into the skin), across at least a portion of skin",
+      "page_number": 10
+    },
+    {
+      "term": "active ingredient",
+      "definition": "refers to a molecule for treating a disease state, and includes small molecules, and macromolecules such as proteins (e.g., immunoglobulins such as IgG and IgY), DNA, and RNA",
+      "page_number": 10
+    },
+    {
+      "term": "drug",
+      "definition": "refers to an active ingredient",
+      "page_number": 10
+    },
+    {
+      "term": "matrix",
+      "definition": "refers to a material in which something is enclosed or embedded",
+      "page_number": 10
+    },
+    {
+      "term": "hyperimmunization",
+      "definition": "means repeated exposure to one or more antigens such that an immune response is elevated and maintained above the natural unexposed state",
+      "page_number": 10
+    },
+    {
+      "term": "hyperimmune state",
+      "definition": "an elevated immune response in an animal, such as an equine or ovine, or an egg producing animal, that has been hyperimmunized",
+      "page_number": 11
+    },
+    {
+      "term": "egg",
+      "definition": "a whole egg (table, hyperimmunized or otherwise)",
+      "page_number": 11
+    },
+    {
+      "term": "egg product",
+      "definition": "a whole egg or any product or fraction obtained from a whole egg",
+      "page_number": 11
+    },
+    {
+      "term": "control egg",
+      "definition": "an egg obtained from an egg-producing animal that is not maintained in a hyperimmunized state, i.e. an animal that has not been hyperimmunized",
+      "page_number": 11
+    },
+    {
+      "term": "control egg product",
+      "definition": "a control egg or an egg product obtained from a control egg",
+      "page_number": 11
+    },
+    {
+      "term": "hyperimmunized egg",
+      "definition": "a whole egg obtained from an egg-producing animal maintained in a hyperimmune state, i.e. an egg-producing animal that has been hyperimmunized",
+      "page_number": 11
+    },
+    {
+      "term": "hyperimmunized egg product",
+      "definition": "a hyperimmunized egg or any product obtained from a hyperimmunized egg",
+      "page_number": 11
+    },
+    {
+      "term": "concentrate",
+      "definition": "a hyperimmunized egg product that is at least partially purified, such that the concentration of antibodies in the concentrate is greater than the concentration of antibodies in a hyperimmunized egg",
+      "page_number": 11
+    },
+    {
+      "term": "egg powder",
+      "definition": "a whole egg that has been dried",
+      "page_number": 11
+    },
+    {
+      "term": "egg-producing animal",
+      "definition": "any oviparous animal, and includes any animal that lays an egg, such as avians, fish and reptiles",
+      "page_number": 11
+    },
+    {
+      "term": "avian",
+      "definition": "an animal that is a member of the class Aves. Avians include, but are not limited to, chickens, turkeys, geese, ducks, pheasants, quail, pigeons and ostriches.",
+      "page_number": 12
+    },
+    {
+      "term": "equine",
+      "definition": "a mammal that is a member of the family Equidae (order Perissodactyla) such as horses.",
+      "page_number": 12
+    },
+    {
+      "term": "ovine",
+      "definition": "a mammal that is a member of the genus Bovidae, such as sheep.",
+      "page_number": 12
+    },
+    {
+      "term": "supranormal levels",
+      "definition": "levels in excess of those found in eggs of egg-producing animals that are not hyperimmunized. For example, supranormal levels of an antibody to a particular antigen are levels of the antibody in excess of those found in eggs of egg-producing animals that are not hyperimmunized with the particular antigen.",
+      "page_number": 12
+    },
+    {
+      "term": "administer",
+      "definition": "any method of providing a subject with a substance, including orally, intranasally, parenterally (intravenously, intramuscularly, or subcutaneously), rectally, topically or intraocularly.",
+      "page_number": 12
+    },
+    {
+      "term": "antigen",
+      "definition": "a substance that is able to induce a humoral antibody and/or cell-mediated immune response rather than immunological tolerance. The term signifies the ability to stimulate an immune response as well as react with the products of it, e.g., an antibody.",
+      "page_number": 12
+    },
+    {
+      "term": "antibody",
+      "definition": "a protein that includes at least one complementarity determining region that binds to a specific target antigen, e.g. antigen A, B, C, D, Co1, Co2, H, or ET-50 disclosed herein. For example, an antibody can include a heavy (H) chain variable region (abbreviated herein as VH), and a light (L) chain variable region (abbreviated herein as VL). In another example, an antibody includes two heavy (H) chain variable regions and two light (L) chain variable regions. In a particular embodiment, the antibody is an IgY antibody.",
+      "page_number": 12
+    },
+    {
+      "term": "polyclonal antibody",
+      "definition": "a population of antibody molecules that are capable of immunoreacting with different epitopes on a particular antigen.",
+      "page_number": 12
+    },
+    {
+      "term": "Transdermal drug delivery system (TDDS)",
+      "definition": "a self-contained drug loaded system which delivers drug(s) in reproducible or predetermined rate via skin portal into systemic circulation that last for long time",
+      "page_number": 13
+    },
+    {
+      "term": "Chemical permeation enhancer",
+      "definition": "chemicals that interact with one or more skin constituents of the stratum corneum to increase its permeability",
+      "page_number": 13
+    },
+    {
+      "term": "Transdermal patch",
+      "definition": "A device applied to the skin to deliver active ingredients through the stratum corneum.",
+      "page_number": 14
+    },
+    {
+      "term": "Microneedle array",
+      "definition": "An array of microneedles that pierce the skin to provide entry points for large molecules such as antibodies and chemical permeation enhancers.",
+      "page_number": 14
+    },
+    {
+      "term": "Stratum corneum",
+      "definition": "The protective outer layer of the skin through which active ingredients must pass.",
+      "page_number": 14
+    },
+    {
+      "term": "IgG antibody",
+      "definition": "An immunoglobulin G antibody used as an active ingredient.",
+      "page_number": 14
+    },
+    {
+      "term": "IgY antibody",
+      "definition": "An immunoglobulin Y antibody used as an active ingredient.",
+      "page_number": 14
+    },
+    {
+      "term": "Multilaminate design",
+      "definition": "A patch design comprising multiple layers such as a release liner, microneedle array, drug matrix, and backing to maintain stability and ensure rapid diffusion of active ingredients.",
+      "page_number": 14
+    },
+    {
+      "term": "Release liner",
+      "definition": "A protective layer removed prior to application that covers and protects the adhesive layer and drug matrix.",
+      "page_number": 14
+    },
+    {
+      "term": "Adhesive layer",
+      "definition": "A skin adhesive layer that secures the patch and, in some embodiments, serves as a drug matrix with active ingredients embedded in or on its surface.",
+      "page_number": 14
+    },
+    {
+      "term": "Drug matrix",
+      "definition": "The layer within the patch that contains or embeds active ingredients for delivery through the skin.",
+      "page_number": 14
+    },
+    {
+      "term": "Backing layer",
+      "definition": "A structural layer of the patch that supports the other layers and prevents loss of active ingredients.",
+      "page_number": 14
+    },
+    {
+      "term": "osmotic pressure",
+      "definition": "Pressure generated by the dissolution of salts that assists in driving dissolved active ingredients through microneedles into the lower epidermis and/or dermis.",
+      "page_number": 17
+    },
+    {
+      "term": "microneedles",
+      "definition": "Microscopic needles that facilitate delivery of active ingredients by penetrating the skin\u2019s stratum corneum into the lower epidermis and/or dermis.",
+      "page_number": 17
+    },
+    {
+      "term": "encapsulating material",
+      "definition": "Biodegradable and nonantigenic materials used to encapsulate active ingredients, including albumin, poly(lactic-co-glycolic acid), globulin, natural and synthetic polymers, and thermoplastic polymers.",
+      "page_number": 17
+    },
+    {
+      "term": "crosslinking agent",
+      "definition": "Chemical agents, such as glutaraldehyde, used to form crosslinks in encapsulating materials; varying concentrations yield encapsulated materials with different release rates.",
+      "page_number": 17
+    },
+    {
+      "term": "hydrophilic particle",
+      "definition": "Solid particles adhered to an adhesive surface that dissolve or disintegrate upon contact with aqueous fluids, such as skin interstitial fluid, releasing active ingredients.",
+      "page_number": 17
+    },
+    {
+      "term": "adhesive material",
+      "definition": "Materials causing minimal skin irritation or sensitization, used in drug-loaded adhesive matrices; examples include acrylates, silicones, polyisobutylenes, synthetic rubber, natural rubber, and their copolymers.",
+      "page_number": 17
+    },
+    {
+      "term": "drug-loaded adhesive matrix",
+      "definition": "Adhesive matrix containing active ingredients designed for transdermal delivery, formed from materials that cause little or no skin irritation during use.",
+      "page_number": 17
+    },
+    {
+      "term": "skin interstitial fluid",
+      "definition": "Aqueous fluid present at the surface of treated skin that interacts with hydrophilic particles to trigger dissolution or disintegration.",
+      "page_number": 17
+    },
+    {
+      "term": "drug reservoir",
+      "definition": "A component of the drug matrix located centrally within the transdermal patch, sized to deliver a selected amount of active ingredient through the skin and having adhesive edges to secure it within the device.",
+      "page_number": 18
+    },
+    {
+      "term": "therapeutically effective amount",
+      "definition": "The amount of drug required to produce the desired therapeutic effect, determined by the specific drug, carrier, and therapeutic outcome.",
+      "page_number": 18
+    },
+    {
+      "term": "polymeric matrix",
+      "definition": "A polymer-based matrix, such as a hydrogel, capable of swelling and retaining aqueous liquid used in the drug matrix.",
+      "page_number": 18
+    },
+    {
+      "term": "hydrogel",
+      "definition": "A water-swollen polymeric network capable of retaining aqueous liquid through swelling.",
+      "page_number": 18
+    },
+    {
+      "term": "macromolecule",
+      "definition": "A large molecule drug, such as vaccines, proteins, or DNA, whose transdermal delivery is enhanced by microneedle arrays.",
+      "page_number": 18
+    },
+    {
+      "term": "lower epidermis",
+      "definition": "The deeper layer of the epidermis into which proteins delivered by microneedles can enter before diffusing into nearby capillaries.",
+      "page_number": 18
+    },
+    {
+      "term": "hollow microneedles",
+      "definition": "microneedles with a hollow bore designed to contain and deliver active ingredients",
+      "page_number": 19
+    },
+    {
+      "term": "semi-solid needles",
+      "definition": "needles composed of a semi-solid material used to deliver drug from a reservoir to the penetration area",
+      "page_number": 19
+    },
+    {
+      "term": "active ingredients",
+      "definition": "pharmacologically active substances delivered through the microneedle array to the bite area of the skin",
+      "page_number": 19
+    },
+    {
+      "term": "Skin Adhesive Layer",
+      "definition": "The layer of the transdermal device that includes a skin-contact adhesive, which can be the same as the drug-loaded adhesive matrix or a separate distinct layer.",
+      "page_number": 20
+    },
+    {
+      "term": "Skin-contact adhesive",
+      "definition": "A pressure-sensitive adhesive capable of securely but releasably adhering or bonding to skin of a subject.",
+      "page_number": 20
+    },
+    {
+      "term": "release agent",
+      "definition": "A substance used to coat release liner materials to reduce adhesion, exemplified by silicones.",
+      "page_number": 21
+    },
+    {
+      "term": "rate-controlling membrane",
+      "definition": "An optional additional layer in the transdermal patch that helps control the release rate of active ingredient diffusion into the bite site.",
+      "page_number": 21
+    },
+    {
+      "term": "protective barrier layer",
+      "definition": "An optional additional layer that prevents interaction between an active ingredient and the backing of the transdermal patch.",
+      "page_number": 21
+    },
+    {
+      "term": "antibiotic",
+      "definition": "An optional component of the transdermal patch controlled by the rate-controlling membrane to destroy microbes introduced via the bite or from the skin surface.",
+      "page_number": 21
+    },
+    {
+      "term": "drug-loaded reservoir",
+      "definition": "A reservoir component of the drug matrix that contains the drug payload.",
+      "page_number": 21
+    },
+    {
+      "term": "drug-loaded adhesive",
+      "definition": "An adhesive layer component of the drug matrix that contains the drug payload.",
+      "page_number": 21
+    },
+    {
+      "term": "antivenin",
+      "definition": "An antibody preparation obtained from immunized equine or ovine serum used to neutralize venom toxins.",
+      "page_number": 22
+    },
+    {
+      "term": "anti-sera",
+      "definition": "Serum obtained from immunized animals containing antibodies specific to the administered antigen.",
+      "page_number": 22
+    },
+    {
+      "term": "IgG anti-antigen antibodies",
+      "definition": "Immunoglobulin G antibodies that specifically bind and neutralize a target antigen, isolated from serum.",
+      "page_number": 22
+    },
+    {
+      "term": "adjuvant",
+      "definition": "A substance included in an immunization composition to enhance the immune response to an antigen.",
+      "page_number": 22
+    },
+    {
+      "term": "immunization schedule",
+      "definition": "The predetermined regimen of antigen injections administered over several weeks to achieve maximum antibody production.",
+      "page_number": 22
+    },
+    {
+      "term": "titre",
+      "definition": "The measured concentration of antibodies in a serum sample, indicating the level of immune response to an antigen.",
+      "page_number": 22
+    },
+    {
+      "term": "serum",
+      "definition": "The liquid component of blood obtained after coagulation, containing antibodies.",
+      "page_number": 22
+    },
+    {
+      "term": "booster immunization",
+      "definition": "Administration of subsequent vaccine doses at a reduced percentage (20%-80%, 30%-70%, or 50%-100%) of the primary immunization dosage to induce and maintain a hyperimmune state",
+      "page_number": 25
+    },
+    {
+      "term": "primary immunization",
+      "definition": "Initial administration of a vaccine containing antigen(s) to elicit an immune response in an egg-producing animal",
+      "page_number": 25
+    },
+    {
+      "term": "ELISA",
+      "definition": "Enzyme-linked immunosorbent assays, methods used to determine whether a vaccine has elicited an immune response in the egg-producing animal by detecting and quantifying antibodies to the stimulating antigens.",
+      "page_number": 26
+    },
+    {
+      "term": "booster vaccination",
+      "definition": "A 0.5 ml dose of vaccine administered one to two weeks after the initial vaccination\u2014or 3 to 6 weeks after the first vaccination\u2014as an additional vaccination to enhance the immune response.",
+      "page_number": 27
+    },
+    {
+      "term": "polyclonal antibodies",
+      "definition": "Antibodies comprising multiple distinct antibody molecules, each of which can react with different epitopes of the same antigen.",
+      "page_number": 27
+    },
+    {
+      "term": "polyethylene glycol (PEG) precipitation",
+      "definition": "a method of purifying or partially purifying IgY antibodies by precipitation with polyethylene glycol",
+      "page_number": 29
+    },
+    {
+      "term": "freeze thaw methods",
+      "definition": "a technique for separating water-soluble antibodies into an aqueous layer at different pH by freezing and thawing",
+      "page_number": 29
+    },
+    {
+      "term": "NaCl precipitation",
+      "definition": "a method of precipitating IgY antibodies using sodium chloride",
+      "page_number": 29
+    },
+    {
+      "term": "affinity chromatography",
+      "definition": "a method of purifying or partially purifying IgY antibodies by separating them based on specific antigen binding",
+      "page_number": 29
+    },
+    {
+      "term": "antigen-specific IgY antibodies",
+      "definition": "IgY antibodies directed against a particular antigen, isolated by affinity chromatography to remove cross-reacting antibodies",
+      "page_number": 29
+    },
+    {
+      "term": "affinity column",
+      "definition": "a chromatography column prepared by conjugating a specific antigen to a support to bind and isolate corresponding antibodies",
+      "page_number": 29
+    },
+    {
+      "term": "transdermal adhesive patch",
+      "definition": "A patch provided for transdermal delivery of the active ingredient to a bite site.",
+      "page_number": 31
+    },
+    {
+      "term": "skin-contact adhesive layer",
+      "definition": "A portion of the transdermal patch adhesive that adheres to the skin surface adjacent to the bite site to anchor the patch in position.",
+      "page_number": 31
+    },
+    {
+      "term": "transdermal device",
+      "definition": "A device comprising a transdermal adhesive patch and microneedle array for delivering active ingredients through the skin.",
+      "page_number": 31
+    },
+    {
+      "term": "anti-snake venom IgY antibodies",
+      "definition": "IgY antibodies prepared against the venoms of Naja Naja (Cobra), Bungarus Caeruleus (common Krait), Daboia russelii (Russell\u2019s viper), and Echis carinatus (Saw-scaled viper).",
+      "page_number": 31
+    },
+    {
+      "term": "venom",
+      "definition": "A toxic secretion from snakes, referring here to venom samples of Naja Naja, Bungarus Caeruleus, Daboia russelii, and Echis carinatus, dissolved in PBS.",
+      "page_number": 31
+    },
+    {
+      "term": "sterile phosphate buffered saline (PBS)",
+      "definition": "A buffer solution with pH 7.4 used to dissolve and store venom samples at -20 \u00b0C until further use.",
+      "page_number": 31
+    },
+    {
+      "term": "Freund\u2019s complete adjuvant (FCA)",
+      "definition": "An adjuvant used in antibody preparation, purchased from Sigma Aldrich.",
+      "page_number": 31
+    },
+    {
+      "term": "incomplete Freund\u2019s adjuvant (IFA)",
+      "definition": "An adjuvant used in antibody preparation, purchased from Sigma Aldrich.",
+      "page_number": 31
+    },
+    {
+      "term": "IgY antibodies",
+      "definition": "immunoglobulin Y antibodies produced by immunized chickens and harvested from egg yolk",
+      "page_number": 32
+    },
+    {
+      "term": "hyperimmunized eggs",
+      "definition": "eggs collected 14 days after first immunization containing elevated levels of IgY antibodies",
+      "page_number": 32
+    },
+    {
+      "term": "phosphate buffered saline (PBS) pH 7.4",
+      "definition": "buffer solution used to dilute egg yolk at pH 7.4",
+      "page_number": 32
+    },
+    {
+      "term": "Freund\u2019s Complete Adjuvant",
+      "definition": "mineral oil-based adjuvant containing inactivated mycobacteria used to enhance primary immune response",
+      "page_number": 32
+    },
+    {
+      "term": "Freund\u2019s Incomplete Adjuvant (FIA)",
+      "definition": "mineral oil-based adjuvant lacking mycobacterial components used for booster immunizations",
+      "page_number": 32
+    }
+  ],
+  "text": "",
+  "filename": "snake_bites.pdf",
+  "page_number": 10,
+  "section": "detailed description -> definitions"
+}

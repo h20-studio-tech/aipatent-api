@@ -1,16 +1,388 @@
 {
-  "text": "BACKGROUND\n\nAlcoholic liver disease (ALD) encompasses the liver manifestations of alcohol overconsumption, including fatty liver, alcoholic hepatitis, and chronic hepatitis with liver fibrosis or cirrhosis. The most severe form of alcoholic liver disease is alcoholic hepatitis; mortality ranges from 20% to 40% at 1-6 months, and as many as 75% of patients die within 90 days of a diagnosis of severe alcoholic hepatitis. See Duan et al., 2019, Nature 575: 505-511. Therapy with corticosteroids is only marginally effective. Early liver transplantation is the only curative therapy, but is offered only at select centers and to a limited group of patients. See Duan et al., cited above.\n\nGraft-versus-host disease (GVHD) affects the skin, liver, and gastrointestinal tract and occurs when donor T cells recognize recipient tissue as foreign and trigger tissue inflammation and injury. Preventive and therapeutic strategies for GVHD are active areas of investigation. See Garrett, 2020, New England Journal of Medicine 382(11): 1004-1060. Accordingly, a need exists for improved methods of treating or preventing ALD and GVHD.",
-  "filename": "ALD_GvHD provisional patent.pdf",
-  "page_number": 2,
-  "section": "detailed description -> definitions",
   "definitions": [
     {
-      "term": "Alcoholic liver disease (ALD)",
-      "definition": "Encompasses the liver manifestations of alcohol overconsumption, including fatty liver, alcoholic hepatitis, and chronic hepatitis with liver fibrosis or cirrhosis."
+      "term": "hyperimmunization",
+      "definition": "Repeated exposure to one or more antigens such that an immune response is elevated and maintained above the natural unexposed state.",
+      "page_number": 6
     },
     {
-      "term": "Graft-versus-host disease (GVHD)",
-      "definition": "Affects the skin, liver, and gastrointestinal tract and occurs when donor T cells recognize recipient tissue as foreign and trigger tissue inflammation and injury."
+      "term": "hyperimmune state",
+      "definition": "an elevated immune response in an egg-producing animal that has been hyperimmunized",
+      "page_number": 7
+    },
+    {
+      "term": "egg",
+      "definition": "a whole egg (table, hyperimmunized or otherwise)",
+      "page_number": 7
+    },
+    {
+      "term": "egg product",
+      "definition": "a whole egg or any product or fraction obtained from a whole egg",
+      "page_number": 7
+    },
+    {
+      "term": "control egg",
+      "definition": "an egg obtained from an egg-producing animal that is not maintained in a hyperimmunized state, i.e. an animal that has not been hyperimmunized",
+      "page_number": 7
+    },
+    {
+      "term": "control egg product",
+      "definition": "a control egg or an egg product obtained from a control egg",
+      "page_number": 7
+    },
+    {
+      "term": "hyperimmunized egg",
+      "definition": "a whole egg obtained from an egg-producing animal maintained in a hyperimmune state, i.e. an egg-producing animal that has been hyperimmunized",
+      "page_number": 7
+    },
+    {
+      "term": "hyperimmunized egg product",
+      "definition": "a hyperimmunized egg or any product obtained from a hyperimmunized egg",
+      "page_number": 7
+    },
+    {
+      "term": "concentrate",
+      "definition": "a hyperimmunized egg product that is at least partially purified such that the concentration of antibodies in the concentrate is greater than the concentration of antibodies in a hyperimmunized egg",
+      "page_number": 7
+    },
+    {
+      "term": "egg powder",
+      "definition": "a whole egg that has been dried, for example, spray-dried",
+      "page_number": 7
+    },
+    {
+      "term": "egg-producing animal",
+      "definition": "any oviparous animal, including any animal that lays an egg, such as avians, fish and reptiles",
+      "page_number": 7
+    },
+    {
+      "term": "avian",
+      "definition": "an animal that is a member of the class Aves, including but not limited to chickens, turkeys, geese, ducks, pheasants, quail, pigeons and ostriches",
+      "page_number": 7
+    },
+    {
+      "term": "supranormal levels",
+      "definition": "levels in excess of those found in eggs of egg-producing animals that are not hyperimmunized",
+      "page_number": 7
+    },
+    {
+      "term": "administer",
+      "definition": "any method of providing a subject with a substance, including orally, intranasally, parenterally (intravenously, intramuscularly, or subcutaneously), rectally, topically or intraocularly.",
+      "page_number": 8
+    },
+    {
+      "term": "antigen",
+      "definition": "a substance that is able to induce a humoral antibody and/or cell-mediated immune response rather than immunological tolerance; signifies the ability to stimulate an immune response as well as react with the products of it, e.g. an antibody.",
+      "page_number": 8
+    },
+    {
+      "term": "antibody",
+      "definition": "a protein that includes at least one complementarity determining region that binds to a specific target antigen; for example, an antibody can include a heavy chain variable region and a light chain variable region, or include two heavy chain variable regions and two light chain variable regions; in a particular embodiment, the antibody is a polyclonal antibody.",
+      "page_number": 8
+    },
+    {
+      "term": "polyclonal antibody",
+      "definition": "a population of antibody molecules that are capable of immunoreacting with different epitopes on a particular antigen; in a particular embodiment, the antibody is an IgY antibody.",
+      "page_number": 8
+    },
+    {
+      "term": "alcoholic liver disease",
+      "definition": "the liver manifestations of alcohol overconsumption, including fatty liver (steatosis), alcoholic hepatitis, and chronic hepatitis with liver fibrosis or cirrhosis.",
+      "page_number": 8
+    },
+    {
+      "term": "alcohol-related disorders",
+      "definition": "diseases and disorders related to alcohol consumption and include, but are not limited to, alcohol-induced psychotic disorder with delusions, alcohol abuse, excessive drinking, heavy drinking, problem drinking, alcohol intoxication, alcohol withdrawal, alcohol intoxication delirium, alcohol withdrawal delirium, alcohol-induced persisting dementia, alcohol-induced persisting amnestic disorder, alcohol dependence, alcohol-induced psychotic disorder with hallucinations, alcohol-induced mood disorder, alcohol-induced or associated bipolar disorder, alcohol-induced or associated post-traumatic stress disorder, alcohol-induced anxiety disorder.",
+      "page_number": 8
+    },
+    {
+      "term": "alcohol abuser",
+      "definition": "A subject who meets DSM TY criteria for alcohol abuse (\u201crepeated use despite recurrent adverse consequences\u201d) but is not dependent on alcohol.",
+      "page_number": 9
+    },
+    {
+      "term": "excessive drinker",
+      "definition": "Men who drink more than 21 standard drinks per week and women who consume more than 14 standard drinks per week. One standard drink is 0.5 ounces (15 ml) of absolute alcohol, equivalent to 10 ounces (300 ml) of beer, 4 ounces (120 ml) of wine, or 1 ounce (30 ml) of 100-proof liquor. These individuals are not dependent on alcohol but may or may not meet DSM TV criteria for alcohol abuse.",
+      "page_number": 9
+    },
+    {
+      "term": "heavy drinker",
+      "definition": "Men who drink more than 14 standard drinks per week and women who consume more than 7 standard drinks per week. These individuals are not dependent on alcohol but may or may not meet DSM TV criteria for alcohol abuse.",
+      "page_number": 9
+    },
+    {
+      "term": "effective amount",
+      "definition": "The amount of hyperimmunized egg product which when administered to a subject is sufficient to prevent or treat a disorder, e.g., alcoholic liver disease (ALD) or graft-vs-host disease (GVHD). The effective amount can vary depending, for example, on the age, weight, and/or health of the subject to be treated.",
+      "page_number": 9
+    },
+    {
+      "term": "isolated",
+      "definition": "A biological compound (e.g., a protein) that is purified or partially purified from the cell in which it was produced. For example, an isolated Enterococcus faecalis cytolysin toxin is purified or partially purified from the Enterococcus faecalis cell in which it was produced. In some embodiments, the isolated Enterococcus faecalis cytolysin toxin is a recombinant Enterococcus faecalis cytolysin toxin, e.g., an Enterococcus faecalis cytolysin toxin that is produced in a cell other than an Enterococcus faecalis cell.",
+      "page_number": 9
+    },
+    {
+      "term": "Alcoholic liver disease (ALD)",
+      "definition": "a spectrum of liver disorders including fatty liver (steatosis), alcoholic hepatitis, and chronic hepatitis with liver fibrosis or cirrhosis",
+      "page_number": 10
+    },
+    {
+      "term": "Fatty liver (steatosis)",
+      "definition": "the accumulation of fatty acids in liver cells",
+      "page_number": 10
+    },
+    {
+      "term": "Macro vesicular steatosis",
+      "definition": "the development of large fatty globules throughout the liver",
+      "page_number": 10
+    },
+    {
+      "term": "Alcohol dehydrogenase (ADED)",
+      "definition": "the enzyme that metabolizes ethanol into acetaldehyde",
+      "page_number": 10
+    },
+    {
+      "term": "Aldehyde dehydrogenase (ALDH)",
+      "definition": "the enzyme that converts acetaldehyde into acetic acid",
+      "page_number": 10
+    },
+    {
+      "term": "Alcoholic hepatitis",
+      "definition": "the inflammation of hepatocytes that predisposes the liver to fibrosis",
+      "page_number": 10
+    },
+    {
+      "term": "Cirrhosis",
+      "definition": "a late stage of serious liver disease marked by inflammation (swelling), fibrosis (cellular hardening) and damaged membranes preventing detoxification of chemicals in the body, ending in scarring and necrosis (cell death)",
+      "page_number": 10
+    },
+    {
+      "term": "alcoholic hepatitis (AH)",
+      "definition": "the most severe form of alcohol-related liver disease",
+      "page_number": 11
+    },
+    {
+      "term": "Enterococcus faecalis",
+      "definition": "a bacterium present in the human microbiome that can expand in abundance and produce the toxin cytolysin in patients with alcoholic liver disease",
+      "page_number": 11
+    },
+    {
+      "term": "cytolysin",
+      "definition": "a toxin produced by Enterococcus faecalis that contributes to increased severity and mortality in alcoholic hepatitis",
+      "page_number": 11
+    },
+    {
+      "term": "bacteriophage",
+      "definition": "a virus that targets and lyses bacteria, such as cytolysin-positive Enterococcus faecalis",
+      "page_number": 11
+    },
+    {
+      "term": "humanized mice",
+      "definition": "mice colonized with human bacteria from feces of alcoholic hepatitis patients, used to model ethanol-induced liver disease",
+      "page_number": 11
+    },
+    {
+      "term": "graft-versus-host disease (GVHD)",
+      "definition": "a major complication after transplantation of solid organs and stem cells, in which donor immune cells attack the recipient\u2019s body cells",
+      "page_number": 11
+    },
+    {
+      "term": "acute graft-versus-host disease",
+      "definition": "the form of graft-versus-host disease observed within the first 100 days post-transplant",
+      "page_number": 11
+    },
+    {
+      "term": "chronic graft-versus-host disease",
+      "definition": "the form of graft-versus-host disease that occurs after 100 days post-transplant",
+      "page_number": 11
+    },
+    {
+      "term": "graft",
+      "definition": "the donated tissue transplanted into a recipient",
+      "page_number": 11
+    },
+    {
+      "term": "host",
+      "definition": "the recipient of a transplant",
+      "page_number": 11
+    },
+    {
+      "term": "aGVHD",
+      "definition": "acute graft-versus-host disease affecting the skin, liver, and gastrointestinal tract and occurring when donor T cells recognize recipient tissue as foreign and trigger tissue inflammation and injury",
+      "page_number": 12
+    },
+    {
+      "term": "cytolytic Enterococcus faecalis",
+      "definition": "strains of Enterococcus faecalis that are cytolysin-positive, correlating with the severity of alcoholic liver disease and patient mortality in alcoholic hepatitis",
+      "page_number": 12
+    },
+    {
+      "term": "cylLy",
+      "definition": "the gene encoding the large subunit oligopeptide component of the functional cytolysin toxin in Enterococcus faecalis",
+      "page_number": 12
+    },
+    {
+      "term": "cylLs",
+      "definition": "the gene encoding the small subunit oligopeptide component of the functional cytolysin toxin in Enterococcus faecalis",
+      "page_number": 12
+    },
+    {
+      "term": "antibiotics",
+      "definition": "Complex polycyclic antimicrobial peptides which are ribosomally synthesized by Gram-positive bacteria and are characterized by the presence of lanthionine and methyllanthionine bridges between dehydrated serine and threonine residues and cysteine thiols.",
+      "page_number": 13
+    },
+    {
+      "term": "acute graft-versus-host disease (acute GVHD)",
+      "definition": "Graft-versus-host disease that results from allogeneic hematopoietic cell transplantation.",
+      "page_number": 13
+    },
+    {
+      "term": "Enterococcus faecium",
+      "definition": "An enterococcal species in the gut that is an opportunistic pathogen and frequently causes life-threatening bloodstream infections in patients who have undergone allogeneic hematopoietic cell transplantation.",
+      "page_number": 13
+    },
+    {
+      "term": "lactose",
+      "definition": "A dietary sugar that drives enterococcal growth in a mouse model of graft-versus-host disease.",
+      "page_number": 13
+    },
+    {
+      "term": "immunized egg",
+      "definition": "an egg which comes from an avian which has been immunized with, for example, a specific antigen or mixture of antigens",
+      "page_number": 14
+    },
+    {
+      "term": "standard immunization",
+      "definition": "An immunization regimen consisting of an initial immunization followed by one or two booster immunizations at 30 day intervals.",
+      "page_number": 15
+    },
+    {
+      "term": "class Aves",
+      "definition": "The class of animals commonly known as birds, including domesticated fowl such as chickens, turkeys, ducks, and geese.",
+      "page_number": 15
+    },
+    {
+      "term": "ELISA",
+      "definition": "enzyme-linked immunosorbent assays",
+      "page_number": 18
+    },
+    {
+      "term": "antibody titer",
+      "definition": "The concentration of specific antibodies in a sample, as determined by ELISA.",
+      "page_number": 21
+    },
+    {
+      "term": "IgY",
+      "definition": "Total chicken immunoglobulin Y extracted from eggs.",
+      "page_number": 21
+    },
+    {
+      "term": "delipidation reagent",
+      "definition": "A reagent used to remove lipids from egg in preparation for IgY purification.",
+      "page_number": 21
+    },
+    {
+      "term": "spray dried egg powder",
+      "definition": "Egg powder produced by spray drying and reconstituted in sterile PBS for analysis.",
+      "page_number": 21
+    },
+    {
+      "term": "PBS",
+      "definition": "Phosphate buffered saline, a sterile buffer used for reconstituting egg powder samples.",
+      "page_number": 21
+    },
+    {
+      "term": "96-well microtiter plate",
+      "definition": "A flat-bottom microtiter plate with 96 wells used as the substrate for ELISA assays.",
+      "page_number": 21
+    },
+    {
+      "term": "encapsulating material",
+      "definition": "Biodegradable and nonantigenic materials used to encapsulate antibodies and other proteins; includes albumin, PLGA, globulin, natural and synthetic polymers, and thermoplastic polymers.",
+      "page_number": 24
+    },
+    {
+      "term": "crosslinking agent",
+      "definition": "Agents used to crosslink the encapsulating material; includes glutaraldehyde.",
+      "page_number": 24
+    },
+    {
+      "term": "microparticle",
+      "definition": "A particle, typically spherical, with a diameter of less than 10 microns, for example from about 0.1 to about 10 microns.",
+      "page_number": 24
+    },
+    {
+      "term": "nanoparticle",
+      "definition": "a particle with a diameter of less than 1000 nm, optionally ranging from about 1 to about 1000 nm, including ranges such as about 100 to about 1000 nm or about 10 to about 100 nm",
+      "page_number": 25
+    },
+    {
+      "term": "microencapsulation",
+      "definition": "a process for encapsulating microparticles or nanoparticles using methods such as multi-walled microencapsulation, hot melt encapsulation, phase separation encapsulation, spontaneous emulsion, solvent evaporation microencapsulation, solvent removal microencapsulation, and coacervation",
+      "page_number": 25
+    },
+    {
+      "term": "IgY antibody",
+      "definition": "an immunoglobulin Y (IgY) antibody specific for a disclosed antigen, which can be purified and concentrated from egg products",
+      "page_number": 25
+    },
+    {
+      "term": "qPCR",
+      "definition": "quantitative PCR",
+      "page_number": 26
+    },
+    {
+      "term": "immunologically effective amount",
+      "definition": "Amount that is immunologically effective in treating or preventing alcoholic liver disease or GVHD.",
+      "page_number": 28
+    },
+    {
+      "term": "composition",
+      "definition": "a pharmaceutical formulation comprising a specified percentage (0.01% to 99% w/w) of hyperimmunized egg product.",
+      "page_number": 29
+    },
+    {
+      "term": "IgY antibodies",
+      "definition": "immunoglobulin Y antibodies derived from egg yolk of hyperimmunized hens, specific to target antigens.",
+      "page_number": 29
+    },
+    {
+      "term": "anti-Enterococcus faecalis IgY antibodies",
+      "definition": "IgY antibodies specifically targeting Enterococcus faecalis bacteria.",
+      "page_number": 29
+    },
+    {
+      "term": "anti-cytolysin IgY antibodies",
+      "definition": "IgY antibodies specifically targeting the cytolysin toxin produced by Enterococcus faecalis.",
+      "page_number": 29
+    },
+    {
+      "term": "cytolysin toxin",
+      "definition": "a toxin produced by Enterococcus faecalis with cytolytic activity.",
+      "page_number": 29
+    },
+    {
+      "term": "humanized mice ALD model",
+      "definition": "a mouse model colonized with bacteria from alcoholic hepatitis patient feces to simulate alcoholic liver disease in humans.",
+      "page_number": 29
+    },
+    {
+      "term": "neutralizing antibodies",
+      "definition": "Antibodies that inhibit the growth of E. faecalis, as demonstrated by 75% inhibition of bacterial colony formation.",
+      "page_number": 32
+    },
+    {
+      "term": "alanine aminotransferase (ALT)",
+      "definition": "a test for liver damage",
+      "page_number": 34
+    },
+    {
+      "term": "One-way analysis of variance (ANOVA)",
+      "definition": "a statistical test for comparing means across groups",
+      "page_number": 34
     }
-  ]
+  ],
+  "text": "",
+  "filename": "ALD_GvHD provisional patent.pdf",
+  "page_number": 6,
+  "section": "detailed description -> definitions"
 }

@@ -97,7 +97,8 @@ async def classify_chunk(
         + principles_text
         + "\n\n"
         + "Does the paragraph below describe a specific embodiment of one or more of these principles? "
-        "If so, label it as an embodiment, explain why, and indicate which principles and claims it supports.\n\n"
+        + "If so, label it as an embodiment, explain why, and indicate which principles and claims it supports.\n\n"
+        + "If the paragraph appears to be a word or term definition, label it as not an embodiment.\n\n"
         + f"Paragraph: \n{chunk}"
     )
     response = await async_openai.chat.completions.create(
