@@ -58,13 +58,16 @@ from src.models.api_schemas import (
      DeleteAllFilesResponse,
      DropTableResponse,
      PatentFilesListResponse,
-     RawSectionsResponse
+     RawSectionsResponse,
+     PageBasedSectionsResponse,
+     PageData
  )
 from src.models.ocr_schemas import (
     Embodiment, 
     DetailedDescriptionEmbodiment, 
     Glossary,
-    GlossaryDefinition
+    GlossaryDefinition,
+    ProcessedPage
 )
 from src.router.sections import router as sections_router
 load_dotenv(".env")
@@ -561,7 +564,7 @@ async def patent(patent_id: str, file: UploadFile):
         else:
             logging.info(f"Patent with ID {patent_id} does not exist.")
             # process the doc because it does not exist in db
-            glossary_subsection, patent_embodiments, sections, raw_sections = await process_patent_document(content, filename)
+            glossary_subsection, patent_embodiments, sections, raw_sections, segmented_pages = await process_patent_document(content, filename)
             
             # Extract abstract using our enhanced OCR-capable extractor
             abstract_result = await extract_abstract_from_pdf(content)
@@ -625,7 +628,28 @@ async def patent(patent_id: str, file: UploadFile):
                     ]
                 ).execute()
                 logging.info(f"Inserted {len(patent_embodiments)} embodiments for patent_id={patent_id}")
-                # 4️⃣ Insert section hierarchy JSON
+                
+                # 4️⃣ Insert page data for better source tracing
+                if segmented_pages:
+                    try:
+                        supabase.table("pages").insert(
+                            [
+                                {
+                                    "file_id": str(patent_id),
+                                    "page_number": page.page_number,
+                                    "text": page.text,
+                                    "section": page.section,
+                                    "filename": page.filename
+                                }
+                                for page in segmented_pages
+                            ]
+                        ).execute()
+                        logging.info(f"Inserted {len(segmented_pages)} pages for patent_id={patent_id}")
+                    except Exception as pages_e:
+                        # Pages table might not exist yet, log but don't fail
+                        logging.warning(f"Failed to insert pages data (table might not exist): {pages_e}")
+                
+                # 5️⃣ Insert section hierarchy JSON
                 if sections:
                     # Convert Pydantic models to dicts for JSONB insertion
                     sections_data = [sec.model_dump() for sec in sections]
@@ -633,7 +657,7 @@ async def patent(patent_id: str, file: UploadFile):
                         {"sections": sections_data}
                     ).eq("id", str(patent_id)).execute()
                     logging.info(f"Inserted {len(sections_data)} sections for patent_id={patent_id}")
-                    # 5️⃣ Upsert raw sections
+                    # 6️⃣ Upsert raw sections
                     if raw_sections:
                         supabase.table("raw_sections").upsert(
                             [
@@ -649,12 +673,20 @@ async def patent(patent_id: str, file: UploadFile):
             except Exception as db_e:
                 logging.error(f"Failed to store data for patent_id={patent_id}: {db_e}")
               
+        # Convert GlossarySubsectionPage to Glossary for API response
+        glossary_terms = None
+        if glossary_subsection and hasattr(glossary_subsection, 'definitions'):
+            glossary_terms = Glossary(
+                definitions=glossary_subsection.definitions,
+                filename=glossary_subsection.filename
+            )
+        
         return PatentUploadResponse(
             filename=filename,
             file_id=str(patent_id),
             message="Patent document processed successfully",
             data=patent_embodiments,
-            terms=glossary_subsection,
+            terms=glossary_terms,
             abstract=abstract,
             abstract_page=abstract_page,
             abstract_pattern=abstract_pattern,
@@ -692,6 +724,107 @@ async def get_raw_sections(patent_id: str):
     except Exception as e:
         logging.error(f"Failed to retrieve raw sections for patent_id={patent_id}: {e}")
         raise HTTPException(status_code=500, detail=f"Error retrieving raw sections: {e}")
+
+
+@app.get("/api/v1/pages/{patent_id}", response_model=PageBasedSectionsResponse, tags=["Patent"])
+async def get_patent_pages(patent_id: str):
+    """Retrieve patent content organized by pages for better navigation and source tracing.
+    
+    This endpoint provides the complete raw text content per page, enabling better
+    source tracing when users click on processed embodiments in the UI.
+    """
+    try:
+        # Fetch filename for friendly response details
+        file_resp = (
+            supabase.table("patent_files")
+            .select("filename")
+            .eq("id", str(patent_id))
+            .maybe_single()
+            .execute()
+        )
+        filename = file_resp.data["filename"] if file_resp and file_resp.data else ""
+
+        # Try to get page data from a dedicated pages table first (if it exists)
+        # This would contain the complete raw text per page from segmented_pages
+        try:
+            pages_resp = (
+                supabase.table("pages")
+                .select("page_number, text, section, filename")
+                .eq("file_id", str(patent_id))
+                .order("page_number")
+                .execute()
+            )
+            
+            if pages_resp.data:
+                # Use complete page data if available
+                pages = [
+                    PageData(
+                        page_number=page["page_number"],
+                        text=page["text"],
+                        section=page["section"],
+                        filename=page["filename"] or filename
+                    )
+                    for page in pages_resp.data
+                ]
+                
+                return PageBasedSectionsResponse(
+                    file_id=str(patent_id),
+                    filename=filename,
+                    pages=pages,
+                    total_pages=len(pages)
+                )
+        except Exception:
+            # Pages table doesn't exist or query failed, fall back to embodiments
+            pass
+
+        # Fallback: Reconstruct pages from embodiments (partial content)
+        embodiments_resp = (
+            supabase.table("embodiments")
+            .select("text, page_number, section, filename")
+            .eq("file_id", str(patent_id))
+            .order("page_number")
+            .execute()
+        )
+        
+        if not embodiments_resp.data:
+            return PageBasedSectionsResponse(
+                file_id=str(patent_id),
+                filename=filename,
+                pages=[],
+                total_pages=0
+            )
+        
+        # Group embodiments by page and aggregate text
+        pages_dict = {}
+        for emb in embodiments_resp.data:
+            page_num = emb["page_number"]
+            if page_num not in pages_dict:
+                pages_dict[page_num] = {
+                    "page_number": page_num,
+                    "text": "",
+                    "section": emb["section"],
+                    "filename": emb["filename"] or filename
+                }
+            # Concatenate text from all embodiments on this page
+            if pages_dict[page_num]["text"]:
+                pages_dict[page_num]["text"] += "\n\n" + emb["text"]
+            else:
+                pages_dict[page_num]["text"] = emb["text"]
+        
+        # Convert to sorted list of PageData objects
+        pages = [PageData(**page_data) for page_data in sorted(pages_dict.values(), key=lambda x: x["page_number"])]
+        
+        return PageBasedSectionsResponse(
+            file_id=str(patent_id),
+            filename=filename,
+            pages=pages,
+            total_pages=len(pages)
+        )
+        
+    except Exception as e:
+        logging.error(f"Failed to retrieve pages for patent_id={patent_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving pages: {e}")
+
 
 @app.get("/api/v1/patent-files/", response_model=PatentFilesListResponse, status_code=200, tags=["Patent"])
 async def list_patent_files():

@@ -438,3 +438,20 @@ class RawSectionsResponse(BaseModel):
     file_id: str = Field(..., description="Unique identifier for the patent file")
     filename: Optional[str] = Field(None, description="Filename of the patent document")
     sections: Dict[str, str] = Field(..., description="Mapping of section name to raw text")
+
+
+class PageData(BaseModel):
+    """Represents the raw text content of a single page."""
+    page_number: int = Field(..., description="Page number in the document")
+    text: str = Field(..., description="Raw text content of the page")
+    section: str = Field(..., description="Section this page belongs to")
+    filename: str = Field(..., description="Source filename")
+
+
+class PageBasedSectionsResponse(BaseModel):
+    """Response model for retrieving patent content organized by pages."""
+    status: str = Field(default="success", description="Status of the response (success/error)")
+    file_id: str = Field(..., description="Unique identifier for the patent file")
+    filename: Optional[str] = Field(None, description="Filename of the patent document")
+    pages: List[PageData] = Field(..., description="List of pages with their content and metadata")
+    total_pages: int = Field(..., description="Total number of pages in the document")

@@ -1664,7 +1664,7 @@ def extract_raw_sections(segmented_pages: list[ProcessedPage]) -> dict[str, str]
 async def process_patent_document(
     pdf_data: bytes, filename: str
 ) -> tuple[
-    Glossary, list[Embodiment | DetailedDescriptionEmbodiment], list[SectionHierarchy]
+    Glossary, list[Embodiment | DetailedDescriptionEmbodiment], list[SectionHierarchy], dict[str, str], list[ProcessedPage]
 ]:
     try:
         # Process PDF pages
@@ -1815,7 +1815,7 @@ async def process_patent_document(
         for embodiment in spell_checked_embodiments:
             embodiment.filename = filename
 
-        return glossary_subsection, spell_checked_embodiments, sections, raw_sections
+        return glossary_subsection, spell_checked_embodiments, sections, raw_sections, segmented_pages
 
     except Exception as e:
         raise RuntimeError(f"Error processing patent document: {str(e)}")

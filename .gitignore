@@ -28,3 +28,5 @@ labeled_chunks_dataset.json
 labeled_chunks_dataset.jsonl
 labeled_all_chunks_concurrent.jsonl
 invention_principles.json
+.windsurf/rules/fastapi-server.md
+.windsurf/workflows/start-server.md
