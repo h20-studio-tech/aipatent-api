@@ -11,6 +11,13 @@ class SectionGenerationRequest(BaseModel):
     disease: str = Field(..., description="The disease for the patent draft")
     additional: str = Field(..., description="Additional information for the patent draft")
 
+class KeyTermsGenerationRequest(SectionGenerationRequest):
+    context: str = Field(..., description="The context for the patent draft")
+
+class KeyTermsResponse(KeyTermsGenerationRequest):
+    prediction: str = Field(..., description="The prediction for the section")
+    trace_id: str = Field(..., description="The trace id for the section")
+
 class SectionResponse(SectionGenerationRequest):
     prediction: str = Field(..., description="The prediction for the section")
     trace_id: str = Field(..., description="The trace id for the section")

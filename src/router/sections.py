@@ -17,6 +17,8 @@ from src.models.sections_schemas import (
     SectionResponse,
     TargetOverviewRequest,
     TargetOverviewResponse,
+    KeyTermsGenerationRequest,
+    KeyTermsResponse,
 )
 router = APIRouter(prefix="/api/v1/sections", tags=["sections"])
 
@@ -210,4 +212,27 @@ async def abstract(req: SectionGenerationRequest) -> SectionResponse:
         antigen=req.antigen,
         disease=req.disease,
         additional=req.additional,
+    )
+    
+@router.post("/key_terms", response_model=KeyTermsResponse)
+async def key_terms(req: KeyTermsGenerationRequest) -> KeyTermsResponse:
+    res = generate_key_terms(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+        context=req.context
+    )
+    return KeyTermsResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,      
+        context=req.context,
     )
