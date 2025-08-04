@@ -151,6 +151,8 @@ async def process_pages(
                     page_number=ann.page_number,
                     section=ann.section,
                     summary="",
+                    start_char=0,  # Default value - this module doesn't track positions
+                    end_char=len(ann.paragraph),  # Default to text length
                 )
             )
 
