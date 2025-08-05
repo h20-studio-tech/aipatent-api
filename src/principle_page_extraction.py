@@ -12,7 +12,7 @@ pipeline.
 import json
 import re
 import asyncio
-from typing import List
+from typing import List, Tuple
 
 import instructor
 from openai import AsyncOpenAI
@@ -36,6 +36,8 @@ class PageEmbodimentAnnotation(BaseModel):
     filename: str
     page_number: int = Field(..., description="Page number where the paragraph appears")
     section: str = Field(..., description="Document section for the page (e.g. Summary)")
+    start_char: int = Field(0, description="Starting character position in the page")
+    end_char: int = Field(0, description="Ending character position in the page")
 
 
 # ---------------------------------------------------------------------------
@@ -48,6 +50,8 @@ async def _classify_paragraph(
     paragraph: str,
     page: ProcessedPage,
     principles: List[Principle],
+    start_char: int,
+    end_char: int,
 ) -> PageEmbodimentAnnotation:
     """Ask the LLM if *paragraph* is an embodiment and map to principles/claims."""
 
@@ -69,6 +73,8 @@ async def _classify_paragraph(
         response_model=PageEmbodimentAnnotation,
     )
     ann.filename = page.filename
+    ann.start_char = start_char
+    ann.end_char = end_char
     return ann
 
 
@@ -76,16 +82,67 @@ async def _classify_paragraph(
 # Paragraph utilities
 # ---------------------------------------------------------------------------
 
-def _split_into_paragraphs(text: str, sentences_per_paragraph: int = 3) -> List[str]:
-    """Return coarse paragraphs; fallback to sentence grouping when no blank lines."""
-    # Primary: blank lines
-    paras = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
-    if len(paras) <= 1:
+def _split_into_paragraphs(text: str, sentences_per_paragraph: int = 3) -> List[Tuple[str, int, int]]:
+    """Return paragraphs with their character positions.
+    
+    Returns:
+        List of tuples (paragraph_text, start_pos, end_pos)
+    """
+    results = []
+    
+    # Primary: split by blank lines
+    parts = re.split(r'(\n\s*\n)', text)
+    
+    if len([p for p in parts if p.strip() and not re.match(r'^\n\s*\n$', p)]) > 1:
+        # We have multiple paragraphs separated by blank lines
+        current_pos = 0
+        for part in parts:
+            if part.strip() and not re.match(r'^\n\s*\n$', part):
+                # This is actual content, not a separator
+                stripped = part.strip()
+                # Find where the stripped content starts in the original part
+                strip_offset = part.find(stripped)
+                start_pos = current_pos + strip_offset
+                end_pos = start_pos + len(stripped)
+                results.append((stripped, start_pos, end_pos))
+            current_pos += len(part)
+    else:
         # Fallback: group sentences
-        sentences = re.split(r"(?<=[.!?])\s+", text.strip())
-        paras = [" ".join(sentences[i : i + sentences_per_paragraph]) for i in range(0, len(sentences), sentences_per_paragraph)]
-        paras = [p.strip() for p in paras if p.strip()]
-    return paras
+        sentence_pattern = r'(?<=[.!?])\s+'
+        sentences = re.split(f'({sentence_pattern})', text)
+        
+        # Reconstruct sentences with their positions
+        current_pos = 0
+        sentence_groups = []
+        
+        i = 0
+        while i < len(sentences):
+            if i + 1 < len(sentences) and re.match(sentence_pattern, sentences[i + 1]):
+                # This is a sentence followed by separator
+                sentence_groups.append((sentences[i] + sentences[i + 1], current_pos))
+                current_pos += len(sentences[i]) + len(sentences[i + 1])
+                i += 2
+            else:
+                # This is a sentence without separator or last sentence
+                sentence_groups.append((sentences[i], current_pos))
+                current_pos += len(sentences[i])
+                i += 1
+        
+        # Group sentences into paragraphs
+        for i in range(0, len(sentence_groups), sentences_per_paragraph):
+            group = sentence_groups[i:i + sentences_per_paragraph]
+            if group:
+                combined_text = ''.join(s[0] for s in group).strip()
+                if combined_text:
+                    start_pos = group[0][1]
+                    # Find actual start of non-whitespace content
+                    first_sentence = group[0][0]
+                    strip_offset = len(first_sentence) - len(first_sentence.lstrip())
+                    start_pos += strip_offset
+                    end_pos = start_pos + len(combined_text)
+                    results.append((combined_text, start_pos, end_pos))
+    
+    return results
 
 # ---------------------------------------------------------------------------
 # Public API
@@ -124,13 +181,13 @@ async def process_pages(
     sem = asyncio.Semaphore(max_concurrency)
     tasks: list[asyncio.Task[PageEmbodimentAnnotation]] = []
 
-    async def _classify_with_limit(para: str, page: ProcessedPage):
+    async def _classify_with_limit(para: str, page: ProcessedPage, start: int, end: int):
         async with sem:
-            return await _classify_paragraph(para, page, principles)
+            return await _classify_paragraph(para, page, principles, start, end)
 
     for page in processed_pages:
-        for para in _split_into_paragraphs(page.text):
-            tasks.append(asyncio.create_task(_classify_with_limit(para, page)))
+        for para_text, start_pos, end_pos in _split_into_paragraphs(page.text):
+            tasks.append(asyncio.create_task(_classify_with_limit(para_text, page, start_pos, end_pos)))
 
     annotations: List[PageEmbodimentAnnotation] = await asyncio.gather(*tasks)
 
@@ -151,8 +208,8 @@ async def process_pages(
                     page_number=ann.page_number,
                     section=ann.section,
                     summary="",
-                    start_char=0,  # Default value - this module doesn't track positions
-                    end_char=len(ann.paragraph),  # Default to text length
+                    start_char=ann.start_char,
+                    end_char=ann.end_char
                 )
             )
 
