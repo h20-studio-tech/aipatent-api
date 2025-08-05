@@ -1086,32 +1086,18 @@ async def get_embodiments(page: ProcessedPage) -> list[Embodiment]:
                     {{ example_embodiments }}
                     </EmbodimentExamples>
                     
-                    Extract any Patent Embodiments from the text below WITH THEIR EXACT CHARACTER POSITIONS.
+                    Extract any Patent Embodiments from the text below
                     
                     Text: 
                     <text>
                     {{ page_text }}
                     </text>
                     
-                    CRITICAL INSTRUCTIONS FOR CHARACTER POSITIONS:
-                    1. For each embodiment, identify the exact starting character position (0-indexed)
-                    2. Identify the exact ending character position (exclusive - the position after the last character)
-                    3. Count EVERY character including spaces, newlines, tabs, and punctuation
-                    4. Verify: page_text[start_char:end_char] should exactly equal the embodiment text
-                    5. Be extremely precise - if the embodiment starts with "In certain aspects", the 'I' is at start_char
-                    6. If the embodiment ends with ".", include the period in the count
                     
-                    Example:
-                    If the page text is: "Background text here. In certain aspects the disclosure relates to a method. More text."
-                    And the embodiment is: "In certain aspects the disclosure relates to a method."
-                    Then start_char would be 21 (position of 'I') and end_char would be 75 (position after '.')
-                    
-                    Rules:
-                    - If you can't identify any embodiments, return an empty list
-                    - Always provide start_char and end_char for each embodiment
-                    - Double-check your character counting for accuracy
-                """,
-            }
+                    Rules
+                    - if you can't identify any embodiments, return an empty list
+                """
+            },
         ],
         response_model=Embodiments,
         context={
@@ -1123,31 +1109,7 @@ async def get_embodiments(page: ProcessedPage) -> list[Embodiment]:
         },
     )
     logger.info(f"Embodiments extracted from page {page_number} of {filename}")
-    
-    # Validate the extracted positions
-    validated_embodiments = []
-    for embodiment in completion.content:
-        try:
-            if hasattr(embodiment, 'start_char') and hasattr(embodiment, 'end_char'):
-                # Convert string positions to integers if needed
-                start = int(embodiment.start_char) if isinstance(embodiment.start_char, str) else embodiment.start_char
-                end = int(embodiment.end_char) if isinstance(embodiment.end_char, str) else embodiment.end_char
-                
-                # Validate the positions
-                extracted_text = page_text[start:end]
-                if extracted_text.strip() == embodiment.text.strip():
-                    logger.info(f"✓ Valid position for embodiment: [{start}:{end}]")
-                else:
-                    logger.warning(f"✗ Position mismatch for embodiment on page {page_number}")
-                    logger.warning(f"  Expected: '{embodiment.text[:50]}...'")
-                    logger.warning(f"  Got: '{extracted_text[:50]}...'")
-                    # Still include the embodiment but log the issue
-            validated_embodiments.append(embodiment)
-        except Exception as e:
-            logger.error(f"Error validating embodiment positions: {e}")
-            validated_embodiments.append(embodiment)
-    
-    return validated_embodiments
+    return completion.content
 
 
 async def find_embodiments(pages: list[ProcessedPage]) -> list[Embodiment]:
