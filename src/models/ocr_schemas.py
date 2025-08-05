@@ -77,6 +77,8 @@ class DetailedDescriptionEmbodiment(BaseModel):
     section: str = Field(
         ..., description="The section of the embodiment in the source file"
     )
+    start_char: int = Field(..., description="the character where the embodiment starts relative to the source page")
+    end_char: int = Field(..., description="the character where the embodiment ends relative to the source page")
     sub_category: str = Field(
         ...,
         description="The category of the embodiment",
