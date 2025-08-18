@@ -1096,8 +1096,8 @@ async def get_embodiments(page: ProcessedPage) -> list[Embodiment]:
                     
                     Rules
                     - if you can't identify any embodiments, return an empty list
-                """,
-            }
+                """
+            },
         ],
         response_model=Embodiments,
         context={
@@ -1171,6 +1171,8 @@ async def categorize_embodiment(
         filename=embodiment.filename,
         page_number=embodiment.page_number,
         section=embodiment.section,
+        start_char=embodiment.start_char,
+        end_char=embodiment.end_char,
         sub_category=response.sub_category,
     )
 

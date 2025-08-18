@@ -1,0 +1,1408 @@
+{
+  "status": "success",
+  "filename": "snake_bites.pdf",
+  "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+  "message": "Source embodiments retrieved successfully",
+  "abstract": "Provided is a transdermal patch and a method of transdermal administration of a drug that is antibodies or small molecules, for the treatment of snake bites and other venomous or infectious bites. The topical application of drug or antibody formulations is through transdermal patches containing a microneedle array provided with either IgG based anti-snake venoms or IgY based anti-snake venoms or IgG or IgY antibodies to any protein or antigen alone or in combination with peptide(s) or small molecule (synthetic/natural), aimed to treat venomous or infectious bites in humans as well as animals. Kausalya Santhanam digitally signed for e-filing",
+  "sections": [
+    {
+      "section": "summary of invention",
+      "subsections": [
+        {
+          "header": "SUMMARY OF THE INVENTION",
+          "summary": "The invention introduces a transdermal drug delivery system (TDDS) for treating venomous and poisonous bites using antivenins. These antivenins, consisting of IgG or IgY antibodies, target four specific snakes: Cobra, common Krait, Russell’s viper, and Saw-scaled viper, with antibodies produced from hyper-immunized horse plasma or chicken eggs. The focus is on ensuring efficacy and safety of these antibody preparations for treatment use.",
+          "embodiments": []
+        },
+        {
+          "header": "Brief Description of the Drawings",
+          "summary": "The drawings include schematic representations of transdermal patch embodiments and processes of developing anti-snake venoms from horse plasma and chicken eggs. Additionally, there is a photograph illustrating an SDS-PAGE analysis comparing venoms and purified antibodies, and graphs depicting cross-reactivity between venoms and anti-venoms.",
+          "embodiments": [
+            {
+              "text": "The topical application of drug or antibody formulations is through transdermal patches containing a microneedle array 10 provided with either IgG-based anti-snake venom antibodies or IgY-based anti-snake venom antibodies or IgG or IgY antibodies to any protein or antigen alone or in combination with peptide(s) or small molecule(s) (synthetic/natural), aimed to treat venomous or infectious bites in humans as well as animals.",
+              "section": "summary of invention",
+              "summary": "Uses microneedle transdermal patches delivering IgG/IgY or combined antibodies and drugs for venomous or infectious bites. Unlike other embodiments, specifies broad combination of antibodies with peptides or small molecules.",
+              "end_char": 879,
+              "filename": "snake_bites.pdf",
+              "start_char": 471,
+              "page_number": 2
+            },
+            {
+              "text": "These antibodies may\nbe polyclonal or monoclonal.",
+              "section": "summary of invention",
+              "summary": "Allows selection of either polyclonal or monoclonal antibody formats. Introduces antibody format flexibility beyond fixed IgG/IgY stances seen elsewhere.",
+              "end_char": 1310,
+              "filename": "snake_bites.pdf",
+              "start_char": 1261,
+              "page_number": 3
+            },
+            {
+              "text": "Antivenins mainly consist of IgG or IgY antibodies against four poisonous snakes\nviz., Naja naja (Cobra), Bungarus caeruleus (common Krait), Daboia russelii (Russell’s\nviper) and Echis carinatus (Saw-scaled viper). These antibodies are commercially produced\nfrom hyperimmunized horse plasma or chicken eggs by injecting different venoms or\nantigens along with suitable adjuvants.",
+              "section": "summary of invention",
+              "summary": "Antivenins use IgG/IgY antibodies targeting four snake venoms, produced from hyper-immunized horse plasma or chicken eggs. Broad antibody production lacking transdermal microneedle, cross-species and drug matrix features.",
+              "end_char": 1195,
+              "filename": "snake_bites.pdf",
+              "start_char": 812,
+              "page_number": 5
+            },
+            {
+              "text": "In some configurations, the transdermal patches provided herein can be formulated to\ntreat canine bites, such as to prevent rabies, or infections caused by Staphylococcus bacteria,\nStreptococcus bacteria, Pasteurella multocida or Pasteurella canis.\nThe present invention provides a transdermal patch loaded with IgG or IgY or\n5 phytochemical-based polyclonal anti-snake venoms against four major venomous snakes\nwhich include but not limited to common cobra, common krait, Russell’s viper and saw-\nscaled viper.",
+              "section": "summary of invention",
+              "summary": "Patch treats canine bites—preventing rabies and bacterial infections—and carries polyclonal IgG/IgY or phytochemical anti-venoms against four snake species. Unlike other embodiments, combines canine/infection therapy with snakebite antivenom in one patch.",
+              "end_char": 511,
+              "filename": "snake_bites.pdf",
+              "start_char": 0,
+              "page_number": 6
+            },
+            {
+              "text": "This transdermal patch loaded with the drug is used as a first aid in the snakebite treatments and prevents systemic circulation of venom toxins thus helping in saving lives of victims.",
+              "section": "summary of invention",
+              "summary": "Emergency first-aid snakebite patch blocks venom systemic circulation, rapidly neutralizing toxins to save victims’ lives. Contrasts with other embodiments detailing microneedle formulations, delivery matrices, and antibody sourcing processes.",
+              "end_char": 697,
+              "filename": "snake_bites.pdf",
+              "start_char": 512,
+              "page_number": 6
+            },
+            {
+              "text": "The patch is designed to release anti-snake venoms into the skin/muscle\n10 primarily, allowing them to neutralize free venom toxins at the bitten area. These\nantibodies are IgG- or IgY-based, raised in horses or chickens/avians, respectively.",
+              "section": "summary of invention",
+              "summary": "Local microneedle patch delivers horse-derived IgG or avian IgY into skin/muscle to neutralize venom toxins. Differs by stressing muscle-targeted antibody release at bite versus broader epidermal or reservoir-based delivery.",
+              "end_char": 948,
+              "filename": "snake_bites.pdf",
+              "start_char": 698,
+              "page_number": 6
+            },
+            {
+              "text": "Horses or chickens (avians) are immunized with sublethal doses of either individual snake venoms or a cocktail of four major snake venoms or venom peptides, along with suitable adjuvants to improve the immune response in the animals.",
+              "section": "summary of invention",
+              "summary": "Immunize horses/chickens with sublethal doses of individual or cocktail of four snake venoms/peptides plus adjuvants. Parallels other hyperimmunization embodiments but uniquely specifies sublethal venom cocktails in equine or avian hosts.",
+              "end_char": 1162,
+              "filename": "snake_bites.pdf",
+              "start_char": 949,
+              "page_number": 6
+            },
+            {
+              "text": "Further, these high-tier antibodies may be purified from immunized horse plasma (IgG antibodies; see FIG. 2) or from eggs of immunized chickens or other avian species (IgY antibodies; see FIG. 3).",
+              "section": "summary of invention",
+              "summary": "High-tier antibodies purified from immunized horse plasma (IgG) or chicken/avian eggs (IgY). Differs by focusing solely on source purification rather than patch formulation or delivery specifics.",
+              "end_char": 1333,
+              "filename": "snake_bites.pdf",
+              "start_char": 1163,
+              "page_number": 6
+            },
+            {
+              "text": "The transdermal patches provided herein can be used for immediate administration of an active ingredient, such as an antivenin, to a bite site.",
+              "section": "summary of invention",
+              "summary": "Enables immediate transdermal antivenin administration at bite site using microneedle-equipped patch for first-aid treatment.",
+              "end_char": 1905,
+              "filename": "snake_bites.pdf",
+              "start_char": 1762,
+              "page_number": 6
+            },
+            {
+              "text": "Provided is a transdermal patch for treatment of a subject who is a victim of a venomous or toxic bite. The patch can include a release liner; a microneedle array; a drug matrix containing an IgG or IgY antibody to a venom or toxin in the bite; and a backing layer.",
+              "section": "summary of invention",
+              "summary": "Transdermal patch comprising release liner, microneedle array, IgG/IgY antibody-filled drug matrix, and backing layer. It defines the base format; others add membranes, enhancers, reservoirs, varied antibodies/drugs.",
+              "end_char": 265,
+              "filename": "snake_bites.pdf",
+              "start_char": 0,
+              "page_number": 7
+            },
+            {
+              "text": "The IgG or IgY antibody can react with a venom from a snake selected from among Naja naja (cobra), Bungarus caeruleus (common krait), Daboia russelii (Russell's viper) and Echis carinatus (saw-scaled viper).",
+              "section": "summary of invention",
+              "summary": "Antibodies (IgG/IgY) target venoms of four snakes: Cobra, common Krait, Russell’s viper, Saw-scaled viper. Focuses solely on four snake species, complementing broader embodiments including diverse venomous targets.",
+              "end_char": 472,
+              "filename": "snake_bites.pdf",
+              "start_char": 266,
+              "page_number": 7
+            },
+            {
+              "text": "The IgG or IgY antibody can react with a venom or toxin from\n a scorpion, spider, honeybee, jellyfish, cone snail, lionfish, scorpionfish, or stonefish. The\n IgG or IgY antibody can react with a rabies virus.",
+              "section": "summary of invention",
+              "summary": "IgG/IgY antibodies target toxins from scorpion, spider, bee, jellyfish, cone snail, lionfish, scorpionfish, stonefish, and rabies virus. Extends antigen scope versus typical four snake venom focus, covering insects, marine toxins, and rabies.",
+              "end_char": 679,
+              "filename": "snake_bites.pdf",
+              "start_char": 473,
+              "page_number": 7
+            },
+            {
+              "text": "In some embodiments, the transdermal patch can include a microneedle array that\n10 includes a plurality of microneedles, each microneedle having: a base; a tip distal to the base;\na body between the base and the tip; and a channel extending substantially from the base\nthrough the body portion, the channel being open along at least part of the body portion and\nforming a channel in fluid communication with at least a portion of the drug matrix.",
+              "section": "summary of invention",
+              "summary": "Describes a microneedle array comprising hollow channels from base to tip for fluid drug delivery. Unique focus on microneedle channel design versus other embodiments’ emphasis on antibody formulations.",
+              "end_char": 1126,
+              "filename": "snake_bites.pdf",
+              "start_char": 680,
+              "page_number": 7
+            },
+            {
+              "text": "The microneedles can be made of or include a biocompatible metal. The microneedles can be made of or include a biocompatible polymer.",
+              "section": "summary of invention",
+              "summary": "Microneedles fabricated from biocompatible metals or polymers. Differs by specifying material options, not delivery mechanics or drug matrices as others do.",
+              "end_char": 1263,
+              "filename": "snake_bites.pdf",
+              "start_char": 1127,
+              "page_number": 7
+            },
+            {
+              "text": "The microneedle array can include an adhesive material for securing the microneedle array to the subject's skin in the vicinity of the bite with one or more of the microneedles of the microneedle array inserted into the stratum corneum.",
+              "section": "summary of invention",
+              "summary": "Microneedle array includes adhesive layer to affix needles into stratum corneum for secure skin attachment. Unlike embodiments focusing on drug matrices/release, this uniquely ensures microneedle adhesion for insertion reliability.",
+              "end_char": 1500,
+              "filename": "snake_bites.pdf",
+              "start_char": 1264,
+              "page_number": 7
+            },
+            {
+              "text": "In some embodiments, the drug matrix can be within the body of at least one of the microneedles of the microneedle array. The drug matrix can be (a) lyophilized IgG or IgY antibody; (b) encapsulated particles of the IgG or IgY antibody; (c) an emulsion comprising the IgG or IgY antibody; or (d) any combination of (a) to (c).",
+              "section": "summary of invention",
+              "summary": "Drug matrix resides within microneedle hollows as lyophilized, encapsulated particles, or antibody emulsion. Unlike other embodiments using adhesive matrices or reservoirs, this integrates drug directly into needle bodies.",
+              "end_char": 1836,
+              "filename": "snake_bites.pdf",
+              "start_char": 1501,
+              "page_number": 7
+            },
+            {
+              "text": "The drug matrix can include an\nadditional active ingredient selected from among an antibiotic, a chemical permeation\nenhancer, and combinations thereof. The transdermal patch can include a rate-controlling\nmembrane that controls the rate of release of the additional active ingredient.",
+              "section": "summary of invention",
+              "summary": "Drug matrix includes antibiotic or chemical permeation enhancer; rate-controlling membrane regulates additional active ingredient release. Unlike others, this adds co-loaded agents with controlled release, complementing antibody-only patches.",
+              "end_char": 2286,
+              "filename": "snake_bites.pdf",
+              "start_char": 1998,
+              "page_number": 7
+            },
+            {
+              "text": "The transdermal patch can be contained in a packaging material.",
+              "section": "summary of invention",
+              "summary": "Patch is enclosed within protective packaging material. Adds packaging context; others detail components and formulation but omit packaging specifics.",
+              "end_char": 2350,
+              "filename": "snake_bites.pdf",
+              "start_char": 2287,
+              "page_number": 7
+            },
+            {
+              "text": "The pressure can be applied to or adjacent to the microneedle array of the transdermal patch, pressing the microneedle array into the stratum corneum of the skin at the bite site. The pressing of the microneedle array into the stratum corneum of the skin makes holes or micropores in the skin to facilitate delivery of IgG or IgY transdermally across the stratum corneum of the skin.",
+              "section": "summary of invention",
+              "summary": "Applies pressure to microneedles to create stratum corneum micropores, facilitating IgG/IgY transdermal delivery. Unlike structural/formulation embodiments, this emphasizes mechanical activation enabling antibody penetration.",
+              "end_char": 734,
+              "filename": "snake_bites.pdf",
+              "start_char": 352,
+              "page_number": 8
+            },
+            {
+              "text": "FIG. 9 shows a schematic purification using affinity chromatography to produce species-specific antibodies.",
+              "section": "summary of invention",
+              "summary": "Affinity chromatography purification (Fig.9) produces species‐specific antibodies. This uniquely focuses on purification, whereas others emphasize patch composition and delivery.",
+              "end_char": 1876,
+              "filename": "snake_bites.pdf",
+              "start_char": 1768,
+              "page_number": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "section": "detailed description",
+      "subsections": [
+        {
+          "header": "DETAILED DESCRIPTION OF THE INVENTION",
+          "summary": "Definitions clarify the usage of terms, where the singular includes the plural unless context dictates otherwise, and \"about\" allows for minor variations in stated amounts, such as standard deviations in measurement techniques relevant to alloys or composites.",
+          "embodiments": []
+        },
+        {
+          "header": "Transdermal Delivery",
+          "summary": "Transdermal drug delivery systems (TDDS) are self-contained drug-loaded systems that deliver drugs through the skin into the systemic circulation at a controlled rate. These systems have seen significant growth since the FDA approved the first transdermal patch, Transderm-Scop, in 1981. By 2015, the market expanded significantly, with over 35 transdermal products approved for treating various diseases.",
+          "embodiments": []
+        },
+        {
+          "header": "Components of Transdermal Patch",
+          "summary": "This transdermal patch features a multilaminate design consisting of components such as a release liner, microneedle array, drug matrix, and backing. These elements work together to maintain stability and enable rapid diffusion of active ingredients into the skin while preserving their efficacy. Exemplary configurations are depicted in FIG. 1A through FIG. 1C, with FIG. 1A specifically illustrating a release liner, adhesive layer, and microneedle.",
+          "embodiments": [
+            {
+              "text": "5 The transdermal patches provided herein can include a microneedle array, alone or in combination with one or more chemical permeation enhancers. The microneedles pierce the skin and provide a point of entry to allow large molecules, such as antibodies, to penetrate the protective outer layers of the skin.",
+              "header": "Components of Transdermal Patch",
+              "section": "detailed description",
+              "summary": "Microneedle arrays plus optional chemical permeation enhancers enhance transdermal delivery of antibodies. Unique in chemical enhancer integration; extends beyond antibody-only microneedle patches.",
+              "filename": "snake_bites.pdf",
+              "page_number": 14,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The microneedles also can pierce the skin and provide a point of entry for the chemical permeation enhancer to enter and assist with the passage of antibodies to pass through the stratum corneum.",
+              "header": "Components of Transdermal Patch",
+              "section": "detailed description",
+              "summary": "Microneedles facilitate entry of chemical permeation enhancers, boosting antibody transdermal passage through skin. Provides chemical enhancer pathway, unlike other embodiments solely using microneedle arrays for antibodies.",
+              "filename": "snake_bites.pdf",
+              "page_number": 14,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The transdermal patch provided herein can be applied to the bite site on the skin, and\nthe transdermal patch applies an active ingredient or a combination of active ingredients to the\napplication site and through the stratum corneum. The active ingredient can be an IgG or\nIgY antibody, an antibiotic, a chemical permeation enhancer, or any combination thereof.",
+              "header": "Components of Transdermal Patch",
+              "section": "detailed description",
+              "summary": "Patch applied to bite site delivers payload via microneedles across stratum corneum, comprising IgG/IgY, antibiotics, enhancers, or combinations. General delivery method complements specialized source, formulation, purification, and packaging embodiments.",
+              "filename": "snake_bites.pdf",
+              "page_number": 14,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "3. Components of Transdermal Patch\nThe transdermal patch provided herein is a multilaminate design that can include, but is not limited to components including a release liner, microneedle array, a drug matrix, and a backing.",
+              "header": "Components of Transdermal Patch",
+              "section": "detailed description",
+              "summary": "Multilaminate patch comprises release liner, microneedle array, drug matrix, and backing. This broad overview omits details like drug-loading strategies, adhesives or rate-controlling membranes in other embodiments.",
+              "filename": "snake_bites.pdf",
+              "page_number": 14,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In the embodiment shown in FIG. 1A, the transdermal patch 1000 includes a release liner 100, an adhesive layer 200, a microneedle array layer 300, and a backing layer 400.",
+              "header": "Components of Transdermal Patch",
+              "section": "detailed description",
+              "summary": "This embodiment describes a four-layer patch comprising a release liner, adhesive, microneedle array, and backing. It omits drug matrix and delivery specifics found elsewhere, focusing purely on basic layer structure.",
+              "filename": "snake_bites.pdf",
+              "page_number": 14,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In this configuration, the adhesive layer 200 serves as both a skin adhesive layer as well as a drug matrix, with the active ingredient embedded in or on the surface of the adhesive.",
+              "header": "Components of Transdermal Patch",
+              "section": "detailed description",
+              "summary": "Adhesive layer 200 doubles as skin adhesive and drug matrix, embedding active ingredient in or on adhesive surface. Simplifies design versus other embodiments with separate drug reservoir or distinct adhesive drug layers.",
+              "filename": "snake_bites.pdf",
+              "page_number": 14,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "Backing Layer",
+          "summary": "The backing layer of the transdermal patch maintains the structure's physical integrity and protects both the drug matrix and the microneedle array. It is typically made from flexible materials known in the field to ensure structural durability.",
+          "embodiments": [
+            {
+              "text": "1C, the transdermal patch\n1000 includes a release liner 100, a skin adhesive layer 250, a microneedle array layer 300, a\ndrug-loaded adhesive layer 600, a rate-controlling membrane 600, a drug matrix layer 500,\n5 and a backing layer 400.",
+              "header": "Backing Layer",
+              "section": "detailed description",
+              "summary": "Patch 1000 comprises seven layers: release liner, skin adhesive, microneedles, drug-loaded adhesive, rate-control membrane, drug matrix, backing. Differs by including distinct drug-loaded adhesive plus dedicated rate-controlling membrane beyond simpler designs.",
+              "filename": "snake_bites.pdf",
+              "page_number": 15,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "A. Backing Layer\nThe transdermal patch provided herein can include a backing layer.",
+              "header": "Backing Layer",
+              "section": "detailed description",
+              "summary": "Describes optional backing layer inclusion providing patch structural integrity and drug/microneedle protection. Unlike others detailing drug matrices and microneedles, this focuses on structural support.",
+              "filename": "snake_bites.pdf",
+              "page_number": 15,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The backing layer\ncan help in providing the physical integrity to the transdermal patch, and can help to protect\nthe drug matrix and the microneedle array.",
+              "header": "Backing Layer",
+              "section": "detailed description",
+              "summary": "Reinforcing backing layer provides mechanical support and protects drug matrix and microneedle array. Uniquely emphasizes structural integrity over formulation, microneedle design, or active ingredient strategies.",
+              "filename": "snake_bites.pdf",
+              "page_number": 15,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "10 The backing of the transdermal patch provided herein can be formed of any material\nknown in the art, and typically include materials that result in a flexible structure. Exemplary\nmaterials include cellulose acetate, ethyl cellulose, regenerated cellulose, cross-linked\npolyvinyl alcohol, ethylene-vinyl acetate (EVA) copolymer, polyester, polyethylene, such as\nlow density polyethylene or high density polyethylene, linear low density polyethylene,\n15 metallocene polyethylene, polyethylene terephthalate, polypropylene, polyvinyl chloride,\npolyvinylidene chloride, polyurethane, and combinations, composites, or multi-laminates\nthereof.",
+              "header": "Backing Layer",
+              "section": "detailed description",
+              "summary": "Backing layer uses various flexible polymer materials (cellulose, EVA, polyethylene, polyester, polyurethane, composites, multilaminates). Only embodiment detailing backing composition; others focus on drug delivery, microneedles, adhesives.",
+              "filename": "snake_bites.pdf",
+              "page_number": 15,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The backing can be formulated to be opaque, translucent or transparent. Additives can be included in the material for forming the backing 110, such as 20 antioxidants, colorants, plasticizers, tackifiers, and combinations thereof.",
+              "header": "Backing Layer",
+              "section": "detailed description",
+              "summary": "The backing material may be opaque, translucent or transparent and include additives like antioxidants, colorants, plasticizers, tackifiers. Offers aesthetic and functional customization beyond standard uniform backing materials.",
+              "filename": "snake_bites.pdf",
+              "page_number": 15,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The drug matrix can be included as a drug-loaded adhesive matrix.",
+              "header": "Backing Layer",
+              "section": "detailed description",
+              "summary": "Drug matrix forms a drug-loaded adhesive matrix embedding antibodies in adhesive. Integrates drug into skin adhesive versus separate microneedle reservoirs.",
+              "filename": "snake_bites.pdf",
+              "page_number": 15,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The drug matrix can be included as a drug reservoir. In some embodiments, the transdermal patch can include the active ingredient within the hollows of the microneedles of the microneedle array, alone or in combination with active ingredient in a drug-loaded adhesive matrix and/or in a drug reservoir.",
+              "header": "Backing Layer",
+              "section": "detailed description",
+              "summary": "Defines drug matrix as reservoir, enabling active ingredient loading into microneedle hollows, drug-loaded adhesive, or reservoir. Adds flexible multi-compartment delivery beyond embodiments limited to adhesive matrices or hollow microneedles alone.",
+              "filename": "snake_bites.pdf",
+              "page_number": 15,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "2. Drug-loaded Adhesive Matrix",
+          "summary": "The active ingredient can be incorporated into an adhesive matrix, which is in fluid communication with a microneedle array. When the microneedles penetrate the skin, interstitial fluid enables the active ingredient to dissolve and flow through the microneedles into the epidermis or dermis. This adhesive matrix may consist of an adhesive material mixed with a lyophilized form of antibodies like IgG or IgY for anti-venom or anti-toxin purposes.",
+          "embodiments": [
+            {
+              "text": "In some embodiments of the transdermal patch provided herein, the active ingredient can be provided within the hollows of the microneedles of the microneedle array. For example, solution of anti-venom IgG or IgY antibodies can be placed into the hollows of the microneedles.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "This embodiment loads anti-venom IgG/IgY inside hollow microneedles for direct local delivery; unlike adhesive matrix or reservoir embodiments, it ensures rapid, concentrated venom neutralization at puncture sites.",
+              "filename": "snake_bites.pdf",
+              "page_number": 16,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In some embodiments, the solution of antivenom IgG or IgY antibodies can include a bioerodible or biodegradable gelling agent that can set to form a solid or semi-solid gel within the hollows of the microneedles. Once the microneedle array punctures the stratum corneum, skin interstitial fluid can dissolve or help release the antivenom IgG or IgY antibodies from within the microneedles.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Bioerodible gelling agents form solid/semi-solid microneedle cores, releasing IgG/IgY when skin interstitial fluid dissolves the gel. Unlike adhesive or reservoir-loaded patches, it embeds antibody gel within hollow needles for controlled release.",
+              "filename": "snake_bites.pdf",
+              "page_number": 16,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Exemplary bioerodible or biodegradable gelling agents include chitin, alginate, gellan gum, polylactic acid (PLA), polyglycolic acid (PGA), poly(D,L-lactide-co-glycolide), polycaprolactone, polyamides, polyester amides, polyhydroxy acids, polyalkanoates, and combinations thereof.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Defines biodegradable gelling agents (e.g., chitin, alginate, PLA, PGA, PLGA, PCL, polyhydroxy acids) for microneedle drug matrix. Differs by detailing matrix excipients, rather than antibody sources or delivery mechanics like other embodiments.",
+              "filename": "snake_bites.pdf",
+              "page_number": 16,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "2. Drug-loaded Adhesive Matrix\n15 In some embodiments, the active ingredient can be included in an adhesive matrix.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Embodiment embeds the active ingredient within a drug-loaded adhesive matrix layer of the transdermal patch. Differs by using adhesive matrix only, versus other embodiments employing hollow microneedles or drug reservoirs.",
+              "filename": "snake_bites.pdf",
+              "page_number": 16,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "When the\nmicroneedle array punctures the stratum corneum, skin interstitial fluid can flow through the\nmicroneedles forming a fluid conduit which allows the active ingredient within the adhesive\nmatrix to dissolve and flow past the stratum corneum into the lower epidermis and/or the dermis.\nThe active ingredient can be mixed with an adhesive material to form the adhesive matrix.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Microneedle-created channels let interstitial fluid dissolve drug in adhesive matrix, enabling backflow into epidermis and dermis. Differs by embedding drug in surface adhesive matrix rather than within hollow microneedles or reservoirs.",
+              "filename": "snake_bites.pdf",
+              "page_number": 16,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Micronized or encapsulated lyophilized antibody also can be dispersed throughout the\nadhesive material to produce the drug-loaded adhesive matrix. Precipitated IgG or IgY anti-venom or anti-toxin antibody also can be dispersed throughout the adhesive material to\nproduce the drug-loaded adhesive matrix.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "This embodiment disperses various processed antibodies—micronized, encapsulated, lyophilized, or precipitated—within the adhesive matrix for sustained local release. In contrast to microneedle hollows, it embeds antibodies directly in adhesive, not separate reservoirs.",
+              "filename": "snake_bites.pdf",
+              "page_number": 16,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "When a high salt concentration is used to precipitate the antibody, residual salt in the precipitated protein can help to act as a driving force when the transdermal patch is activated.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Residual salt from high-salt antibody precipitation provides osmotic driving force for active ingredient release upon patch activation. Differs from other embodiments using matrices, adhesives, or microneedle structures for release control.",
+              "filename": "snake_bites.pdf",
+              "page_number": 16,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "When the microneedle array punctures the skin, skin interstitial fluid can flow through the microneedles, forming a fluid conduit that allows the active ingredient within the adhesive matrix to dissolve, along with any associated salts.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Microneedles puncture skin; interstitial fluid forms conduits dissolving adhesive-matrix-embedded actives and salts. Differs by fluid-enabled adhesive-matrix dissolution and salt-mediated delivery.",
+              "filename": "snake_bites.pdf",
+              "page_number": 16,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Dissolving salts can create an osmotic pressure that helps drive the dissolved active ingredient through the microneedles into the lower epidermis and/or dermis. In some embodiments, the active ingredient is encapsulated.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Salts create osmotic pressure, propelling dissolved drug through microneedles; active ingredient can be encapsulated. Differs by exploiting osmotic driving force versus other embodiments’ adhesive matrices or permeation enhancers.",
+              "filename": "snake_bites.pdf",
+              "page_number": 17,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Materials that are biodegradable and nonantigenic can\nbe used as the encapsulating material. Encapsulating materials include, but are not limited to,\nalbumin, poly(lactic-co-glycolic acid), globulin, natural and synthetic polymers, and\nthermoplastic polymers.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Lists biodegradable, nonantigenic encapsulation materials (albumin, PLGA, globulin, natural/synthetic and thermoplastic polymers). Distinctly highlights encapsulation options, unlike other embodiments focused on microneedle structures or drug reservoir design.",
+              "filename": "snake_bites.pdf",
+              "page_number": 17,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Any polymer that is biocompatible and bioerodible can be used for encapsulation.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Broadly permits any biocompatible, bioerodible polymer for encapsulation. Unlike specific gelling agents, offers a general encapsulation choice.",
+              "filename": "snake_bites.pdf",
+              "page_number": 17,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "A number of available crosslinking agents such as glutaraldehyde can be used to crosslink the encapsulating material. Additionally, the degree of crosslinking used to form the encapsulated active ingredient can be varied by using different concentrations of crosslinking agent whereby the resulting encapsulated materials can exhibit different release rates, thereby creating a prolonged continuous release of the active ingredient.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Variable crosslinking of encapsulating materials using agents like glutaraldehyde modulates active ingredient release rates for prolonged, continuous drug delivery. Unlike others centering on antibody sourcing or matrix design, it tunes release kinetics via crosslinking.",
+              "filename": "snake_bites.pdf",
+              "page_number": 17,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In another embodiment, the active ingredient can be provided in the form of solid particles adhered to the surface of the adhesive.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Active ingredient provided as solid particles adhered to the adhesive surface. Unlike microneedle-loaded or matrix-embedded delivery, this focuses on surface-bound particulate dosing.",
+              "filename": "snake_bites.pdf",
+              "page_number": 17,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In particular, these particles may be hydrophilic, so that contact with aqueous fluid exposed at the surface of the treated skin, such as skin interstitial fluid, will cause the particles to dissolve or disintegrate, thus releasing the active ingredient into the skin. Any adhesive material that causes little or no irritation or sensitization of the skin during the intended period for which the transdermal patch is to be used can be selected for formation of the drug-loaded adhesive matrix.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Hydrophilic particles embedded in adhesive dissolve upon skin fluid contact, rapidly releasing active ingredient with minimal irritation. Differs from reservoir or hollow-microneedle matrices by using particle dissolution and emphasizing skin-friendly adhesives.",
+              "filename": "snake_bites.pdf",
+              "page_number": 17,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Examples of suitable adhesives include\nacrylates, silicones, polyisobutylenes, synthetic rubber, natural rubber, and copolymers and\nmixtures thereof.",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Suitable adhesives include acrylates, silicones, polyisobutylenes, synthetic or natural rubber, and mixtures thereof. Unlike other patches specifying egg products or antibodies, this embodiment details diverse adhesive chemistries.",
+              "filename": "snake_bites.pdf",
+              "page_number": 17,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The active ingredient can be mixed with the adhesive prior to forming the transdermal patch, or it can be applied to the adhesive layer of the transdermal patch in a separate process",
+              "header": "2. Drug-loaded Adhesive Matrix",
+              "section": "detailed description",
+              "summary": "Embodiment: Active ingredient integration offers dual approaches—pre-mixed in adhesive or post-application onto adhesive layer. Unlike other embodiments focused on microneedle or reservoir loading, it emphasizes adhesive-based flexibility.",
+              "filename": "snake_bites.pdf",
+              "page_number": 17,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "Drug Reservoir",
+          "summary": "Some transdermal patches can include a drug matrix containing a drug reservoir, designed to deliver a specific dosage of active ingredients through the skin. The reservoir is centrally located on the patch and surrounded by adhesive to secure it in place, and various known reservoirs can be adapted for use in these patches.",
+          "embodiments": [
+            {
+              "text": "step. Examples of suitable methods for applying any active ingredient to an adhesive layer are described in U.S.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "This refers to U.S. patent methods describing how to apply active ingredients onto adhesive layers of transdermal patches. Unlike other embodiments detailing patch composition or microneedles, this focuses on adhesive application techniques.",
+              "filename": "snake_bites.pdf",
+              "page_number": 18,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The size of such a drug reservoir can be selected to deliver a selected amount of active ingredient through the skin. The reservoir can be centrally located with respect to the shape and size of the transdermal patch, and can include on each of its edges an adhesive that can help to secure the drug reservoir in place within the transdermal device.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "Adjustable reservoir dimensions enable precise dosing via a centrally located, edge-adhesive secured drug depot. Differing from microneedle-centric designs, it prioritizes reservoir placement and dosing precision over insertion mechanics.",
+              "filename": "snake_bites.pdf",
+              "page_number": 18,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In some embodiments, the matrix can include a polymeric matrix, for example, a hydrogel, that is capable of swelling and retaining an aqueous liquid.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "The drug matrix may be a hydrogel polymer capable of swelling and retaining aqueous fluid. Differs from adhesive/reservoir matrices by providing enhanced swelling-driven drug release and retention.",
+              "filename": "snake_bites.pdf",
+              "page_number": 18,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Microneedle Array\nThe transdermal device provided herein includes a microneedle array for delivery of the active ingredient.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "Microneedle array delivers active ingredient transdermally. Serves as core delivery mechanism versus other embodiments specifying microneedle materials, channels, or drug matrix.",
+              "filename": "snake_bites.pdf",
+              "page_number": 18,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Microneedle arrays use micron-sized needles that can enhance permeation of large-molecule drugs, particularly macromolecules like vaccines, proteins, and DNA, through the stratum corneum by creating micron-sized channels in the skin [Kalluri et al., The AAPS Journal 13(3): 473-481 (2011); Kalluri and Banga, Journal of Drug Delivery Science and Technology 19(5): 303-310 (2009)]. Proteins, such as immunoglobulins, can be loaded in microneedles and can pass through the channel of the needle and then enter the lower epidermis and further diffuse into nearby capillaries.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "Microneedle arrays create micro-channels facilitating large macromolecule delivery into lower epidermis and capillaries. Unique focus on mechanical skin permeation; complements other embodiments detailing antibody sourcing and patch formulations.",
+              "filename": "snake_bites.pdf",
+              "page_number": 18,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Recombinant keratinocyte growth factors and human IgG were delivered by using poly(lactic-co-glycolic acid) and maltose microneedles [Chellathurai et al., Turk. J. Pharm. Sci. 18(1):96–103 (2021); Li et al., Int. J. Pharm. 368(1–2):109–115 (2009); Jamaledin et al., J. Clin. Med. 9:542 (2020)].",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "Recombinant keratinocyte growth factors and human IgG delivered via poly(lactic-co-glycolic acid) and maltose microneedles. Broadens scope beyond antivenom-only formulations, demonstrating polymeric microneedles for diverse therapeutic proteins.",
+              "filename": "snake_bites.pdf",
+              "page_number": 19,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Semi-solid needles also can be used, and the drug can be delivered from a reservoir to the penetration area of the needles.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "This embodiment employs semi-solid microneedles delivering drugs from a reservoir to needle penetration areas. Unlike hollow or lyophilized designs, it prioritizes reservoir-based semi-solid needle delivery.",
+              "filename": "snake_bites.pdf",
+              "page_number": 19,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "US2020-0206488 (Lim et al., 2020) and US2015-0030642 (Wu et al., 2015).\nThe transdermal patches provided herein allow a subject that is a victim of a bite to\n20 adhere the transdermal patch to bite area of the skin, apply manual pressure to the transdermal\npatch to puncture the skin with the microneedle array, creating pathways or penetration sites\nthrough which the active ingredient(s) can pass, and allow the active ingredient(s) to be\ndelivered to the bite area.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "Describes transdermal patch application: victim adheres patch, presses to microneedles, creates skin channels, delivers active ingredients to bite site. Uniquely emphasizes mechanical delivery, unlike other embodiments detailing antibody sources, microneedle composition, or matrix formulations.",
+              "filename": "snake_bites.pdf",
+              "page_number": 19,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The active ingredients can be contained within hollow microneedles of the microneedle array.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "Active ingredients are loaded within hollow microneedles of the array, enabling direct transdermal drug delivery. Unlike reservoir or adhesive matrices, this localized needle encapsulation ensures targeted release through microneedle channels.",
+              "filename": "snake_bites.pdf",
+              "page_number": 19,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The active ingredient(s) can be loaded into a drug matrix. The drug matrix can be a drug-loaded reservoir.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "Embodiment: Active ingredients are contained in a drug matrix configured as a drug-loaded reservoir. Differs by specifying a reservoir matrix rather than hollow microneedle or adhesive-loaded formats.",
+              "filename": "snake_bites.pdf",
+              "page_number": 19,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The active ingredients can be contained within hollow microneedles of the\nmicroneedle array and in a drug matrix.\nIn some embodiments, the length of the microneedles of the microneedle array are\nsufficient to penetrate completely through the stratum corneum.",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "Active ingredients loaded within hollow microneedles and drug matrix; microneedles penetrate full stratum corneum. Unlike surface-only or reservoir patches, this design ensures direct transdermal delivery via internal hollow microneedles.",
+              "filename": "snake_bites.pdf",
+              "page_number": 19,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In some embodiments, the\n30 length of the microneedles of the microneedle array are sufficient to penetrate into the lower",
+              "header": "Drug Reservoir",
+              "section": "detailed description",
+              "summary": "Microneedles sized to penetrate lower epidermis/dermis for deeper delivery. Unique deeper penetration focus vs. others targeting only stratum corneum.",
+              "filename": "snake_bites.pdf",
+              "page_number": 19,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "D. Skin Adhesive Layer",
+          "summary": "The transdermal device may include a skin adhesive layer, which can either be integrated with the drug-loaded adhesive matrix or be a separate layer. This layer includes a pressure-sensitive adhesive designed to securely yet releasably adhere to the skin. Multiple skin-contact adhesives can be used, allowing for independent selection of adhesive materials and thickness.",
+          "embodiments": [
+            {
+              "text": "epidermis layer of the skin. In some embodiments, the length of the microneedles of the microneedle array are sufficient to penetrate into the dermis layer of the skin.",
+              "header": "D. Skin Adhesive Layer",
+              "section": "detailed description",
+              "summary": "Microneedles penetrate to dermis, ensuring deeper transdermal delivery. Focuses uniquely on needle depth, unlike others emphasizing formulation or matrix design.",
+              "filename": "snake_bites.pdf",
+              "page_number": 20,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The skin adhesive layer can include a skin-contact adhesive.",
+              "header": "D. Skin Adhesive Layer",
+              "section": "detailed description",
+              "summary": "Skin adhesive layer includes a skin-contact adhesive. Broadly defines layer, unlike other embodiments specifying adhesive matrix or reservoir features.",
+              "filename": "snake_bites.pdf",
+              "page_number": 20,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The\nskin-contact adhesive can be a pressure-sensitive adhesive, and particularly is a pressure-\nsensitive adhesive that is capable of securely but releasably adhering or bonding to skin of a\nsubject. In some embodiments, the transdermal patch can include more than one skin-contact\n10 adhesive, and each skin-contact adhesive can be independently selected with respect to the\nadhesive material selected and the thickness of the adhesive layer.",
+              "header": "D. Skin Adhesive Layer",
+              "section": "detailed description",
+              "summary": "Embodiment describes a pressure-sensitive skin-contact adhesive layer, optionally multiple layers with independent material and thickness selection. Unlike embodiments centered on microneedle arrays or drug matrices, this highlights adhesive layer customization.",
+              "filename": "snake_bites.pdf",
+              "page_number": 20,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Examples of suitable\nadhesives are described above, and include (meth)acrylates, silicones, polyisobutylenes,\nsynthetic rubber, natural rubber, and copolymers and mixtures thereof.",
+              "header": "D. Skin Adhesive Layer",
+              "section": "detailed description",
+              "summary": "Lists adhesive options: (meth)acrylates, silicones, polyisobutylenes, synthetic and natural rubbers, copolymers. Broader material scope than other embodiments, emphasizing adhesive selection over formulation specifics.",
+              "filename": "snake_bites.pdf",
+              "page_number": 20,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Release Liner\nThe transdermal patches provided herein can include a release liner.",
+              "header": "D. Skin Adhesive Layer",
+              "section": "detailed description",
+              "summary": "Release liner protects the adhesive layer until use, preserving patch adhesion properties; unlike microneedle and drug matrices, it doesn’t deliver actives but secures storage stability.",
+              "filename": "snake_bites.pdf",
+              "page_number": 20,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The release liner can be configured to release from the skin-contact adhesive layer, so that the transdermal patch can be adhered to a skin surface of a subject. The release liner is in place during storage of the transdermal device, to protect the adhesive properties of the skin-contact adhesive layer 20.",
+              "header": "D. Skin Adhesive Layer",
+              "section": "detailed description",
+              "summary": "Release liner peels off to expose adhesive, preserving adhesive properties during storage. Unique storage protection focus versus other microneedle/drug matrix features.",
+              "filename": "snake_bites.pdf",
+              "page_number": 20,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "For use, the release liner is removed, exposing the skin-contact adhesive layer, and when the transdermal device is placed on a bite site, the skin-contact adhesive layer can adhere to the skin of the subject to hold the transdermal patch in position.",
+              "header": "D. Skin Adhesive Layer",
+              "section": "detailed description",
+              "summary": "Remove liner to expose adhesive layer, securing the patch on the bite site. Differs from embodiments detailing microneedles or drug matrices by emphasizing adhesive application.",
+              "filename": "snake_bites.pdf",
+              "page_number": 20,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Suitable release liners can be made of a material\nselected from among Kraft paper, supercalendered Kraft paper with or without a coating of\nclay or polyvinyl alcohol, a biaxially oriented polyethylene terephthalate film, a biaxially\noriented polypropylene film, a polyester film, a high density polyethylene film, a low density\npolyethylene film",
+              "header": "D. Skin Adhesive Layer",
+              "section": "detailed description",
+              "summary": "Release liners comprise coated/uncoated Kraft paper or polymer films (PET, PP, polyester, HDPE, LDPE). Unique: addresses packaging components versus other embodiments’ active drug or microneedle features.",
+              "filename": "snake_bites.pdf",
+              "page_number": 20,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "F. Optional Components",
+          "summary": "The transdermal patch may include optional additional components, such as extra layers like a rate-controlling membrane or a protective barrier layer, which can be configured to ensure direct or indirect coupling of the skin-contact adhesive layer to the backing surface. These additional layers manage the release rate of active ingredients or prevent interaction with the backing.",
+          "embodiments": [
+            {
+              "text": "polyethylene film, or laminates or composites of any of these materials. The release liner material can be coated with release agents or low adhesion coatings.",
+              "header": "F. Optional Components",
+              "section": "detailed description",
+              "summary": "The release liner uses polyethylene film or laminates, coated with release agents for low-adhesion release. Compared to other embodiments that detail multi-layer matrices, this specifically optimizes low-adhesion release liner composition.",
+              "filename": "snake_bites.pdf",
+              "page_number": 21,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "When present, if the optional component is an additional layer, any optional layers can be configured so that the skin-contact adhesive layer is still coupled, directly or indirectly, to a surface of the backing. Exemplary additional layer(s) include, for example, a rate-controlling membrane, a protective barrier layer that prevents interaction between an active ingredient and the backing, or combinations thereof.",
+              "header": "F. Optional Components",
+              "section": "detailed description",
+              "summary": "Optional additional layers (e.g., rate-control membrane, barrier) can be configured while maintaining skin-contact adhesive attachment to backing. Specifies optional layer integration preserving adhesive-back coupling, unlike other embodiments detailing core structure.",
+              "filename": "snake_bites.pdf",
+              "page_number": 21,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "A rate-controlling membrane can be present to help control the release rate of active ingredient diffusion into the bite site.",
+              "header": "F. Optional Components",
+              "section": "detailed description",
+              "summary": "Optional rate-controlling membrane modulates active ingredient diffusion rate into the bite site. Unique optional membrane feature complements antibody-loaded microneedle and adhesive matrices in controlling release kinetics.",
+              "filename": "snake_bites.pdf",
+              "page_number": 21,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "As an example, the transdermal patch can include a\nchemical permeation enhancer to increase the permeability or porosity of the outermost skin\nlayers as an active ingredient, and the rate-controlling membrane can control the rate of\n15 release of the chemical permeation enhancer in order to maintain the micropores produced by\nthe microneedle array and to enhance prolonged permeability.\nAs another example, the transdermal patch can include an antibiotic as an optional\ncomponent, and the rate-controlling membrane can control the rate of release of the antibiotic\nin order to maintain an efficacious amount at the treatment site, such as to destroy any\n20 microbes that may have been introduced via the bite or from a skin surface.",
+              "header": "F. Optional Components",
+              "section": "detailed description",
+              "summary": "Rate-controlling membrane in patch controls enhancer and antibiotic release, prolonging microneedle-induced permeability. Unique in using rate membrane to sustain permeability; others emphasize antibody/drug delivery matrices.",
+              "filename": "snake_bites.pdf",
+              "page_number": 21,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "1C, the transdermal patch includes a drug-loaded adhesive and a drug matrix separated by a membrane. The drug matrix can be a drug-loaded reservoir or a drug-loaded adhesive.",
+              "header": "F. Optional Components",
+              "section": "detailed description",
+              "summary": "Membrane distinguishes drug-loaded adhesive from drug matrix, enabling separate reservoir or adhesive drug compartments. Offers modular layering and separated compartments, improving controlled release versus single-matrix patches.",
+              "filename": "snake_bites.pdf",
+              "page_number": 21,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In other embodiments, a membrane is not present, and the drug matrix can include a drug loaded reservoir, or a drug loaded adhesive layer, or a combination thereof.",
+              "header": "F. Optional Components",
+              "section": "detailed description",
+              "summary": "This embodiment omits a rate-controlling membrane, using either a drug reservoir, an adhesive drug-loaded layer, or both. Simplifies patch design by removing membrane; relies on reservoir or adhesive-only drug delivery.",
+              "filename": "snake_bites.pdf",
+              "page_number": 21,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In some embodiments, each transdermal patch can be packaged individually in a",
+              "header": "F. Optional Components",
+              "section": "detailed description",
+              "summary": "Each transdermal patch is individually packaged. This uniquely highlights packaging specifics versus other embodiments focusing on formulation and delivery mechanisms.",
+              "filename": "snake_bites.pdf",
+              "page_number": 21,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "A. Equine or Ovine Antibody Production",
+          "summary": "The text outlines methods for producing antivenin in equine (horses) or ovine (sheep) by immunizing these animals with specific venom antigens from snakes, spiders, scorpions, jellyfish, cone snails, or venomous fish. A schematic for the preparation of IgG-containing anti-sera in horses is referenced in FIG. 2, suggesting a detailed methodology for such production is available.",
+          "embodiments": [
+            {
+              "text": "Packaging material. In some embodiments, a transdermal patch can be packaged in foil or a foil-lined pouch.",
+              "header": "A. Equine or Ovine Antibody Production",
+              "section": "detailed description",
+              "summary": "Embodiment: patch packaged in foil or foil-lined pouch. Comparison: focuses on protective packaging, contrasting other embodiments’ emphasis on drug delivery components.",
+              "filename": "snake_bites.pdf",
+              "page_number": 22,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "2. A serum can be prepared by immunizing horses with a composition\ncomprising an antigen selected from among a snake venom antigen, a spider venom antigen, a\nscorpion venom antigen, a jellyfish venom antigen, a cone snail venom antigen, a venomous\nfish venom antigen, a rabies antigen, and a bacterial antigen.",
+              "header": "A. Equine or Ovine Antibody Production",
+              "section": "detailed description",
+              "summary": "Horses immunized with diverse antigens (venoms, rabies, bacteria) yield sera. Unlike IgY egg-derived antibodies, uses horse-derived IgG serum with broader antigen scope.",
+              "filename": "snake_bites.pdf",
+              "page_number": 22,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "An adjuvant typically is included\nin the composition.",
+              "header": "A. Equine or Ovine Antibody Production",
+              "section": "detailed description",
+              "summary": "Embodiment indicates compositions include an adjuvant. Differs by specifying immunization formulation component, while others detail antigen selection and antibody processing.",
+              "filename": "snake_bites.pdf",
+              "page_number": 22,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The IgG anti-antigen antibodies can be used as an active ingredient in the transdermal patches provided herein.",
+              "header": "A. Equine or Ovine Antibody Production",
+              "section": "detailed description",
+              "summary": "Embodiment defines IgG anti-antigen antibodies as active ingredients in transdermal microneedle patches. Contrasts with embodiments using IgY, phytochemicals, or small molecule combinations.",
+              "filename": "snake_bites.pdf",
+              "page_number": 22,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The IgG antibodies can target and neutralize a snake venom antigen, a spider venom antigen, a scorpion venom antigen, a jellyfish venom antigen, a cone snail venom antigen, a venomous fish venom antigen, a rabies antigen, or a bacterial antigen.",
+              "header": "A. Equine or Ovine Antibody Production",
+              "section": "detailed description",
+              "summary": "Broad IgG antibodies neutralize various venomous and infectious antigens: snake, spider, scorpion, jellyfish, cone snail, venomous fish, rabies, bacteria. Unlike embodiments targeting only specific snake venoms, this broadly covers multiple venomous and infectious agents.",
+              "filename": "snake_bites.pdf",
+              "page_number": 22,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "B. Antibody production in an egg-laying animal",
+          "summary": "The disclosure discusses a method for producing anti-sera containing IgY antibodies in egg-laying animals, such as chickens. The process involves hyperimmunizing these animals with antigens derived from various venoms or pathogens, such as those from snake, spider, or scorpion venoms, to generate specific antibodies. This method is aimed at producing antibodies targeting toxins or bacteria transferred through animal bites.",
+          "embodiments": [
+            {
+              "text": "B. Antibody production in an egg-laying animal\nIn some embodiments, antisera containing IgY are prepared in an egg-laying species.",
+              "header": "B. Antibody production in an egg-laying animal",
+              "section": "detailed description",
+              "summary": "Embodiment: preparation of IgY anti-sera in egg-laying species; focuses solely on antibody sourcing versus patch formulation and microneedle design.",
+              "filename": "snake_bites.pdf",
+              "page_number": 23,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "3.\n5 In certain aspects, the present disclosure relates to a method of preparing an antibody\nin an egg-producing animal directed to venom, rabies, or a bacterium known to be transferred\nby an animal bite, the method comprising: a) hyperimmunizing an egg-producing animal with\na composition comprising an antigen selected from among a snake venom antigen, a spider\nvenom antigen, a scorpion venom antigen, a jellyfish venom antigen, a cone snail venom\n10 antigen, a venomous fish venom antigen, a rabies antigen, and a bacterial antigen; and b)\npreparing a hyperimmunized egg product from one or more eggs produced by the animal.",
+              "header": "B. Antibody production in an egg-laying animal",
+              "section": "detailed description",
+              "summary": "Hyperimmunize egg-laying animals with various venom/toxin, rabies, or bacterial antigens to produce hyperimmune IgY eggs. Unique IgY egg production method versus other embodiments emphasizing microneedle patches and antibody purification.",
+              "filename": "snake_bites.pdf",
+              "page_number": 23,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In some embodiments, the antigen comprises or consists of snake venom antigen selected from Naja naja (cobra) venom, Bungarus caeruleus (common krait) venom, Daboia russelii (Russell’s viper) venom, and Echis carinatus (saw-scaled viper) venom.",
+              "header": "B. Antibody production in an egg-laying animal",
+              "section": "detailed description",
+              "summary": "Embodiment restricts antigen to one of four snake venoms: Cobra, Krait, Russell’s viper, or Saw-scaled viper. More specific than broader embodiments covering various toxins (scorpion, spider, bee, rabies, bacteria).",
+              "filename": "snake_bites.pdf",
+              "page_number": 23,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The polyclonal nature of the avian antibodies for multiple epitopes for neutralization or targeting toxins/antigens translates to improved efficacy, particularly when compared to monoclonal antibodies.",
+              "header": "B. Antibody production in an egg-laying animal",
+              "section": "detailed description",
+              "summary": "Emphasizes avian polyclonal antibodies bind multiple epitopes, enhancing neutralization efficacy. Unlike monoclonal embodiments, offers broader epitope coverage, potentially more effective multispecies antivenom.",
+              "filename": "snake_bites.pdf",
+              "page_number": 23,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Within\n                the class Aves, domesticated fowl are preferred, but other members of this class, such as\nturkeys, ducks, and geese, are a suitable source of hyperimmune egg product.",
+              "header": "B. Antibody production in an egg-laying animal",
+              "section": "detailed description",
+              "summary": "Specifies Aves class includes chickens and also turkeys, ducks, geese as hyperimmune egg sources. Expands species scope beyond chicken-only embodiments, uniquely acknowledging alternative fowl sources.",
+              "filename": "snake_bites.pdf",
+              "page_number": 24,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In a particular\nembodiment, the egg-producing animal is a chicken.\n25 This special state of hyperimmunization is preferably achieved by administering an\ninitial immunization, followed by periodic boosters with sufficiently high doses of specific\nantigens or mixtures of antigens.",
+              "header": "B. Antibody production in an egg-laying animal",
+              "section": "detailed description",
+              "summary": "Hyperimmunization uses chickens, via initial immunization plus high-dose antigen boosters. Specifies host and immunization regimen, unlike other embodiments focusing on antibody formulation and patch composition.",
+              "filename": "snake_bites.pdf",
+              "page_number": 24,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "Hyperimmunization Procedure",
+          "summary": "The hyperimmunization procedure involves selecting antigens that can induce a hyperimmune state in egg-producing animals. The process includes administering a primary vaccine with the selected antigens to elicit an immune response, followed by booster vaccines to maintain the heightened immunity. The choice of antigens is crucial as they must effectively induce both immune and hyperimmune responses.",
+          "embodiments": [
+            {
+              "text": "20 Step 1: A critical point in this step is that the antigen(s) must be capable of inducing immune and hyperimmune states in the egg-producing animal.\nStep 2: For a venom, the venom is diluted to a sub-lethal dosage.",
+              "header": "Hyperimmunization Procedure",
+              "section": "detailed description",
+              "summary": "Ensures antigen induces hyperimmune state; venom diluted to sub-lethal dose. Compared to others: focuses on immunization steps, not patch formulation.",
+              "filename": "snake_bites.pdf",
+              "page_number": 25,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Exemplary biodegradable polymers include chitosan, zymosan, a poly(ethylene glycol)-block-poly(propylene glycol)-block-poly(ethylene glycol), such as Pluronic® L121 block copolymer, poly(lactic acid), poly(glycolic acid), poly(lactic-co-glycolic acid), polycaprolactone, and combinations thereof.",
+              "header": "Hyperimmunization Procedure",
+              "section": "detailed description",
+              "summary": "Lists biodegradable polymers for microneedle/patch matrices: chitosan, zymosan, Pluronic L121, PLA, PGA, PLGA, PCL. Unique polymer diversity compared to antibody and matrix-focused formulations in other embodiments.",
+              "filename": "snake_bites.pdf",
+              "page_number": 26,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The IgY antibody can react to a portion of a snake venom antigen, a spider venom antigen, a scorpion venom antigen, a jellyfish venom antigen, a cone snail venom antigen, a venomous fish venom antigen, a rabies antigen, or a bacterial antigen.",
+              "header": "Hyperimmunization Procedure",
+              "section": "detailed description",
+              "summary": "IgY antibody reacts with diverse antigens: snake, spider, scorpion, jellyfish, cone snail, fish venoms, rabies virus, bacterial pathogens. Extends specificity beyond core snake-venom focus to broad toxin and pathogen repertoire.",
+              "filename": "snake_bites.pdf",
+              "page_number": 27,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In particular embodiments, the IgY antibody can be polyclonal antibodies, each of which can react with different epitopes of the same antigen. For example, the IgY antibody produced by the methods described herein can react with one or several epitopes of Naja naja (cobra) venom, Bungarus caeruleus (common krait) venom, Daboia russelii (Russell’s viper) venom, or Echis carinatus (saw-scaled viper) venom.",
+              "header": "Hyperimmunization Procedure",
+              "section": "detailed description",
+              "summary": "Polyclonal IgY antibodies bind multiple epitopes on cobra, krait, viper toxins. In contrast to monoclonal embodiments, this approach ensures broader venom neutralization.",
+              "filename": "snake_bites.pdf",
+              "page_number": 27,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "25 In some embodiments, the hyperimmunized egg or egg product comprises at least 10%, 20%, 30%, 40%, 50%, 100%, 200%, 300%, 400%, or 500% more antibody (e.g., anti-Enterococcus faecalis IgY) than a comparable egg or egg product from a non-hyperimmunized animal.",
+              "header": "Hyperimmunization Procedure",
+              "section": "detailed description",
+              "summary": "Hyperimmunized egg product comprises at least 10–500% increased antibody levels. Specifically quantifies immune boost, unlike other embodiments focusing on patch design or antibody extraction methods.",
+              "filename": "snake_bites.pdf",
+              "page_number": 27,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Spray-dried egg powder samples were reconstituted in sterile PBS at 1 mg/mL and then filtered through a 0.22 μm membrane filter.",
+              "header": "Hyperimmunization Procedure",
+              "section": "detailed description",
+              "summary": "Egg powder is reconstituted in PBS (1 mg/mL) and sterile-filtered through a 0.22 μm membrane. Simplifies processing compared to complex affinity chromatography and multi-step purification in other embodiments.",
+              "filename": "snake_bites.pdf",
+              "page_number": 28,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Specific antibody titers in the isolated IgY or egg powder samples are measured by ELISA. Flat bottom, 96-well microtiter plates (Corning® Costar®, Corning, NY) are coated with the antigen of interest at an appropriate dilution and incubated overnight at 4 °C.",
+              "header": "Hyperimmunization Procedure",
+              "section": "detailed description",
+              "summary": "Embodiment describes measuring specific IgY titers by ELISA using 96‐well plates coated overnight with antigen at 4 °C. Unlike other embodiments focused on patch delivery and formulation, this details titration methodology.",
+              "filename": "snake_bites.pdf",
+              "page_number": 28,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In some embodiments, 3 grams of egg yolk contains approximately 20 grams of total IgY, such that a whole egg contains about 150-200 mg total IgY. In some embodiments, at least 1%, 2%, 3%, 4%, 5%, 6%, 7%, 8%, 9%, 10%, 11%, 12%, 13%, 14%, 15%, 16%, 17%, 18%, 19%, 20%, 25% or 30% of the total IgY in the",
+              "header": "Hyperimmunization Procedure",
+              "section": "detailed description",
+              "summary": "A whole egg yields ~150–200 mg IgY; hyperimmune eggs contain 1–30% antigen-specific IgY. This quantitative yield focus contrasts with other embodiments’ emphasis on form, purification, or immunization protocols.",
+              "filename": "snake_bites.pdf",
+              "page_number": 28,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "Advantages of the Invention",
+          "summary": "The invention is a transdermal patch designed to treat various snake venoms and other acute toxic bites. It offers a versatile solution for targeting venomous snake bites globally, providing a potentially lifesaving intervention for those affected by such incidents.",
+          "embodiments": [
+            {
+              "text": "A hyperimmunized egg or egg product is specific to one of the antigens used for hyperimmunization. The IgY antibody, specific for an antigen disclosed herein, is concentrated for use in the transdermal patch.",
+              "header": "Advantages of the Invention",
+              "section": "detailed description",
+              "summary": "Egg products are hyperimmunized against a single antigen, yielding concentrated specific IgY for patch formulation. Differs by emphasizing antigen specificity and antibody concentration versus multi-epitope or polyclonal approaches.",
+              "filename": "snake_bites.pdf",
+              "page_number": 29,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "For example, the IgY antibody can be purified or partially purified and concentrated before formulating into the drug matrix of the transdermal patch.",
+              "header": "Advantages of the Invention",
+              "section": "detailed description",
+              "summary": "Purified IgY antibodies are concentrated before loading into the transdermal patch drug matrix. Unlike other embodiments, this emphasizes upstream antibody processing rather than patch components.",
+              "filename": "snake_bites.pdf",
+              "page_number": 29,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The IgY antibody can be purified or partially purified by separation using affinity chromatography. The IgY antibody also can be purified to yield antigen-specific IgY antibodies.",
+              "header": "Advantages of the Invention",
+              "section": "detailed description",
+              "summary": "Affinity chromatography purifies IgY, yielding antigen-specific antibodies. Specifically details affinity chromatography to isolate antigen-specific IgY, unlike broader antibody formulation embodiments.",
+              "filename": "snake_bites.pdf",
+              "page_number": 29,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "For antibodies that demonstrate cross-reactivity with other antigens, antigen-specific antibodies can be obtained using affinity chromatography.",
+              "header": "Advantages of the Invention",
+              "section": "detailed description",
+              "summary": "Affinity chromatography isolates antigen-specific antibodies from cross-reactive mixtures. This purification focus uniquely contrasts device/formulation-centric embodiments.",
+              "filename": "snake_bites.pdf",
+              "page_number": 29,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "For example, to purify IgY antibodies to\nantigen A from other cross-reacting antibodies, an affinity column can be prepared by\nconjugating antigen A to a support, placing the conjugated support in a column, and eluting a\nsolution containing the IgY antibodies through the column. IgY antibodies that react with\nantigen A will adhere to the conjugated support, while IgY antibodies that do not react with\n20 antigen A will pass through the column.",
+              "header": "Advantages of the Invention",
+              "section": "detailed description",
+              "summary": "Antigen A-conjugated affinity column binds and isolates IgY specific to antigen A; nonrelevant antibodies wash through. Focuses on precise antigen-specific purification, differing from broader, nonselective extraction and delivery methods.",
+              "filename": "snake_bites.pdf",
+              "page_number": 29,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "After purifying the high-titer antibodies from either chicken eggs or horse plasma, these antibodies can be formulated as active ingredients to achieve rapid penetration into the skin, followed by incorporation into a drug matrix of the transdermal patches provided herein.",
+              "header": "Advantages of the Invention",
+              "section": "detailed description",
+              "summary": "Purified high-titer Ig antibodies are loaded into a transdermal patch’s drug matrix for rapid skin penetration. Complements diverse microneedle and reservoir designs by specifying antibody formulation step.",
+              "filename": "snake_bites.pdf",
+              "page_number": 29,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "Additional benefits:",
+          "summary": "Polyclonal antibody-loaded transdermal patches offer rapid release of antibodies and additional drugs into the bloodstream for neutralizing antigens or toxins, reducing systemic circulation and preventing local toxicity. They provide multiple epitope neutralization for improved efficacy compared to monoclonal antibodies and benefit from the use of avian antibodies (IgY), which increase the number of targetable antigenic epitopes or toxins.",
+          "embodiments": []
+        },
+        {
+          "header": "METHODS",
+          "summary": "This disclosure outlines a method for treating bite sites from poisonous or infectious bites by using a transdermal patch to deliver antibodies like IgG or IgY. The method includes placing a specially designed transdermal adhesive patch on the bite site, which releases antibodies to neutralize toxins or infectious agents introduced during the bite.",
+          "embodiments": [
+            {
+              "text": "METHODS\nAnother aspect of the present disclosure provides a method of treating a bite site of a subject who is a victim of a poisonous or infectious bite by transdermally delivering an active ingredient, such as an IgG or IgY antibody that interacts and/or neutralizes the toxin or infectious agent injected into the subject by the action of the bite. The method can include providing a transdermal adhesive patch provided herein, and applying the transdermal patch to a bite site.",
+              "header": "METHODS",
+              "section": "detailed description",
+              "summary": "Method of treating bite sites by applying transdermal patch delivering IgG/IgY antibodies to neutralize venom.",
+              "filename": "snake_bites.pdf",
+              "page_number": 31,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The method can further include adhering at least a portion of a skin-contact adhesive layer of the transdermal patch to a skin surface adjacent to the bite site to anchor the transdermal patch in position.",
+              "header": "METHODS",
+              "section": "detailed description",
+              "summary": "Describes adhering skin-contact adhesive layer to adjacent skin to anchor patch. Unlike other embodiments detailing microneedle design or drug matrix, this emphasizes secure fixation.",
+              "filename": "snake_bites.pdf",
+              "page_number": 31,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The method can further include applying a pressure to or\nadjacent to the microneedle array to treat the bite site. The pressure can be applied using one\nor more fingers, or the palm of the hand.",
+              "header": "METHODS",
+              "section": "detailed description",
+              "summary": "Apply finger or palm pressure on patch’s microneedles to puncture skin and facilitate transdermal antibody delivery. Differs by requiring manual activation of microneedles versus other embodiments’ passive release.",
+              "filename": "snake_bites.pdf",
+              "page_number": 31,
+              "sub_category": "disease rationale"
+            },
+            {
+              "text": "The pressure (e.g., finger pressure or palm pressure)\ncan press the microneedle array into the stratum corneum of the skin to treat the bite site and\nto make holes or micropores in the skin to facilitate delivery of the active ingredient\n15 transdermally across stratum corneum of the skin.",
+              "header": "METHODS",
+              "section": "detailed description",
+              "summary": "Manual finger or palm pressure drives microneedle insertion to form micropores for active ingredient delivery. Unique in emphasizing manual activation versus others' formulation-centric or structural focus.",
+              "filename": "snake_bites.pdf",
+              "page_number": 31,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Preparation of anti-snake venom IgY antibodies\nIgY antibodies to four species of venomous snakes were prepared.\nVenoms: Venoms of Naja naja (Cobra), Bungarus caeruleus (common Krait),\nDaboia russelii (Russell’s viper) and Echis carinatus (Saw-scaled viper) were purchased from\nIrula snake catchers Co-Operative Society, Chennai, Tamil Nadu, India.",
+              "header": "METHODS",
+              "section": "detailed description",
+              "summary": "Anti-snake venom IgY antibodies were prepared using venoms from four major Indian snakes sourced from the Irula Cooperative Society. This sourcing-focused method contrasts formulation-centric embodiments by detailing venom procurement specifics.",
+              "filename": "snake_bites.pdf",
+              "page_number": 31,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "Animals/Chickens",
+          "summary": "18-week-old female Giri Raja chickens were used to prepare IgY antibodies. The chickens were divided into five groups, each consisting of ten chickens, and were kept in individual pens. Groups 1 to 4 were injected intramuscularly with sublethal doses of different snake venoms mixed with Freund’s Complete Adjuvant.",
+          "embodiments": [
+            {
+              "text": "Concentrations of venom used were in the range between 20 µg and 100 µg per kg body weight.\nEgg collection\nAfter 14 days of the first immunization, hyperimmunized eggs were collected\ncontinuously every day from all the pens/groups separately and stored at 4 °C until further use.",
+              "header": "Animals/Chickens",
+              "section": "detailed description",
+              "summary": "Venom dosing 20–100 µg/kg; eggs collected daily starting 14 days post-immunization, stored at 4°C. Emphasizes venom dosing and daily egg harvest, contrasting with other embodiments' focus on antibody formulation.",
+              "filename": "snake_bites.pdf",
+              "page_number": 32,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "Protein Estimation",
+          "summary": "Protein estimation of the IgY samples was conducted by dissolving final precipitates in PBS, filtering through a 0.4um nitrocellulose membrane, and measuring at 280 nm using a Nanodrop spectrophotometer. SDS-PAGE analysis was used to confirm the presence of IgY antibodies in test groups by analyzing samples in 12% gels under reducing and non-reducing conditions, with confirmation achieved via Coomassie Brilliant Blue staining.",
+          "embodiments": [
+            {
+              "text": "The pellet obtained was again dissolved in 100 mL of PBS and mixed with 12% PEG-6000. The mixture was centrifuged at 8000 rpm for 30 min at 4°C.",
+              "header": "Protein Estimation",
+              "section": "detailed description",
+              "summary": "Pellet dissolved in 100mL PBS, treated with 12% PEG-6000, then centrifuged at 8000 rpm for 30 min at 4°C. Streamlines crude antibody concentration via PEG precipitation, complementing affinity-based purification steps.",
+              "filename": "snake_bites.pdf",
+              "page_number": 33,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The solution was centrifuged, and the IgY precipitate was resuspended in PBS (phosphate buffer, 20 mM, pH 7.2) to yield a clear solution of antibody.",
+              "header": "Protein Estimation",
+              "section": "detailed description",
+              "summary": "After centrifugation, precipitated IgY is resuspended in PBS (20mM, pH7.2), yielding a clear antibody solution. Unlike affinity chromatography, this simple resuspension provides isotonic IgY solution ready for patch formulation.",
+              "filename": "snake_bites.pdf",
+              "page_number": 33,
+              "sub_category": "product composition"
+            }
+          ]
+        },
+        {
+          "header": "ELISA evaluation of IgY against all venoms",
+          "summary": "Different snake venoms from a specific species are prepared in a coating buffer and used to coat ELISA microtiter plates. After incubation, wells are washed, blocked with 10% skimmed milk in PBST, and incubated again before applying the primary antibody for further analysis.",
+          "embodiments": [
+            {
+              "text": "In a particular embodiment, the egg\nproduct is an egg yolk, for example, an egg yolk powder. In another embodiment, the egg\nproduct is an egg white, for example, an egg white powder.",
+              "header": null,
+              "section": "detailed description",
+              "summary": "Egg product uses specific fractions: yolk powder or egg white powder. Differs by isolating yolk/white powders, while other embodiments use whole eggs or concentrate.",
+              "filename": "snake_bites.pdf",
+              "page_number": 11,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In some embodiments, the egg powder is lyophilized.",
+              "header": null,
+              "section": "detailed description",
+              "summary": "Embodiment details lyophilization of egg powder, enabling freeze-dried hyperimmune egg formulations. Contrasts with spray-drying or whole-egg powders by improving antibody stability and activity.",
+              "filename": "snake_bites.pdf",
+              "page_number": 11,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In another example, an antibody includes two heavy (H) chain variable regions and two light (L) chain variable regions. In a particular embodiment, the antibody is an IgY polyclonal antibody.",
+              "header": null,
+              "section": "detailed description",
+              "summary": "Tetrameric antibody with two heavy and two light variable regions, exemplified as polyclonal. Contrasts monoclonal and species-specific embodiments by emphasizing broad-spectrum, polyclonal antibody.",
+              "filename": "snake_bites.pdf",
+              "page_number": 12,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "In a particular embodiment, the antibody is an IgY antibody.",
+              "header": null,
+              "section": "detailed description",
+              "summary": "Specifies antibody in patch formulation is IgY. Distinguishes from embodiments using IgG or mixed antibodies, emphasizing avian IgY focus.",
+              "filename": "snake_bites.pdf",
+              "page_number": 12,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Because these produced antibodies were found to cross-react to each other, venom-specific antibodies were purified by using sequential affinity chromatography.",
+              "header": "ELISA evaluation of IgY against all venoms",
+              "section": "detailed description",
+              "summary": "Venom-specific antibodies are purified by sequential affinity chromatography to remove cross-reactive antibodies. This specificity method contrasts other embodiments’ broader antibody preparations, ensuring species-targeted neutralization.",
+              "filename": "snake_bites.pdf",
+              "page_number": 34,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "8% glutaraldehyde was added to these freshly prepared iron nanoparticles and incubated overnight at 4°C. 1 mg/ml solutions of various IgY antibodies were prepared and passed through a set of three different columns conjugated with different antigens to adsorb cross-reactive antibodies in the columns themselves.",
+              "header": "ELISA evaluation of IgY against all venoms",
+              "section": "detailed description",
+              "summary": "IgY antibodies are purified by coupling antigens to glutaraldehyde-treated iron nanoparticles and sequential affinity chromatography. This nanoparticle-based method uniquely enables species-specific IgY purification versus generic precipitation and chromatography.",
+              "filename": "snake_bites.pdf",
+              "page_number": 35,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "Anti-CV antibodies were passed through columns\npacked with KV, column packed with RV and subsequently column packed with SSV\nantigen.",
+              "header": "ELISA evaluation of IgY against all venoms",
+              "section": "detailed description",
+              "summary": "Anti-CV IgY antibodies were sequentially purified via affinity columns packed with KV, RV, and SSV antigens. This serial antigen-based depletion yields species-specific antibodies unlike bulk IgY extraction.",
+              "filename": "snake_bites.pdf",
+              "page_number": 35,
+              "sub_category": "product composition"
+            },
+            {
+              "text": "The final eluate was collected and stored as antibodies highly specific for the CV antigen. A similar procedure was followed with the other three antibodies, and the final fractions of species-specific antibodies were stored at 4°C until further use.",
+              "header": "ELISA evaluation of IgY against all venoms",
+              "section": "detailed description",
+              "summary": "Species-specific antibodies isolated via sequential affinity chromatography yield CV-specific fractions stored at 4°C. Unlike general polyclonal mixes, this approach ensures high specificity to individual venoms over bulk formulations.",
+              "filename": "snake_bites.pdf",
+              "page_number": 35,
+              "sub_category": "product composition"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": [
+    {
+      "id": "4a5826ad-6eff-4dc0-93ec-59eecd58e83b",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "compositions",
+      "definition": "Compositions described herein are intended to encompass compositions which consist of, consist essentially of, as well as comprise, the various constituents identified herein, unless explicitly indicated to the contrary.",
+      "page_number": 9,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "013a09c9-ff46-493b-b684-131735fa6449",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "numerical range",
+      "definition": "The recitation of a numerical range for a variable is intended to convey that the variable can be equal to any value(s) within that range, as well as any and all sub-ranges encompassed by the broader range, including integer values and the end-points of the range.",
+      "page_number": 9,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "093b1712-f9de-4b34-84ef-1da6152e2a5a",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "victim",
+      "definition": "members of the animal kingdom including but not limited to human beings",
+      "page_number": 10,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "45649255-e228-4ade-98cf-aa4e96f16b77",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "subject",
+      "definition": "members of the animal kingdom including but not limited to human beings",
+      "page_number": 10,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "245a54dc-1b6d-4301-9f2f-a5970471c015",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "tissue",
+      "definition": "animal tissues, which may be connective, muscle, nervous or epithelial tissues, and may include a single tissue or a collection of tissues that form a common function",
+      "page_number": 10,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "9d3e88e9-334f-46dc-98b2-46d396d0ab6c",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "transdermally",
+      "definition": "any type of delivery of an active ingredient that crosses any portion of skin (but not necessarily all layers of skin), rather than merely being topically applied to an outer layer of the skin; includes systemic delivery where the active ingredient is transported across or substantially through the dermis into the bloodstream and intradermal delivery where the active ingredient is transported partially through the dermis, such as across the outer layer (stratum corneum) of the skin",
+      "page_number": 10,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "130f0cf3-150a-40a2-8ce8-2e8b8ba1fa91",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "active ingredient",
+      "definition": "a molecule for treating a disease state, including small molecules and macromolecules such as proteins (e.g., immunoglobulins such as IgG and IgY), DNA, and RNA",
+      "page_number": 10,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "84d66fca-42bb-48b4-ba11-a916933be0cf",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "drug",
+      "definition": "an active ingredient",
+      "page_number": 10,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "c0ae03fc-7ce3-4a3a-b482-c6c6fb12343e",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "matrix",
+      "definition": "a material in which something is enclosed or embedded",
+      "page_number": 10,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "fdebee54-b687-4d35-959c-b4c565c12e66",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "hyperimmunization",
+      "definition": "repeated exposure to one or more antigens such that an immune response is elevated and maintained above the natural unexposed state",
+      "page_number": 10,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "5d549f7d-701e-4130-a98f-b01af6e9f19c",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "hyperimmune state",
+      "definition": "an elevated immune response in an animal, such as an equine or ovine, or an egg producing animal, that has been hyperimmunized.",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "18076af8-e403-4d8a-96cf-8c015eab16bc",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "egg",
+      "definition": "a whole egg (table, hyperimmunized or otherwise).",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "6bed4b22-92ac-4c88-9ebb-5647754ba99e",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "egg product",
+      "definition": "a whole egg or any product or fraction obtained from a whole egg.",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "15ab251e-c3b0-40b5-acb2-abd149ba2df8",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "control egg",
+      "definition": "an egg obtained from an egg-producing animal that is not maintained in a hyperimmunized state, i.e. an animal that has not been hyperimmunized.",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "fee6eeb5-626c-4ed0-8d43-76ee857d80bc",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "control egg product",
+      "definition": "a control egg or an egg product obtained from a control egg.",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "b91aef5f-bdc9-47d4-a3a1-556c907f42ad",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "hyperimmunized egg",
+      "definition": "a whole egg obtained from an egg-producing animal maintained in a hyperimmune state, i.e. an egg-producing animal that has been hyperimmunized.",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "20d1e33c-0b64-4822-81d9-265add78580a",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "hyperimmunized egg product",
+      "definition": "a hyperimmunized egg or any product obtained from a hyperimmunized egg.",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "69c1d985-1635-4338-86d1-79331653b030",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "concentrate",
+      "definition": "a hyperimmunized egg product that is at least partially purified, such that the concentration of antibodies in the concentrate is greater than the concentration of antibodies in a hyperimmunized egg.",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "4e255e40-aaf4-47ad-ba22-363b229e9212",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "egg powder",
+      "definition": "a whole egg that has been dried.",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "f3a32d42-82cd-48e9-bb0b-03a6fb91ddb3",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "egg-producing animal",
+      "definition": "any oviparous animal, and includes any animal that lays an egg, such as avians, fish and reptiles.",
+      "page_number": 11,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "27d2afe2-c20b-4aed-90f3-0c08b757202f",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "avian",
+      "definition": "an animal that is a member of the class Aves. Avians include, but are not limited to, chickens, turkeys, geese, ducks, pheasants, quail, pigeons and ostriches.",
+      "page_number": 12,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "6ea922ba-42d6-4231-b136-2f6ca91e65a5",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "equine",
+      "definition": "a mammal that is a member of the family Equidae (order Perissodactyla) such as horses.",
+      "page_number": 12,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "13bbdeb8-e0a9-4935-9202-6e5809b84b1d",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "ovine",
+      "definition": "a mammal that is a member of the genus Bovidae, such as sheep.",
+      "page_number": 12,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "b0cefcc9-f2d7-43de-96f7-24d11da47e68",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "supranormal levels",
+      "definition": "levels in excess of those found in eggs of egg-producing animals that are not hyperimmunized. For example, supranormal levels of an antibody to a particular antigen are levels of the antibody in excess of those found in eggs of egg-producing animals that are not hyperimmunized with the particular antigen.",
+      "page_number": 12,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "5397d064-b6f3-49b9-aecb-f84978d18b0c",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "administer",
+      "definition": "any method of providing a subject with a substance, including orally, intranasally, parenterally (intravenously, intramuscularly, or subcutaneously), rectally, topically or intraocularly.",
+      "page_number": 12,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "590f90ba-84e0-470a-9060-0fb671ea46d7",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "antigen",
+      "definition": "a substance that is able to induce a humoral antibody and/or cell-mediated immune response rather than immunological tolerance. The term signifies the ability to stimulate an immune response as well as react with the products of it, e.g., an antibody.",
+      "page_number": 12,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "dfb8887f-5121-40af-9930-7d8a584ed74b",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "antibody",
+      "definition": "a protein that includes at least one complementarity determining region that binds to a specific target antigen, e.g. antigen A, B, C, D, Co1, Co2, H, or ET-50 disclosed herein. For example, an antibody can include a heavy (H) chain variable region (VH), and a light (L) chain variable region (VL). In another example, an antibody includes two heavy (H) chain variable regions and two light (L) chain variable regions. In a particular embodiment, the antibody is a polyclonal antibody.",
+      "page_number": 12,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    },
+    {
+      "id": "25c7faa0-56fb-4e67-a865-53c068891c3a",
+      "file_id": "337517fa-6f95-440f-a85c-d0c6b11599cd",
+      "term": "polyclonal antibody",
+      "definition": "a population of antibody molecules that are capable of immunoreacting with different epitopes on a particular antigen.",
+      "page_number": 12,
+      "created_at": "2025-08-05T05:00:43.745376+00:00"
+    }
+  ]
+}

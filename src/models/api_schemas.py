@@ -10,6 +10,7 @@ from src.models.ocr_schemas import (
 from src.models.rag_schemas import Chunk
 from enum import Enum
 from src.models.ocr_schemas import Glossary
+
 class FileUploadResponse(BaseModel):
     """
     Response model for file upload operations.

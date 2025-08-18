@@ -631,6 +631,11 @@ async def patent(patent_id: str, file: UploadFile):
                                 if isinstance(emb, DetailedDescriptionEmbodiment)
                                 else {}
                             ),
+                            **(
+                                {"start_char": emb.start_char, "end_char": emb.end_char}
+                                if hasattr(emb, 'start_char') and hasattr(emb, 'end_char')
+                                else {}
+                            ),
                         }
                         for idx, emb in enumerate(patent_embodiments, start=1)
                     ]
