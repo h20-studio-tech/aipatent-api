@@ -4,4 +4,26 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "asyncio>=4.0.0",
+    "boto3>=1.40.6",
+    "cohere>=5.16.3",
+    "fastapi[standard]>=0.116.1",
+    "google-genai>=1.29.0",
+    "instructor>=1.10.0",
+    "lancedb>=0.24.2",
+    "langfuse<3.0.0",
+    "nest-asyncio>=1.6.0",
+    "numpy>=2.3.2",
+    "openai>=1.99.6",
+    "pandas>=2.3.1",
+    "pdfplumber>=0.11.7",
+    "pydantic>=2.11.7",
+    "pytesseract>=0.3.13",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "python-dotenv>=1.1.1",
+    "supabase>=2.18.0",
+    "unstructured-client>=0.42.2",
+    "uvicorn>=0.35.0",
+]

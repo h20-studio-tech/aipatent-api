@@ -2,7 +2,7 @@ import uuid
 import os
 from datetime import datetime
 
-from openai import OpenAI
+# OpenAI client now injected via dependency injection
 from src.models.llm import (
     FieldOfInvention,
     BackgroundAndNeed,
@@ -32,17 +32,16 @@ def generate_field_of_invention(
     antigen: str, 
     disease: str,
     additional:str, 
-    model: str = model,
-    client=None,
-    lf=None) -> FieldOfInvention:
-    client = client or OpenAI()
-    lf = lf or langfuse
+    client,
+    model: str = model) -> FieldOfInvention:
+    if not client:
+        raise ValueError("OpenAI client must be provided")
 
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
     trace_id = str(uuid.uuid4())
-    trace = lf.trace(
+    trace = langfuse.trace(
         id=trace_id,
         name=f"generate_field_of_invention_{model}",
         input=values_to_json(
@@ -56,7 +55,7 @@ def generate_field_of_invention(
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
-    raw_prompt = lf.get_prompt("generate_field_of_invention")
+    raw_prompt = langfuse.get_prompt("generate_field_of_invention")
     prompt = raw_prompt.compile(
         technology=technology, 
         antigen=antigen, 
@@ -118,9 +117,11 @@ def generate_background(
     antigen: str, 
     disease: str,
     additional:str,
+    client,
     model: str = model) -> BackgroundAndNeed:
 
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -193,8 +194,10 @@ def generate_summary(
     antigen: str, 
     disease: str,
     additional:str, 
+    client,
     model: str = model) -> BriefSummary:
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -272,8 +275,10 @@ def generate_target_overview(
     disease: str,
     additional:str, 
     context: str,
+    client,
     model: str = model) -> TargetOverview:
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -352,8 +357,10 @@ def generate_high_level_concept(
     antigen: str, 
     disease: str,
     additional:str, 
+    client,
     model: str = model) -> HighLevelConcept:
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -430,9 +437,11 @@ def generate_underlying_mechanism(
     antigen: str, 
     disease: str,
     additional:str, 
+    client,
     model: str = model
 ) -> UnderlyingMechanism:
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -506,9 +515,11 @@ def generate_embodiment(
     approach: str, 
     antigen: str, 
     disease: str, 
+    client,
     model: str = model
 ) -> Embodiment:
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -583,9 +594,11 @@ def generate_disease_overview(
     antigen: str, 
     disease: str,
     additional:str, 
+    client,
     model: str = model
 ) -> DiseaseOverview:
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -657,8 +670,10 @@ def generate_claims(
     antigen: str, 
     disease: str,
     additional:str, 
+    client,
     model: str = model) -> Claims:
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -733,9 +748,11 @@ def generate_key_terms(
     antigen: str, 
     disease: str,
     additional:str, 
+    client,
     model: str = model
 ) -> KeyTerms:
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -809,9 +826,11 @@ def generate_abstract(
     antigen: str, 
     disease: str,
     additional:str, 
+    client,
     model: str = model
 ) -> Abstract:
-    client = OpenAI()
+    if not client:
+        raise ValueError("OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 

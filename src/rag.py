@@ -3,7 +3,6 @@ import logging
 import uuid
 import instructor
 import asyncio
-import langfuse
 import pandas as pd
 try:
     from langfuse.decorators import observe
@@ -11,7 +10,7 @@ except Exception:  # pragma: no cover - fallback for test envs
     from src.utils.langfuse_stub import observe
 from src.models.rag_schemas import Chunk
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 from src.utils.langfuse_client import get_langfuse_instance
 from lancedb.pydantic import LanceModel, Vector
 from lancedb.table import Table
@@ -48,6 +47,10 @@ class Schema(LanceModel):
 
 class MultiQueryQuestions(BaseModel):
     questions: List[str]
+
+class JudgeVerdict(BaseModel):
+    passed: bool
+    feedback: Optional[str] = None
 
 
 def format_chunks(chunks: List[Chunk]) -> str:
@@ -155,24 +158,35 @@ async def search(
 
 
 async def multiquery_search(
-    query: str, table_names: List[str], n_queries: str = 3, db=AsyncConnection
+    query: str,
+    table_names: List[str],
+    n_queries: str = 3,
+    db: AsyncConnection = None,
+    feedback: Optional[str] = None,
 ) -> List[Chunk]:
 
     prompt = f"""
-            You are a query understanding system for an AI Patent Generation application your task is to transform the user query and expand it into `{n_queries}` different queries
-            in order to maximize retrieval efficiency
-            
-            
-            Generate `{n_queries}` questions based on `{query}`. The questions should be focused on expanding the search of information from a microbiology paper:
+            You are a query understanding system for an AI Patent Generation application. Your task is to transform the user query and expand it into `{n_queries}` different queries
+            in order to maximize retrieval efficiency.
 
+            Generate `{n_queries}` questions based on `{query}`. The questions should be focused on expanding the search of information from a microbiology paper.
 
-            Stylistically the queries should be optimized for matching text chunks in a vectordb, doing so enhances the likelihood of effectively retrieving the relevant chunks
+            Stylistically the queries should be optimized for matching text chunks in a vector DB, to enhance the likelihood of effectively retrieving the relevant chunks
             that contain the answer to the original user query.
+            """
+
+    # If we are retrying due to a failed judge, bias the expansions using the feedback
+    if feedback:
+        prompt += f"""
+
+            Additional guidance for regeneration:
+            The previous answer did not pass the judge. Feedback was: "{feedback}".
+            Please bias the expanded queries to cover the gaps highlighted by the feedback while staying faithful to the original intent of the user query.
             """
     try:
         logging.info(f"Generating MultiQuery questions")
         multiquery = openai.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-5",
             response_model=MultiQueryQuestions,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -211,10 +225,63 @@ async def multiquery_search(
 @observe(name="multiquery_message")    
 async def chunks_summary(chunks:List[Chunk], prompt: str):
     return client.chat.completions.create(
-         model="gpt-4o-mini",
+         model="gpt-5",
          messages=[
            {"role": "system", "content": "You are a great scientific analyst who is extensively knowledgeable in microbiologics and patent applications."},
            {"role": "assistant", "content": f"reference data to answer questions {format_chunks(chunks)}"},
-           {"role": "user", "content": f"provide an answer to the question {prompt} using the above document segments as your reference"}
+           {"role": "user", "content": f"""Provide an answer to the question: {prompt}
+
+Use the above document segments as your reference. When you use information from a specific chunk, add an inline citation using the format [X] where X is the chunk ID number.
+
+For example: "IgY antibodies have been shown to reduce bacterial adhesion [57] and improve growth performance in livestock [36]."
+
+Make sure to cite the specific chunk_id(s) that support each claim or piece of information in your response."""}
          ],
      ).choices[0].message.content
+
+
+@observe(name="judge_answer")
+async def judge_answer(question: str, context: List[Chunk], answer: str, label: str = "production") -> JudgeVerdict:
+    """Run the judge prompt to evaluate the answer. Returns a structured verdict.
+
+    Falls back to passing the answer if the judge encounters an error to avoid blocking the flow.
+    """
+    try:
+        prompt_obj = langfuse.get_prompt("research_judge", label=label)
+        context_text = format_chunks(context)
+        compiled = prompt_obj.compile(question=question, context=context_text, answer=answer)
+
+        verdict = openai.chat.completions.create(
+            model=os.getenv("MODEL", "gpt-4o-mini"),
+            response_model=JudgeVerdict,
+            messages=[
+                {"role": "user", "content": compiled},
+            ],
+        )
+        return verdict
+    except Exception as e:
+        logging.error(f"Judge step error: {e}")
+        # Fail-open: if judge fails, do not block returning an answer
+        return JudgeVerdict(passed=True, feedback=None)
+
+
+@observe(name="regenerate_with_feedback")
+async def regenerate_with_feedback(chunks: List[Chunk], question: str, feedback: str) -> str:
+    """Regenerate the answer using feedback from the judge, conditioning on the same context."""
+    return client.chat.completions.create(
+        model=os.getenv("MODEL", "gpt-4o-mini"),
+        messages=[
+            {"role": "system", "content": "You are a great scientific analyst who is extensively knowledgeable in microbiologics and patent applications."},
+            {"role": "assistant", "content": f"reference data to answer questions {format_chunks(chunks)}"},
+            {"role": "user", "content": f"""Question: {question}
+Your previous answer did not pass the judge. Feedback: {feedback}
+
+Please provide a single improved answer strictly using the above document segments as reference.
+
+IMPORTANT: When you use information from a specific chunk, add an inline citation using the format [X] where X is the chunk ID number.
+
+For example: "IgY antibodies have been shown to reduce bacterial adhesion [57] and improve growth performance in livestock [36]."
+
+Make sure to cite the specific chunk_id(s) that support each claim or piece of information in your response."""},
+        ],
+    ).choices[0].message.content

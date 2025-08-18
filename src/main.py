@@ -15,7 +15,7 @@ from fastapi import status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from src.models.pdf_workflow import FileProcessedError
-from src.rag import multiquery_search, create_table_from_file, chunks_summary
+from src.rag import multiquery_search, create_table_from_file, chunks_summary, judge_answer, regenerate_with_feedback
 from contextlib import asynccontextmanager
 from src.pdf_processing import (
     supabase_upload,
@@ -453,9 +453,17 @@ async def query_search(query: str, target_files: list[str]):
         formatted_chunks = await multiquery_search(
             query, table_names=table_names, db=db_connection["db"]
         )
-        summary = await chunks_summary(formatted_chunks, query)
+        original_answer = await chunks_summary(formatted_chunks, query)
+
+        # Judge the original answer. If it does not pass, regenerate once with feedback.
+        verdict = await judge_answer(query, formatted_chunks, original_answer, label="production")
+        if verdict.passed:
+            final_answer = original_answer
+        else:
+            final_answer = await regenerate_with_feedback(formatted_chunks, query, verdict.feedback or "")
+
         return MultiQueryResponse(
-            status="success", message=summary, data=formatted_chunks
+            status="success", message=final_answer, data=formatted_chunks
         )
     except Exception as e:
         raise HTTPException(

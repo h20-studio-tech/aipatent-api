@@ -2,7 +2,7 @@ import uuid
 import os
 from datetime import datetime
 
-from openai import OpenAI
+# Async clients are injected; no global client here
 from src.models.llm import (
     FieldOfInvention,
     BackgroundAndNeed,
@@ -15,7 +15,6 @@ from src.models.llm import (
     Claims,
     Abstract,
     KeyTerms,
-
 )
 
 from src.utils.values_to_json import values_to_json
@@ -25,70 +24,68 @@ langfuse = get_langfuse_instance()
 
 model = os.getenv("MODEL")
 
-def generate_field_of_invention(
-    innovation: str, 
-    technology: str,
-    approach: str, 
-    antigen: str, 
-    disease: str,
-    additional:str, 
-    model: str = model,
-    client=None,
-    lf=None) -> FieldOfInvention:
-    client = client or OpenAI()
-    lf = lf or langfuse
 
+async def generate_field_of_invention(
+    innovation: str,
+    technology: str,
+    approach: str,
+    antigen: str,
+    disease: str,
+    additional: str,
+    client,
+    model: str = model,
+) -> FieldOfInvention:
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
     trace_id = str(uuid.uuid4())
-    trace = lf.trace(
+    trace = langfuse.trace(
         id=trace_id,
         name=f"generate_field_of_invention_{model}",
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
+        ),
+        tags=["evaluation"],
+    )
+    fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
+    raw_prompt = langfuse.get_prompt("generate_field_of_invention")
+    prompt = raw_prompt.compile(
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
         additional=additional,
-       ),
-        tags=["evaluation"],
     )
-    fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
-    raw_prompt = lf.get_prompt("generate_field_of_invention")
-    prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional    )
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
-            technology=technology, 
-            antigen=antigen, 
+            technology=technology,
+            antigen=antigen,
             disease=disease,
             innovation=innovation,
             approach=approach,
-            additional=additional
+            additional=additional,
         ),
         output=raw_prompt,
     )
+
     generation = trace.generation(
         name="field_of_invention",
         input=prompt,
         completion_start_time=datetime.now(),
         model=model,
     )
-    response = client.chat.completions.create(
-        messages=[
-            {
-                "role": "user",
-                "content": prompt,
-            }
-        ],
+
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
         model=model,
     )
 
@@ -111,16 +108,18 @@ def generate_field_of_invention(
     )
 
 
-def generate_background(
-    innovation: str, 
+async def generate_background(
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str,
-    model: str = model) -> BackgroundAndNeed:
-
-    client = OpenAI()
+    additional: str,
+    client,
+    model: str = model,
+) -> BackgroundAndNeed:
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -129,34 +128,35 @@ def generate_background(
         id=trace_id,
         name=f"generate_background_and_need_{model}",
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional        ),
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
+        ),
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_background")
     prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
         additional=additional,
-        )
+    )
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional,
-       ),
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
+        ),
         output=raw_prompt,
     )
 
@@ -166,8 +166,9 @@ def generate_background(
         completion_start_time=datetime.now(),
         model=model,
     )
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -186,15 +187,19 @@ def generate_background(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-def generate_summary(
-    innovation: str, 
+
+async def generate_summary(
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
-    model: str = model) -> BriefSummary:
-    client = OpenAI()
+    additional: str,
+    client,
+    model: str = model,
+) -> BriefSummary:
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -203,34 +208,34 @@ def generate_summary(
         id=trace_id,
         name=f"generate_brief_summary_{model}",
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional,
-      ),
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
+        ),
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_brief_summary")
     prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
         additional=additional,
-       )
+    )
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional,
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
         ),
         output=raw_prompt,
     )
@@ -241,8 +246,9 @@ def generate_summary(
         completion_start_time=datetime.now(),
         model=model,
     )
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
 
     generation.end(
@@ -264,16 +270,19 @@ def generate_summary(
     )
 
 
-def generate_target_overview(
-    innovation: str, 
+async def generate_target_overview(
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
+    additional: str,
     context: str,
-    model: str = model) -> TargetOverview:
-    client = OpenAI()
+    client,
+    model: str = model,
+) -> TargetOverview:
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -282,37 +291,37 @@ def generate_target_overview(
         id=trace_id,
         name="generate_target_overview",
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional,
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
         ),
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_target_overview")
     prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional,   
-        context=context 
-    )
-    fetch_prompt.end(
-        end_time=datetime.now(),
-        input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
         additional=additional,
-        context=context
-       ),
+        context=context,
+    )
+    fetch_prompt.end(
+        end_time=datetime.now(),
+        input=values_to_json(
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
+            context=context,
+        ),
         output=raw_prompt,
     )
 
@@ -323,8 +332,9 @@ def generate_target_overview(
         model=model,
     )
 
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -345,15 +355,18 @@ def generate_target_overview(
     )
 
 
-def generate_high_level_concept(
-    innovation: str, 
+async def generate_high_level_concept(
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
-    model: str = model) -> HighLevelConcept:
-    client = OpenAI()
+    additional: str,
+    client,
+    model: str = model,
+) -> HighLevelConcept:
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -362,20 +375,20 @@ def generate_high_level_concept(
         id=trace_id,
         name="generate_high_level_concept",
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional,
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
         ),
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_high_level_concept")
     prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
@@ -384,12 +397,12 @@ def generate_high_level_concept(
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional,
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
         ),
         output=raw_prompt,
     )
@@ -401,8 +414,9 @@ def generate_high_level_concept(
         model=model,
     )
 
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -423,16 +437,18 @@ def generate_high_level_concept(
     )
 
 
-def generate_underlying_mechanism(
-    innovation: str, 
+async def generate_underlying_mechanism(
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
-    model: str = model
+    additional: str,
+    client,
+    model: str = model,
 ) -> UnderlyingMechanism:
-    client = OpenAI()
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -441,32 +457,34 @@ def generate_underlying_mechanism(
         id=trace_id,
         name="generate_underlying_mechanism",
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional),
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
+        ),
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_underlying_mechanism")
     prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
-        additional=additional,)
+        additional=additional,
+    )
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,  
-        additional=additional,
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
         ),
         output=raw_prompt,
     )
@@ -478,8 +496,9 @@ def generate_underlying_mechanism(
         model=model,
     )
 
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -499,16 +518,19 @@ def generate_underlying_mechanism(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-def generate_embodiment(
-    previous_embodiment: str, 
-    innovation: str, 
+
+async def generate_embodiment(
+    previous_embodiment: str,
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
-    disease: str, 
-    model: str = model
+    approach: str,
+    antigen: str,
+    disease: str,
+    client,
+    model: str = model,
 ) -> Embodiment:
-    client = OpenAI()
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -517,32 +539,32 @@ def generate_embodiment(
         id=trace_id,
         name="generate_embodiment",
         input=values_to_json(
-            previous_embodiment=previous_embodiment, 
-            innovation=innovation, 
-            technology=technology, 
-            antigen=antigen, 
-            disease=disease
+            previous_embodiment=previous_embodiment,
+            innovation=innovation,
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
         ),
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_embodiment")
     prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease, 
+        technology=technology,
+        antigen=antigen,
+        disease=disease,
         innovation=innovation,
-        approach=approach, 
-        previous_embodiment=previous_embodiment
+        approach=approach,
+        previous_embodiment=previous_embodiment,
     )
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
-            technology=technology, 
-            antigen=antigen, 
+            technology=technology,
+            antigen=antigen,
             disease=disease,
             innovation=innovation,
-            previous_embodiment=previous_embodiment
+            previous_embodiment=previous_embodiment,
         ),
         output=raw_prompt,
     )
@@ -554,8 +576,9 @@ def generate_embodiment(
         model=model,
     )
 
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -576,16 +599,18 @@ def generate_embodiment(
     )
 
 
-def generate_disease_overview(
-    innovation: str, 
+async def generate_disease_overview(
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
-    model: str = model
+    additional: str,
+    client,
+    model: str = model,
 ) -> DiseaseOverview:
-    client = OpenAI()
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -629,8 +654,9 @@ def generate_disease_overview(
         model=model,
     )
 
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -650,15 +676,19 @@ def generate_disease_overview(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-def generate_claims(
-    innovation: str, 
+
+async def generate_claims(
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
-    model: str = model) -> Claims:
-    client = OpenAI()
+    additional: str,
+    client,
+    model: str = model,
+) -> Claims:
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -667,34 +697,35 @@ def generate_claims(
         id=trace_id,
         name="generate_claims",
         input=values_to_json(
-            technology=technology, 
-            antigen=antigen, 
+            technology=technology,
+            antigen=antigen,
             disease=disease,
             innovation=innovation,
             approach=approach,
-            additional=additional),
+            additional=additional,
+        ),
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_claims")
     prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
-        additional=additional
-        )
+        additional=additional,
+    )
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional
-    ),
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
+        ),
         output=raw_prompt,
     )
 
@@ -705,8 +736,9 @@ def generate_claims(
         model=model,
     )
 
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -726,16 +758,19 @@ def generate_claims(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-def generate_key_terms(
-    innovation: str, 
+
+async def generate_key_terms(
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
-    model: str = model
+    additional: str,
+    client,
+    model: str = model,
 ) -> KeyTerms:
-    client = OpenAI()
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -744,33 +779,35 @@ def generate_key_terms(
         id=trace_id,
         name="generate_key_terms",
         input=values_to_json(
-            technology=technology, 
-            antigen=antigen, 
+            technology=technology,
+            antigen=antigen,
             disease=disease,
             innovation=innovation,
             approach=approach,
-            additional=additional),
+            additional=additional,
+        ),
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_key_terms")
     prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
-        additional=additional
-        )
+        additional=additional,
+    )
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional,        ),
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
+        ),
         output=raw_prompt,
     )
 
@@ -781,8 +818,9 @@ def generate_key_terms(
         model=model,
     )
 
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -802,16 +840,19 @@ def generate_key_terms(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-def generate_abstract(
-    innovation: str, 
+
+async def generate_abstract(
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
-    model: str = model
+    additional: str,
+    client,
+    model: str = model,
 ) -> Abstract:
-    client = OpenAI()
+    if not client:
+        raise ValueError("Async OpenAI client must be provided")
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -820,35 +861,34 @@ def generate_abstract(
         id=trace_id,
         name="generate_abstract",
         input=values_to_json(
-            technology=technology, 
-            antigen=antigen, 
+            technology=technology,
+            antigen=antigen,
             disease=disease,
             innovation=innovation,
             approach=approach,
-            additional=additional),
+            additional=additional,
+        ),
         tags=["evaluation"],
-        )
-
+    )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_abstract")
     prompt = raw_prompt.compile(
-            technology=technology, 
-            antigen=antigen, 
-            disease=disease,
-            innovation=innovation,
-            approach=approach,
-            additional=additional    
-    )
-
-    fetch_prompt.end(
-        end_time=datetime.now(),
-        input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
-        additional=additional
+        additional=additional,
+    )
+    fetch_prompt.end(
+        end_time=datetime.now(),
+        input=values_to_json(
+            technology=technology,
+            antigen=antigen,
+            disease=disease,
+            innovation=innovation,
+            approach=approach,
+            additional=additional,
         ),
         output=raw_prompt,
     )
@@ -860,9 +900,11 @@ def generate_abstract(
         model=model,
     )
 
-    response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+    response = await client.chat.completions.create(
+        messages=[{"role": "user", "content": prompt}],
+        model=model,
     )
+
     generation.end(
         output=response.choices[0].message.content,
         end_time=datetime.now(),

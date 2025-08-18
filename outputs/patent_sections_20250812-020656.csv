@@ -1,0 +1,277 @@
+provider,model,section,trace_id,content
+openai,gpt-5,field_of_invention,2cdd60df-f97d-493c-8480-f105fb732c35,"Field of the Invention
+
+The present invention relates to biologic therapeutics and, more particularly, to compositions and uses of avian Immunoglobulin Y (IgY) antibodies directed against the SARS-CoV-2 Spike antigen for targeted neutralization of the virus in the prevention and treatment of COVID-19. The invention concerns an IgY-based neutralization therapy enabled by an IgY platform that affords rapid, scalable, and low-cost production and enhanced thermostability, facilitating deployment in both developed and resource-limited settings.
+
+This invention addresses the need for accessible and variant-resilient antiviral countermeasures by providing polyclonal IgY antibodies that specifically bind the SARS-CoV-2 Spike protein to inhibit receptor engagement and membrane fusion, thereby neutralizing the virus and reducing viral transmission and disease severity. Owing to the unique biological properties of IgY—minimal interaction with mammalian Fc receptors and complement, reduced risk of antibody-dependent enhancement, and intrinsic thermostability—the platform supports safe mucosal and systemic applications with extended shelf-life and simplified cold-chain requirements. By establishing a direct, targeted neutralization mechanism against the Spike antigen, the invention provides a solution for both prophylactic and therapeutic management of COVID-19, including use as a stand-alone intervention or as an adjunct to vaccines and small-molecule antivirals.
+
+The field further encompasses pharmaceutical compositions comprising anti–SARS-CoV-2 Spike IgY formulated for mucosal delivery (e.g., nasal sprays, oral rinses, lozenges, inhalable powders), topical applications to the upper respiratory tract, and systemic administration formats, along with appropriate excipients compatible with IgY stability and activity. The invention also pertains to the use of an IgY production platform for rapid generation and reformulation of Spike-targeting IgY to address circulating and emergent variants, leveraging low-cost, high-volume egg-based manufacturing and the thermostable nature of IgY to enable broad, equitable access to COVID-19 prophylaxis and treatment."
+openai,gpt-5,background_and_need,0eca0720-2be1-4e9b-b495-174a9d613f64,"Coronavirus disease 2019 (COVID-19) is caused by severe acute respiratory syndrome coronavirus 2 (SARS‑CoV‑2), a betacoronavirus whose trimeric Spike glycoprotein mediates host cell attachment via ACE2 and membrane fusion. Despite widespread vaccination and prior infections, SARS‑CoV‑2 continues to circulate and evolve, with recurrent waves driven by Spike‑mutated variants that exhibit immune escape from prior antibodies. Initial replication occurs in the upper respiratory mucosa, facilitating efficient transmission and making early, localized neutralization of Spike a critical unmet need to prevent infection, reduce viral load, and limit spread.
+
+The public health and economic burden remains substantial. As of 2024, more than 770 million confirmed cases and over 7 million reported deaths have been documented globally, with periodic surges continuing to strain healthcare systems. Reinfections are common, and a significant subset of patients experiences prolonged, multisystem sequelae consistent with post‑acute COVID‑19 conditions. Ongoing morbidity, healthcare utilization, workforce disruptions, and supply‑chain impacts underscore the need for accessible countermeasures that can be deployed widely, including in resource‑limited settings.
+
+The risk is not confined to any single demographic. Older adults, individuals with cardiometabolic or pulmonary comorbidities, pregnant persons, and the immunocompromised remain at heightened risk of severe outcomes. Patients who mount suboptimal responses to vaccination or cannot receive certain therapeutics due to contraindications are particularly vulnerable. High‑exposure groups—healthcare workers, educators, essential workers, and residents of congregate settings—face persistent transmission risk. Populations in low‑ and middle‑income countries encounter additional barriers related to cost, cold‑chain logistics, and access to advanced biologics.
+
+Current approaches include intramuscular vaccines that reduce severe disease and death, small‑molecule antivirals (e.g., protease and polymerase inhibitors) administered early in infection, and neutralizing monoclonal antibodies for prophylaxis in select high‑risk patients. Non‑pharmaceutical interventions and diagnostics complement these measures. However, most tools target systemic immunity or require early clinical intervention, and many depend on stringent cold‑chain distribution and specialized infusion infrastructure.
+
+These approaches face significant limitations. Antigenic drift and shift in Spike can diminish vaccine‑elicited neutralization and has rendered multiple monoclonal antibody products ineffective against emergent variants, necessitating continual reformulation and regulatory updates. Systemic monoclonal antibodies are costly, infusion‑dependent, and vulnerable to single‑epitope escape. Antivirals require prompt initiation, can present drug–drug interactions, and may face resistance pressure. Current vaccines provide limited and waning sterilizing immunity at the nasal/oral mucosa where infection begins. Cold‑chain requirements, manufacturing complexity, and high costs impede equitable global access, particularly for rapidly updated biologics.
+
+Accordingly, there is a need for compositions and methods that deliver broad, variant‑resilient neutralization of the SARS‑CoV‑2 Spike at the primary sites of entry, that are rapidly updateable, scalable, and suitable for low‑cost, thermostable distribution. An Immunoglobulin Y (IgY) platform offers distinct advantages for targeted neutralization: polyclonal epitope coverage that reduces escape risk; lack of interaction with mammalian Fc receptors, lowering the potential for Fc‑mediated adverse effects; high‑yield, egg‑based biomanufacturing that avoids mammalian cell culture; and formulation options (e.g., lyophilized powders, sprays, rinses) compatible with ambient storage and mucosal delivery. An IgY‑based neutralization therapy directed to SARS‑CoV‑2 Spike can address persistent transmission and disease by providing a safe, scalable, thermostable, and low‑cost countermeasure deployable for pre‑exposure and post‑exposure use, as a standalone or adjunct to vaccines and antivirals."
+openai,gpt-5,brief_summary,187e9d30-4de1-4e11-9705-fccc2b910cec,"The present disclosure relates to compositions and methods for prevention and treatment of coronavirus disease 2019 (COVID-19) through targeted neutralization of Severe Acute Respiratory Syndrome Coronavirus 2 (SARS-CoV-2). In particular, the invention employs an Immunoglobulin Y (IgY) platform to generate hyperimmune egg-derived antibodies that specifically bind the SARS-CoV-2 Spike antigen and neutralize viral entry into host cells. The invention addresses the ongoing clinical and public health need for safe, rapidly deployable, thermostable, and low-cost countermeasures suitable for broad use, including in resource-limited settings.
+
+In one aspect, the invention provides IgY compositions directed against the SARS-CoV-2 Spike protein, including, without limitation, the receptor-binding domain (RBD), S1, S2, and fusion-relevant epitopes. Polyclonal IgY raised to the Spike antigen targets multiple neutralizing epitopes, thereby blocking attachment to ACE2 and membrane fusion and reducing the likelihood of immune escape by variant strains. The polyclonal breadth of IgY confers cross-variant coverage, providing functional resilience against mutations occurring within circulating and emergent SARS-CoV-2 lineages. The antigen SARS-CoV-2 Spike underpins the preparation of the product by serving as the immunogen used to elicit the hyperimmune response from which the egg-derived IgY is harvested.
+
+In another aspect, the invention provides pharmaceutical and nutraceutical formulations comprising hyperimmune egg product containing anti-Spike IgY for mucosal and enteric administration. Exemplary routes of administration include intranasal sprays, oropharyngeal rinses or lozenges, buccal films, and oral dosage forms such as capsules or powders, optionally enteric-coated to deliver active IgY to the gastrointestinal tract. In certain embodiments, local mucosal administration provides immediate, non-systemic passive immunity at the portals of viral entry, reducing viral load, limiting transmission, and mitigating disease progression. The compositions are suitable for prophylaxis, post-exposure prophylaxis, and early treatment, alone or in combination with standard of care.
+
+The invention leverages the unique biological properties of IgY in mammals. IgY does not bind mammalian Fc receptors or activate mammalian complement, reducing the risk of antibody-dependent enhancement and inflammatory sequelae and supporting repeated mucosal dosing without systemic immunomodulatory effects. IgY is naturally confined to the lumen when administered orally or nasally, enabling targeted neutralization at the site of infection while minimizing systemic exposure. These attributes distinguish IgY from mammalian IgG-based approaches and make IgY particularly well-suited for mucosal passive immunization against respiratory viruses.
+
+In certain embodiments, the compositions exhibit enhanced stability profiles that facilitate thermo-tolerant storage and distribution. IgY can be formulated in liquid or solid forms, including lyophilized or spray-dried powders, to maintain activity under ambient conditions, thereby reducing or eliminating cold-chain requirements. Such thermostability, combined with the inherently high-yield and low-cost production of IgY from hyperimmune eggs, enables rapid, scalable, and economically accessible manufacturing. The platform thus supports widespread deployment, including in low- and middle-income countries, with reduced infrastructure burden.
+
+The invention further provides platform advantages for agile response to antigenic drift. Because the SARS-CoV-2 Spike antigen dictates specificity, updated immunogens corresponding to new variants of concern can be introduced into the production workflow to refresh or broaden the IgY response. Antigen cocktails (e.g., multiple Spike variants or conserved Spike regions) may be used to enhance coverage. In all cases, the Spike antigen remains central to product preparation as the eliciting antigen for generating anti-Spike IgY within the hyperimmune egg product.
+
+Also provided are articles of manufacture, kits, and unit-dose devices comprising the anti-Spike IgY compositions together with delivery systems such as nasal spray applicators, blister-packaged lozenges, sachets, or capsules, optionally accompanied by instructions for mucosal or oral administration for prophylactic or therapeutic use in COVID-19. The disclosed IgY-based neutralization therapy is compatible with co-administration alongside vaccines or antivirals, and may be used to protect high-risk individuals, healthcare workers, household contacts, and populations experiencing outbreaks.
+
+Accordingly, the invention delivers a targeted neutralization approach against SARS-CoV-2 via an Immunoglobulin Y platform, in which the SARS-CoV-2 Spike antigen guides the generation of hyperimmune egg-derived IgY, the formulations are optimized for mucosal delivery, and the products are characterized by thermostability and low-cost, high-volume production suitable for rapid, global deployment."
+openai,gpt-5,target_overview,0f69a9ca-a322-4a77-9b01-8e0e9f671c12,"Target overview—SARS‑CoV‑2 Spike (S) antigen
+
+Origin of collection
+- The target antigen is the Spike (S) glycoprotein from human clinical isolates of SARS‑CoV‑2 collected from upper respiratory specimens during the COVID‑19 pandemic. Reference sequences used for antigen design and epitope selection include Wuhan‑Hu‑1 and consensus sequences from variants of concern (e.g., Alpha, Delta, Omicron lineages) as deposited in public repositories (e.g., GenBank, GISAID). In certain embodiments, the immunogen is a recombinant, prefusion‑stabilized S ectodomain or domain fragments (S1, receptor‑binding domain [RBD], N‑terminal domain [NTD], and S2 subunits) expressed in eukaryotic systems.
+
+Composition and structural features of the antigen
+- Spike is a trimeric class I fusion glycoprotein (approximately 1,273 amino acids per monomer) comprising S1 (containing the NTD and RBD, including the receptor‑binding motif [RBM]) and S2 (containing the fusion peptide, heptad repeats HR1/HR2, stem helix, and transmembrane/cytoplasmic tail).
+- It undergoes proteolytic activation at the polybasic S1/S2 site (PRRAR↓) and at S2′, mediated by host proteases (e.g., furin, TMPRSS2, and endosomal cathepsins), enabling receptor engagement and membrane fusion.
+- Spike is extensively N‑glycosylated (∼22–23 N‑linked sites per protomer), yielding a glycan shield that modulates epitope accessibility. Conformational dynamics alternate between “RBD‑up” (ACE2‑accessible) and “RBD‑down” states.
+- On virions, Spike is present at high copy number and is also presented on infected cell membranes, making it an accessible extracellular target for neutralizing agents.
+
+Biological pathway/molecule addressed
+- The molecule addressed is the SARS‑CoV‑2 Spike glycoprotein that mediates viral entry through high‑affinity binding of the RBD to the human ACE2 receptor, followed by protease‑triggered fusion. The invention targets this entry pathway to achieve neutralization, reducing infection of respiratory epithelial cells and subsequent viral replication and transmission.
+
+Expression patterns relevant to targeting
+- Spike is expressed on the surface of nasopharyngeal and lower airway epithelial cells infected by SARS‑CoV‑2 and is incorporated into virions shed in respiratory secretions. The density and accessibility of Spike on mucosal surfaces support topical and mucosal neutralization strategies.
+
+Binding epitopes for targeted neutralization by IgY
+- RBD/RBM epitopes: Blocking ACE2 binding sites directly to prevent attachment. These epitopes are immunodominant and correlate with potent neutralization but can be variable among Omicron‑class variants; inclusion of breadth‑oriented residues (outside the hypervariable RBM) can sustain cross‑lineage activity.
+- NTD “supersite”: Targeting conformational epitopes in NTD can reduce infectivity; activity may be lineage‑dependent and benefits from multi‑epitope formulations.
+- Conserved S2 epitopes: Targeting the stem helix, fusion peptide, and HR1/HR2 interfaces provides cross‑variant and cross‑sarbecovirus coverage due to high sequence conservation and functional constraint. These epitopes remain accessible on both virions and infected cells and are less impacted by antigenic drift.
+- Glycan‑adjacent epitopes: Sites positioned near conserved N‑glycans (e.g., around N343/N234) can stabilize binding and broaden coverage.
+
+Relevance to COVID‑19 and supporting literature
+- Neutralizing antibodies to Spike, especially the RBD, are a principal correlate of protection against COVID‑19, and passive immunization targeting Spike reduces viral load and disease severity in animal models and clinical settings. Multiple studies have shown that:
+  - Anti‑RBD responses correlate with reduced symptomatic infection.
+  - S2‑directed antibodies can retain neutralization breadth across divergent variants, supporting inclusion of S2 epitopes to mitigate escape.
+  - Inhibition of TMPRSS2‑dependent fusion and blockade of ACE2 engagement are effective mechanisms to curtail SARS‑CoV‑2 entry.
+- The present invention leverages these findings by focusing Immunoglobulin Y (IgY) responses on conserved, functionally essential Spike epitopes to maintain efficacy across circulating variants.
+
+Alignment with the IgY platform: thermostability and low‑cost production
+- Spike was selected as a target compatible with an egg‑derived IgY platform that enables:
+  - Thermostable formulations: IgY retains activity after lyophilization and exhibits superior functional stability at ambient temperatures compared to many mammalian IgG preparations, facilitating storage and distribution without continuous cold chain.
+  - Low‑cost, scalable production: Hens hyperimmunized with recombinant Spike antigens yield grams‑level IgY per egg, enabling rapid, economically viable scale‑up suitable for population‑level prophylaxis or early intervention.
+  - Mucosal applicability: The extracellular, mucosal expression of Spike aligns with topical/oral/nasal IgY delivery, where thermostable, low‑cost formulations can be deployed in resource‑limited settings.
+
+Collectively, the SARS‑CoV‑2 Spike glycoprotein provides a structurally defined, functionally essential, and accessible antigen whose conserved epitopes support targeted neutralization by IgY. The combination of conserved S2 and select RBD/NTD epitopes is designed to deliver variant‑resilient activity while exploiting the inherent thermostability and cost advantages of the IgY platform."
+openai,gpt-5,high_level_concept,d965ee38-4497-4b2b-9d28-49ba413128ad,"High-Level Concept
+
+The invention provides IgY-based neutralizing compositions directed against the SARS‑CoV‑2 Spike (S) antigen for the prophylaxis and treatment of COVID‑19. As used herein, “IgY-based neutralization therapy” refers to compositions comprising avian immunoglobulin Y (IgY) molecules, and optionally functional fragments and derivatives thereof, that specifically bind one or more epitopes on Spike (e.g., receptor binding domain (RBD), S1, N-terminal domain (NTD), S2), thereby neutralizing viral entry by blocking ACE2 engagement and/or membrane fusion and promoting virion aggregation and clearance at mucosal surfaces. In certain embodiments, the compositions include polyclonal anti-Spike IgY recovered from the yolks of eggs laid by egg-producing animals (e.g., hens) hyperimmunized with a Spike immunogen, optionally formulated as a monotherapy or in combination with other neutralizing agents.
+
+The product of the invention encompasses:
+- Purified anti-Spike IgY preparations obtained from eggs of immunized avians, optionally enriched by affinity capture using Spike or subunit antigens.
+- IgY mixtures targeting multiple Spike epitopes and/or variant-defining mutations to broaden neutralization breadth.
+- Functional IgY fragments (e.g., F(ab’)2) or engineered IgY derivatives retaining Spike-binding activity while minimizing interactions with mammalian Fc receptors and complement.
+- Pharmaceutical compositions comprising anti-Spike IgY formulated for mucosal delivery (e.g., intranasal spray, oral rinse/gargle, lozenge, inhalation solution or dry powder), enteral delivery (e.g., capsules, sachets), or topical application to the upper aerodigestive tract; parenteral administration is also contemplated.
+
+The IgY platform confers distinct advantages for targeted neutralization of respiratory pathogens:
+- Thermostability: In certain embodiments, anti-Spike IgY maintains functional binding and neutralizing activity under ambient conditions, and exhibits enhanced stability upon lyophilization or spray-drying, enabling room-temperature storage, reduced dependence on cold-chain logistics, and deployment in resource-limited settings.
+- Low-cost, scalable production: High-yield recovery of IgY from egg yolk and straightforward downstream processing (e.g., precipitation, ultrafiltration, and sterile filtration) facilitate cost-efficient, rapid, and scalable manufacturing using established poultry infrastructure. In certain embodiments, the process delivers gram-to‑kilogram quantities without cell culture bioreactors, thereby reducing capital and operating costs.
+- Safety and tolerability: IgY lacks mammalian Fc-mediated effector engagement, reducing the likelihood of Fc receptor–dependent adverse events and antibody-dependent enhancement. Mucosal delivery provides local neutralization at the portal of entry with minimal systemic exposure.
+- Variant agility: Polyclonal IgY responses raised against updated Spike immunogens can be rapidly generated by reimmunization of laying flocks, supporting timely coverage of emerging variants of concern.
+
+In various embodiments, the compositions are administered in a therapeutically or prophylactically effective amount to reduce viral load, prevent infection or reinfection, interrupt transmission, and/or ameliorate signs and symptoms of COVID‑19. The invention further contemplates kits and unit-dose presentations comprising thermostable anti-Spike IgY formulations suitable for ambient shipping and storage, thereby enabling broad, low-cost access to targeted neutralization therapy."
+openai,gpt-5,underlying_mechanism,6469e6d8-05d1-45f6-9012-57dfae857fe2,"Underlying Mechanism
+
+Without being bound by theory, the IgY-based neutralization therapy operates by specific, high-avidity binding of avian immunoglobulin Y antibodies to antigenic sites on the SARS‑CoV‑2 Spike protein, including epitopes within the receptor-binding domain (RBD) and non-RBD regions (e.g., N-terminal domain and conformational epitopes spanning S1/S2 interfaces). This targeted engagement:
+
+- Sterically occludes and/or allosterically perturbs the ACE2-binding interface, thereby preventing virion attachment to host cells.
+- Stabilizes Spike in a non-fusogenic, prefusion conformation and impedes conformational transitions required for membrane fusion and entry.
+- Cross-links Spike proteins within and between virions, promoting agglutination and enhancing mucociliary clearance at mucosal surfaces.
+- Masks Spike exposed on infected cell membranes, reducing cell–cell fusion and syncytia formation.
+
+Because IgY does not engage human Fcγ receptors and has limited activation of the classical complement pathway, neutralization is effected predominantly through direct antigen binding rather than pro-inflammatory Fc effector functions, reducing the risk of antibody-dependent enhancement or off-target inflammation. In preferred embodiments, polyclonal IgY populations confer epitope breadth and functional redundancy across variant Spike mutations, mitigating escape by single-site substitutions.
+
+When administered locally (e.g., intranasal spray, oral rinse, lozenge, or gel), the antibodies form a transient immunological barrier on the naso‑oropharyngeal mucosa, where they intercept virions at the portal of entry and lower upper‑airway viral load. The platform’s relative thermostability preserves neutralizing activity under variable ambient temperatures and simplifies storage and transport without stringent cold‑chain requirements, facilitating frequent, point‑of‑use dosing. In combination with intrinsically low-cost, high-yield egg‑derived production, these stability attributes enable rapid, scalable deployment of updated IgY compositions against emergent Spike variants while maintaining the neutralizing mechanism described above."
+openai,gpt-5,embodiment,6627aea3-ac6c-44db-a899-c0741cfce1fd,"A vaccine composition comprising a prefusion-stabilized SARS-CoV-2 Spike antigen or immunogenic fragment displayed in multivalent form on a self-assembling nanoparticle and formulated with an adjuvant favoring cellular immunity, for eliciting broad neutralizing antibody and T cell responses against COVID-19 in a human subject."
+openai,gpt-5,disease_overview,83d31562-7306-4354-a913-eb553fbc3255,"Disease overview
+
+COVID-19 is an acute infectious disease of humans caused by Severe Acute Respiratory Syndrome Coronavirus 2 (SARS‑CoV‑2), an enveloped, positive-sense RNA virus of the Betacoronavirus genus (family Coronaviridae). The viral Spike (S) glycoprotein mediates attachment to host angiotensin-converting enzyme 2 (ACE2) receptors and membrane fusion, and is the principal antigenic determinant for neutralizing humoral responses. Since its emergence in 2019, SARS‑CoV‑2 has produced recurrent global waves of infection driven by antigenically divergent variants; while the pandemic phase has transitioned toward endemic circulation in many regions, sustained community transmission and periodic surges persist worldwide.
+
+Disease expression spans a continuum that can be usefully described as: susceptible/exposed, incubation (typically short, followed by peak upper-airway viral loads early in illness), subclinical/asymptomatic infection, clinical disease (mild upper-respiratory symptoms; moderate disease with lower-respiratory involvement; severe disease with hypoxemia; and critical illness with acute respiratory distress syndrome, thromboinflammation, and multiorgan failure), and recovery with possible sequelae or death. Post-acute sequelae of SARS‑CoV‑2 infection (PASC, “long COVID”) reflect persistent or relapsing symptoms affecting respiratory, cardiovascular, neurological, and other systems. Risk of hospitalization and mortality increases with age, immunocompromise, and comorbidities (e.g., chronic lung or cardiovascular disease, diabetes), although all age groups can be affected. Children more commonly experience mild disease but can develop multisystem inflammatory syndrome in children (MIS‑C).
+
+Transmission occurs predominantly via respiratory droplets and aerosols in close-contact and indoor settings. Primary replication in the upper respiratory tract facilitates efficient spread; progression to lower-airway infection underlies hypoxemic respiratory failure in severe cases. Viral cytopathic effects and dysregulated host immune responses contribute to tissue injury, endothelial dysfunction, and coagulopathy. The incidence of infection and reinfection varies across geographies and time, influenced by variant-specific transmissibility and immune escape, prior immunity, and public health measures.
+
+Vaccination substantially reduces the risk of severe disease and death; however, antigenic drift in the Spike protein has led to breakthrough infections and erosion of activity for several authorized monoclonal antibodies. Small‑molecule antivirals require early administration and face access, adherence, and resistance considerations. These factors sustain an unmet need for broadly effective, rapidly deployable, and scalable countermeasures that neutralize SARS‑CoV‑2 at the site of entry, particularly in settings with constrained cold-chain infrastructure.
+
+Targeted neutralization of the SARS‑CoV‑2 Spike protein is a clinically and biologically validated mechanism to prevent viral entry by blocking receptor engagement and membrane fusion. In this context, Immunoglobulin Y (IgY)–based neutralization therapies offer attributes well-aligned with current public health needs: polyclonal breadth against evolving Spike epitopes, established low‑cost, high‑volume production from egg yolks, and inherent thermostability that can reduce or obviate stringent cold‑chain requirements, facilitating equitable distribution and stockpiling for outbreak response in resource-limited and high-temperature environments."
+openai,gpt-5,claims,4afb9b97-af04-4567-8f78-9d5639cf0a45,"Claims
+
+1. A pharmaceutical composition comprising an avian immunoglobulin Y (IgY) or antigen-binding fragment thereof that specifically binds the Spike glycoprotein of a SARS-CoV-2 virus and neutralizes viral entry into a mammalian cell, and a pharmaceutically acceptable carrier.
+
+2. The composition of claim 1, wherein the IgY is polyclonal egg yolk-derived IgY obtained from an avian immunized with a SARS-CoV-2 Spike antigen.
+
+3. The composition of claim 1 or 2, wherein the composition is thermostable and retains at least 80% of its initial neutralizing activity after storage for at least three months at a temperature between 25°C and 40°C.
+
+4. The composition of any one of claims 1–3, wherein the IgY binds an epitope within the receptor-binding domain (RBD) of Spike and inhibits binding of Spike to human ACE2.
+
+5. The composition of any one of claims 1–4, wherein the IgY binds an epitope within S1, S2, a fusion peptide, or a heptad repeat region of Spike.
+
+6. The composition of any one of claims 1–5, wherein the IgY neutralizes at least one SARS-CoV-2 variant of concern or interest selected from Alpha, Beta, Gamma, Delta, Omicron lineages, or sublineages thereof.
+
+7. The composition of any one of claims 1–6, formulated for intranasal, inhalation, oral, buccal, or oropharyngeal administration.
+
+8. The composition of any one of claims 1–7, in a dry-powder or lyophilized form comprising one or more stabilizers selected from trehalose, sucrose, mannitol, glycine, or citrate buffer.
+
+9. The composition of any one of claims 1–8, wherein the composition is free of mammalian immunoglobulins and mammalian serum proteins.
+
+10. The composition of any one of claims 1–9, wherein the IgY is a recombinant or engineered IgY, chimeric IgY, F(ab’)2, or single-chain antigen-binding fragment retaining Spike-binding specificity.
+
+11. The composition of any one of claims 1–10, wherein the composition is mucoadhesive and comprises a polymer selected from chitosan, hyaluronic acid, hydroxypropyl methylcellulose, xanthan gum, or carbomer.
+
+12. The composition of any one of claims 1–11, wherein the neutralizing activity is evidenced by inhibition of Spike–ACE2 interaction in an in vitro binding assay or reduction of pseudovirus or live virus entry into ACE2-expressing cells.
+
+13. The composition of any one of claims 1–12, provided in a unit dose containing from 0.5 mg to 500 mg of total IgY.
+
+14. The composition of any one of claims 1–13, wherein the IgY comprises a mixture induced by immunization with two or more Spike antigens selected from full-length Spike, stabilized prefusion Spike, RBD, S1, S2, and variant-specific RBDs.
+
+15. The composition of any one of claims 1–14, wherein the composition is stable for at least six months at 25–30°C without refrigeration.
+
+16. A method of preventing or treating COVID-19 in a subject in need thereof, comprising administering to the subject a therapeutically effective amount of the composition of any one of claims 1–15.
+
+17. The method of claim 16, wherein the composition is administered intranasally, as an inhaled aerosol, as an oropharyngeal spray, as an oral rinse, or as an oral solid dosage with enteric protection.
+
+18. The method of claim 16 or 17, wherein administration is performed as pre-exposure prophylaxis or post-exposure prophylaxis.
+
+19. The method of any one of claims 16–18, further comprising co-administration with an antiviral agent, a vaccine, or an anti-inflammatory agent.
+
+20. A method of neutralizing a betacoronavirus in vitro or in vivo, comprising contacting the betacoronavirus with an IgY or antigen-binding fragment thereof that binds a betacoronavirus Spike glycoprotein and inhibits host receptor engagement, whereby viral entry is reduced.
+
+21. The method of claim 20, wherein the betacoronavirus is SARS-CoV-2, SARS-CoV, or a SARS-related coronavirus.
+
+22. A thermostable IgY formulation comprising an IgY that binds SARS-CoV-2 Spike and an excipient system comprising at least one disaccharide selected from trehalose or sucrose, wherein the formulation retains at least 80% of initial neutralizing activity following storage for three months at 40°C.
+
+23. The formulation of claim 22, wherein the formulation is a dry powder having a mass median aerodynamic diameter between 1 μm and 5 μm suitable for pulmonary or intranasal delivery.
+
+24. The formulation of claim 22 or 23, wherein the formulation is packaged in a device selected from a unit-dose nasal spray, multidose nasal spray, dry-powder inhaler, pressurized metered dose inhaler, or nebulizer ampoule.
+
+25. A kit comprising: (a) the composition of any one of claims 1–15 in a unit-dose container; and (b) a delivery device selected from a nasal spray, a nebulizer, or an inhaler; optionally with instructions for intranasal or inhalation use for prevention or treatment of COVID-19.
+
+26. A method of producing an IgY composition that neutralizes SARS-CoV-2, comprising:
+    (a) immunizing one or more laying avians with a SARS-CoV-2 Spike antigen;
+    (b) collecting eggs from the immunized avians;
+    (c) isolating IgY from egg yolks; and
+    (d) formulating the IgY with one or more stabilizers to provide a thermostable pharmaceutical composition.
+
+27. The method of claim 26, wherein step (c) comprises one or more non-chromatographic purification steps selected from water dilution of yolk, pH adjustment, salt precipitation, polyethylene glycol precipitation, filtration, and ultrafiltration/diafiltration.
+
+28. The method of claim 26 or 27, wherein the Spike antigen is selected from full-length prefusion-stabilized Spike, RBD, S1, S2, variant-specific RBDs, or a mixture thereof.
+
+29. The method of any one of claims 26–28, further comprising a pasteurization or viral inactivation step and optional lyophilization to yield a room-temperature stable product.
+
+30. The method of any one of claims 26–29, wherein the formulated composition retains at least 80% neutralizing activity after storage at 25–40°C for at least three months.
+
+31. The method of any one of claims 26–30, wherein the production yields at least 20 mg IgY per egg.
+
+32. Use of the composition of any one of claims 1–15 for the manufacture of a medicament for prophylaxis or treatment of COVID-19.
+
+33. A composition comprising a cocktail of two or more IgY populations elicited by distinct Spike antigens from different SARS-CoV-2 variants, wherein the cocktail provides broadened neutralization breadth relative to each individual IgY population.
+
+34. The composition of claim 33, wherein at least one IgY population targets the RBD and at least one targets a non-RBD Spike epitope.
+
+35. A method of reducing transmission of SARS-CoV-2 in a population, comprising administering intranasally to individuals in the population the composition of any one of claims 1–15 on a daily or bid schedule during a period of elevated exposure risk.
+
+36. A stabilized oral formulation comprising the composition of any one of claims 1–15 and an enteric coating or encapsulation configured to release IgY in the oropharynx or upper gastrointestinal tract, wherein the formulation is effective to reduce oropharyngeal viral load.
+
+37. The composition of any one of claims 1–15, wherein the IgY exhibits reduced Fc-mediated effector functions in human tissues relative to mammalian IgG, thereby reducing risk of Fc-mediated inflammation.
+
+38. A method of blocking Spike–ACE2 interaction, comprising contacting Spike or a Spike-presenting virion with the composition of any one of claims 1–15, thereby inhibiting binding to ACE2 as measured by a receptor-competition assay.
+
+39. The composition of any one of claims 1–15, wherein the composition is free of cold-chain storage requirements for at least three months.
+
+40. The method of any one of claims 16–19, wherein treatment reduces upper respiratory tract viral load or decreases symptom severity relative to placebo."
+openai,gpt-5,key_terms,f95242d3-a343-4c49-b104-ed6b58b36bb7,"Key Terms
+
+As used herein, unless the context clearly indicates otherwise, the singular encompasses the plural and vice versa, and the terms “comprise,” “comprising,” “include,” and “including” are open-ended and non-limiting.
+
+The term “SARS-CoV-2” refers to Severe Acute Respiratory Syndrome Coronavirus 2, including clinical isolates and laboratory strains, and any genetic variants, lineages, or clades thereof.
+
+The term “COVID-19” refers to the disease caused by infection with SARS-CoV-2, including asymptomatic, mild, moderate, severe, and post-acute sequelae presentations.
+
+The term “Spike” or “SARS‑CoV‑2 Spike” refers to the trimeric class I fusion glycoprotein of SARS‑CoV‑2, including full-length Spike and any fragment, domain, variant, mutant, stabilized form (e.g., prefusion-stabilized), or construct derived therefrom, such as S1, S2, receptor binding domain (RBD), N-terminal domain (NTD), fusion peptide, and heptad repeats.
+
+The term “antigen” refers to a molecule capable of eliciting or being specifically bound by an antibody. In certain embodiments, the antigen is the SARS‑CoV‑2 Spike or any immunogenic fragment or variant thereof, including RBD and/or S1.
+
+The term “epitope” refers to an antigenic determinant within the Spike antigen capable of being specifically recognized by an antibody or antigen-binding fragment thereof. Epitopes may be linear or conformational and may be conserved or variant-specific.
+
+The term “targeted neutralization” means the selective binding of one or more antibodies to one or more epitopes on the SARS‑CoV‑2 Spike so as to inhibit viral attachment, entry, or membrane fusion, including inhibition of Spike binding to ACE2 and/or inhibition of conformational changes required for fusion.
+
+The term “neutralizing activity” refers to the capacity of an antibody preparation to inhibit virus entry or infection in a functional assay, such as a plaque reduction neutralization test (PRNT), focus reduction neutralization test (FRNT), pseudovirus neutralization assay, or an ACE2–Spike binding inhibition assay. Neutralizing activity may be expressed as an IC50, EC50, PRNT50, FRNT50, percent inhibition at a defined concentration, or neutralization units.
+
+The term “neutralization unit (NU)” refers to an arbitrary potency unit defined herein as the amount of IgY that achieves 50% inhibition in a specified neutralization assay under defined conditions. In certain embodiments, 1 NU corresponds to the quantity producing 50% reduction of pseudovirus entry in Vero E6 cells at 1 hour incubation.
+
+The term “cross-neutralization” refers to neutralizing activity against two or more distinct SARS-CoV-2 variants, lineages, or clades, including Variants of Concern and Variants of Interest.
+
+The term “Immunoglobulin Y” or “IgY” refers to the major serum antibody isotype in birds (e.g., Gallus gallus) and the predominant immunoglobulin present in egg yolk. As used herein, “IgY” encompasses polyclonal or monoclonal avian IgY, their antigen-binding fragments (e.g., F(ab’)2, Fab), and recombinant or engineered IgY molecules retaining antigen-binding specificity to SARS‑CoV‑2 Spike.
+
+The term “IgY platform” refers to a production and therapeutic framework leveraging avian IgY antibodies generated in egg-producing animals and recovered from eggs, serum, or recombinant expression systems, including methods of hyperimmunization, IgY extraction, purification, formulation, stabilization, and administration for passive immunization.
+
+The term “IgY-based neutralization therapy” refers to the administration of IgY or IgY-derived antigen-binding molecules specific for SARS‑CoV‑2 Spike to a subject to prevent, reduce, or treat infection or disease by targeted neutralization of the virus at systemic or mucosal sites.
+
+The term “polyclonal IgY” refers to a heterogeneous population of IgY molecules recognizing multiple epitopes on the SARS‑CoV‑2 Spike. The term “monoclonal IgY” refers to an IgY with uniform sequence and specificity produced by a single clone or recombinant method.
+
+The term “hyperimmunization” means repeated exposure of an egg-producing animal to one or more Spike antigens with or without adjuvant such that an elevated, sustained anti-Spike IgY response is achieved relative to a non-immunized state.
+
+The term “adjuvant” refers to any substance that enhances the magnitude, breadth, or durability of the immune response to the Spike antigen in the host animal.
+
+The term “egg-derived IgY” refers to IgY recovered from egg yolk of an immunized egg-producing animal. The “water-soluble fraction” (WSF) refers to the aqueous fraction obtained after delipidation of egg yolk that comprises IgY.
+
+The term “purified IgY” refers to an IgY preparation that has been enriched relative to the starting biological matrix and has reduced levels of non-IgY proteins, lipids, nucleic acids, and endotoxin. Purity may be expressed as weight/weight percent IgY or by SDS-PAGE densitometry.
+
+The term “pharmaceutical composition” refers to a composition comprising IgY or an antigen-binding fragment thereof and one or more pharmaceutically acceptable carriers, excipients, or stabilizers suitable for administration to a subject.
+
+The term “mucosal administration” refers to delivery to a mucosal surface, including nasal, oropharyngeal, respiratory, or gastrointestinal mucosa, by routes such as intranasal spray, oral rinse or gargle, lozenge, inhalation, or enteral administration.
+
+The term “therapeutically effective amount” refers to an amount of IgY sufficient to reduce one or more signs, symptoms, or biomarkers of COVID‑19 or SARS‑CoV‑2 infection. The term “prophylactically effective amount” refers to an amount sufficient to prevent or reduce the likelihood of infection or disease upon exposure.
+
+The term “formulation” refers to the physical presentation of the IgY composition, including liquid solutions, suspensions, gels, films, aerosols, lyophilized powders, spray-dried powders, or tablets, optionally with excipients such as buffers, sugars (e.g., trehalose, sucrose), amino acids, polymers, surfactants, and mucoadhesive agents.
+
+The term “thermostable” refers to an IgY composition that retains a predetermined proportion of its initial neutralizing activity after exposure to elevated temperature and/or without continuous cold-chain storage. In certain embodiments, a thermostable composition retains at least 70%, at least 80%, at least 90%, or at least 95% of initial neutralizing activity after: (i) storage for 1–6 months at 25°C; and/or (ii) storage for at least 7–30 days at 37–45°C; and/or (iii) a unit operation such as spray-drying or lyophilization followed by storage at ambient conditions.
+
+The term “ambient-stable” or “cold-chain independent” refers to a composition that meets predefined potency and quality specifications following storage at 15–30°C for at least the labeled shelf life (e.g., at least 3, 6, or 12 months).
+
+The term “heat-tolerant process” refers to a manufacturing process in which the IgY maintains functional integrity through unit operations that expose the material to elevated temperatures, such as pasteurization-like holds, spray-drying (e.g., high inlet/low outlet temperature profiles), or short-term thermal excursions.
+
+The term “low-cost production” refers to manufacturing approaches that reduce cost of goods relative to mammalian cell culture–derived monoclonal antibodies by leveraging: (i) immunization of egg-producing animals; (ii) recovery of high yields of IgY from eggs; (iii) aqueous, non-chromatographic or minimal-chromatography purification methods; and/or (iv) formulations enabling ambient storage and distribution. In certain embodiments, low-cost production is evidenced by per-gram cost reductions of at least 2-fold, at least 5-fold, or at least 10-fold compared to conventional mammalian IgG manufacturing, and/or by egg-derived yields of at least 50 mg, at least 100 mg, or at least 200 mg IgY per egg.
+
+The term “scalable” refers to processes amenable to linear or modular expansion in flock size, egg throughput, and downstream capacity, while maintaining batch-to-batch consistency and meeting predefined quality specifications.
+
+The term “stabilizer” refers to an excipient that enhances the physical or chemical stability of IgY, including but not limited to disaccharides, polyols, amino acids, polymers, and buffering agents that preserve neutralizing activity under heat or ambient storage.
+
+The term “variant-inclusive antigen” refers to a Spike immunogen designed or selected to elicit IgY that neutralizes multiple SARS‑CoV‑2 variants, such as multivalent mixes, mosaic antigens, conserved-epitope constructs, or cocktails of RBDs.
+
+The term “antigen-binding fragment of IgY” refers to a fragment retaining specific binding to the Spike antigen, including F(ab’)2 and Fab fragments produced by enzymatic cleavage or recombinant expression.
+
+The term “non-Fc effector reactivity” refers to the inherent characteristic of avian IgY of not engaging mammalian Fcγ receptors and not activating the classical complement pathway, thereby reducing risk of Fc-mediated inflammatory effects in human use.
+
+The term “pharmaceutically acceptable” refers to components suitable for use in contact with human tissues without undue toxicity, irritation, or allergic response, and without unacceptable adverse effects commensurate with a reasonable benefit/risk ratio.
+
+The term “unit dose” refers to a discrete dosage form containing a predefined amount of IgY (e.g., mg IgY and/or neutralization units) suitable for single administration.
+
+The term “kit” refers to one or more containers comprising the IgY composition and, optionally, a delivery device (e.g., nasal sprayer, nebulizer, dropper, prefilled syringe), instructions for use, and ancillary components.
+
+The term “combination therapy” refers to the administration of the IgY composition together with one or more additional agents or measures, such as small-molecule antivirals, vaccines, or supportive care, administered concurrently or sequentially.
+
+The term “subject” refers to a mammalian subject, preferably a human, in need of prophylaxis or treatment for SARS‑CoV‑2 infection or COVID‑19.
+
+The term “manufacturing lot” or “batch” refers to a defined quantity of material produced in a single process run with uniform character and quality, intended to meet predetermined release specifications for identity, purity, potency (neutralizing activity), and safety (e.g., endotoxin, bioburden)."
+openai,gpt-5,abstract,f44b2f75-f3b6-4c43-b21d-babd1eda512b,"In one aspect, the present disclosure relates to compositions and methods for the targeted neutralization of severe acute respiratory syndrome coronavirus 2 (SARS‑CoV‑2), the causative agent of coronavirus disease 2019 (COVID‑19), using an Immunoglobulin Y (IgY) platform. In certain embodiments, the method comprises administering to a subject in need thereof a therapeutically or prophylactically effective amount of an IgY composition comprising antibodies that specifically bind the SARS‑CoV‑2 Spike antigen, thereby inhibiting Spike‑mediated attachment and entry into host cells and reducing viral infectivity. The purpose of the invention is to prevent, reduce the severity of, or treat COVID‑19 by neutralizing SARS‑CoV‑2 at mucosal or systemic sites of infection.
+
+In another aspect, the disclosure provides IgY-based neutralization therapies and products comprising polyclonal or antigen-enriched yolk-derived IgY antibodies raised against the SARS‑CoV‑2 Spike protein, optionally formulated with pharmaceutically acceptable carriers for intranasal, oral, inhalational, or topical administration. The compositions may be provided in liquid or solid dosage forms and may include stabilizing excipients to enhance thermostability. In certain embodiments, the IgY compositions exhibit enhanced stability at ambient temperatures and across physiologically relevant pH ranges, enabling cold chain–independent storage and distribution. The platform affords low-cost, scalable production relative to mammalian antibody manufacturing while providing broad epitope coverage that mitigates viral escape.
+
+In use, the disclosed IgY antibodies undermine SARS‑CoV‑2 by binding one or more epitopes on the Spike protein to block receptor interaction and membrane fusion, facilitate viral aggregation and mucosal trapping, and thereby lower viral load. The disclosure further contemplates kits and unit doses comprising the IgY compositions for pre-exposure prophylaxis, post-exposure mitigation, and treatment of COVID‑19."
