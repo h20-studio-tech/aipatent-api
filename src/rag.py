@@ -186,7 +186,8 @@ async def multiquery_search(
     try:
         logging.info(f"Generating MultiQuery questions")
         multiquery = openai.chat.completions.create(
-            model="gpt-5",
+            model="gpt-5-mini",
+            reasoning_effort='low',
             response_model=MultiQueryQuestions,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -225,7 +226,7 @@ async def multiquery_search(
 @observe(name="multiquery_message")    
 async def chunks_summary(chunks:List[Chunk], prompt: str):
     return client.chat.completions.create(
-         model="gpt-5",
+         model="gpt-5-mini",
          messages=[
            {"role": "system", "content": "You are a great scientific analyst who is extensively knowledgeable in microbiologics and patent applications."},
            {"role": "assistant", "content": f"reference data to answer questions {format_chunks(chunks)}"},
@@ -252,7 +253,7 @@ async def judge_answer(question: str, context: List[Chunk], answer: str, label: 
         compiled = prompt_obj.compile(question=question, context=context_text, answer=answer)
 
         verdict = openai.chat.completions.create(
-            model=os.getenv("MODEL", "gpt-4o-mini"),
+            model='gpt-5-mini',
             response_model=JudgeVerdict,
             messages=[
                 {"role": "user", "content": compiled},
@@ -269,7 +270,7 @@ async def judge_answer(question: str, context: List[Chunk], answer: str, label: 
 async def regenerate_with_feedback(chunks: List[Chunk], question: str, feedback: str) -> str:
     """Regenerate the answer using feedback from the judge, conditioning on the same context."""
     return client.chat.completions.create(
-        model=os.getenv("MODEL", "gpt-4o-mini"),
+        model='gpt-5-mini',
         messages=[
             {"role": "system", "content": "You are a great scientific analyst who is extensively knowledgeable in microbiologics and patent applications."},
             {"role": "assistant", "content": f"reference data to answer questions {format_chunks(chunks)}"},
