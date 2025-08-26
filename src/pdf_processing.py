@@ -19,6 +19,7 @@ from dotenv import load_dotenv
 
 load_dotenv('.env')
 
+e_reasoning = os.getenv("e_reasoning")
 class Extraction(BaseModel):
     method: list[str] = Field(
         default_factory=list, 
@@ -125,7 +126,7 @@ async def extract_metadata(text: str, chunk_id: str) -> dict:
     from a given text chunk by wrapping the blocking API call.
     """
     try:
-        model = "gpt-4o-mini"
+        model = "gpt-5-nano-2025-08-07",
         messages = [
             {
                 "role": "system",
@@ -138,7 +139,8 @@ async def extract_metadata(text: str, chunk_id: str) -> dict:
             openai.chat.completions.create,
             model=model,
             response_model=Extraction,
-            messages=messages
+            messages=messages,
+            reasoning_effort=e_reasoning
         )
         extraction_for_debug = dict(extraction)
         extraction_for_debug["chunk_id"] = chunk_id

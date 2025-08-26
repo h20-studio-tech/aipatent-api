@@ -164,7 +164,7 @@ class RagWorkflow:
         from a given text chunk by wrapping the blocking API call.
         """
         try:
-            model = "gpt-4o-mini"
+            model = "gpt-5-nano-2025-08-07",
             messages = [
                 {
                     "role": "system",
@@ -176,6 +176,7 @@ class RagWorkflow:
             extraction = await asyncio.to_thread(
                 self.openai.chat.completions.create,
                 model=model,
+                reasoning_effort="minimal",
                 response_model=Extraction,
                 messages=messages
             )
@@ -594,7 +595,8 @@ class RagWorkflow:
         try:
             logging.info(f"Generating MultiQuery questions")
             multiquery = self.openai.chat.completions.create(
-                model="gpt-4o-mini",
+                model="gpt-5-nano-2025-08-07",
+                reasoning_effort="minimal",
                 response_model=MultiQueryQuestions,
                 messages=[{"role": "user", "content": prompt}],
             )

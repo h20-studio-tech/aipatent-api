@@ -1,7 +1,6 @@
 import uuid
 import os
 from datetime import datetime
-
 from openai import OpenAI
 from src.models.llm import (
     FieldOfInvention,
@@ -17,13 +16,26 @@ from src.models.llm import (
     KeyTerms,
 
 )
-
 from src.utils.values_to_json import values_to_json
 from src.utils.langfuse_client import get_langfuse_instance
 
-langfuse = get_langfuse_instance()
+provider = os.getenv("AI_PROVIDER")
+r_reasoning = os.getenv("r_reasoning")
 
+client = None
+
+if provider == "gemini":
+    client = OpenAI(
+        api_key=os.getenv("GEMINI_API_KEY"),
+        base_url='https://generativelanguage.googleapis.com/v1beta/openai/'
+    )
+else:
+    client = OpenAI()
+
+langfuse = get_langfuse_instance()
 model = os.getenv("MODEL")
+g_reasoning = os.getenv("g_reasoning")
+
 
 def generate_field_of_invention(
     innovation: str, 
@@ -35,7 +47,6 @@ def generate_field_of_invention(
     model: str = model,
     client=None,
     lf=None) -> FieldOfInvention:
-    client = client or OpenAI()
     lf = lf or langfuse
 
     if not antigen or not disease:
@@ -90,6 +101,7 @@ def generate_field_of_invention(
             }
         ],
         model=model,
+        reasoning_effort=g_reasoning,
     )
 
     generation.end(
@@ -110,7 +122,6 @@ def generate_field_of_invention(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-
 def generate_background(
     innovation: str, 
     technology: str,
@@ -120,7 +131,7 @@ def generate_background(
     additional:str,
     model: str = model) -> BackgroundAndNeed:
 
-    client = OpenAI()
+    
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -167,7 +178,9 @@ def generate_background(
         model=model,
     )
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], 
+        model=model,
+        reasoning_effort=g_reasoning,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -194,7 +207,7 @@ def generate_summary(
     disease: str,
     additional:str, 
     model: str = model) -> BriefSummary:
-    client = OpenAI()
+    
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -242,7 +255,7 @@ def generate_summary(
         model=model,
     )
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], model=model, reasoning_effort=g_reasoning
     )
 
     generation.end(
@@ -263,7 +276,6 @@ def generate_summary(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-
 def generate_target_overview(
     innovation: str, 
     technology: str,
@@ -273,7 +285,7 @@ def generate_target_overview(
     additional:str, 
     context: str,
     model: str = model) -> TargetOverview:
-    client = OpenAI()
+    
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -324,7 +336,7 @@ def generate_target_overview(
     )
 
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], model=model, reasoning_effort=g_reasoning,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -344,7 +356,6 @@ def generate_target_overview(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-
 def generate_high_level_concept(
     innovation: str, 
     technology: str,
@@ -353,7 +364,7 @@ def generate_high_level_concept(
     disease: str,
     additional:str, 
     model: str = model) -> HighLevelConcept:
-    client = OpenAI()
+    
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -402,7 +413,7 @@ def generate_high_level_concept(
     )
 
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], model=model, reasoning_effort=g_reasoning,
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -422,7 +433,6 @@ def generate_high_level_concept(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-
 def generate_underlying_mechanism(
     innovation: str, 
     technology: str,
@@ -432,7 +442,7 @@ def generate_underlying_mechanism(
     additional:str, 
     model: str = model
 ) -> UnderlyingMechanism:
-    client = OpenAI()
+    
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -479,7 +489,7 @@ def generate_underlying_mechanism(
     )
 
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], model=model, reasoning_effort=g_reasoning
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -508,7 +518,7 @@ def generate_embodiment(
     disease: str, 
     model: str = model
 ) -> Embodiment:
-    client = OpenAI()
+    
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -555,7 +565,7 @@ def generate_embodiment(
     )
 
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], model=model, reasoning_effort=g_reasoning
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -575,7 +585,6 @@ def generate_embodiment(
         prediction=response.choices[0].message.content, trace_id=trace_id
     )
 
-
 def generate_disease_overview(
     innovation: str, 
     technology: str,
@@ -585,7 +594,7 @@ def generate_disease_overview(
     additional:str, 
     model: str = model
 ) -> DiseaseOverview:
-    client = OpenAI()
+    
     if not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -630,7 +639,7 @@ def generate_disease_overview(
     )
 
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], model=model, reasoning_effort=g_reasoning
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -658,7 +667,7 @@ def generate_claims(
     disease: str,
     additional:str, 
     model: str = model) -> Claims:
-    client = OpenAI()
+    
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -706,7 +715,7 @@ def generate_claims(
     )
 
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], model=model, reasoning_effort=g_reasoning
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -735,7 +744,7 @@ def generate_key_terms(
     additional:str, 
     model: str = model
 ) -> KeyTerms:
-    client = OpenAI()
+    
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -782,7 +791,7 @@ def generate_key_terms(
     )
 
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], model=model, reasoning_effort=g_reasoning
     )
     generation.end(
         output=response.choices[0].message.content,
@@ -811,7 +820,7 @@ def generate_abstract(
     additional:str, 
     model: str = model
 ) -> Abstract:
-    client = OpenAI()
+    
     if not antigen or not disease:
         raise ValueError("Disease and antigen must be non-empty strings")
 
@@ -861,7 +870,7 @@ def generate_abstract(
     )
 
     response = client.chat.completions.create(
-        messages=[{"role": "user", "content": prompt}], model=model
+        messages=[{"role": "user", "content": prompt}], model=model, reasoning_effort=g_reasoning
     )
     generation.end(
         output=response.choices[0].message.content,

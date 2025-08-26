@@ -28,10 +28,22 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
-langfuse = get_langfuse_instance()
-client = OpenAI()
+provider = os.getenv("AI_PROVIDER")
+r_reasoning = os.getenv("r_reasoning")
+
+client = None
+
+if provider == "gemini":
+    client = OpenAI(
+        api_key=os.getenv("GEMINI_API_KEY"),
+        base_url='https://generativelanguage.googleapis.com/v1beta/openai/'
+    )
+else:
+    client = OpenAI()
+    
 openai = instructor.from_openai(OpenAI())
 asyncopenai = instructor.from_openai(AsyncOpenAI())
+langfuse = get_langfuse_instance()
 
 func = get_registry().get("openai").create(name=os.getenv("EMBEDDING_MODEL_NAME"))
 
@@ -150,7 +162,7 @@ async def search(
         )
 
         # Now chain the limit and to_pydantic calls on the resolved object.
-        logging.info(f"search result {search_result}")
+        # logging.info(f"search result {search_result}")
         return search_result
     except Exception as e:
         logging.info(f"Error during search: {str(e)}")
@@ -187,7 +199,7 @@ async def multiquery_search(
         logging.info(f"Generating MultiQuery questions")
         multiquery = openai.chat.completions.create(
             model="gpt-5-mini",
-            reasoning_effort='low',
+            reasoning_effort='minimal',
             response_model=MultiQueryQuestions,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -227,6 +239,7 @@ async def multiquery_search(
 async def chunks_summary(chunks:List[Chunk], prompt: str):
     return client.chat.completions.create(
          model="gpt-5-mini",
+         reasoning_effort=r_reasoning,
          messages=[
            {"role": "system", "content": "You are a great scientific analyst who is extensively knowledgeable in microbiologics and patent applications."},
            {"role": "assistant", "content": f"reference data to answer questions {format_chunks(chunks)}"},
@@ -254,6 +267,7 @@ async def judge_answer(question: str, context: List[Chunk], answer: str, label: 
 
         verdict = openai.chat.completions.create(
             model='gpt-5-mini',
+            reasoning_effort="minimal",
             response_model=JudgeVerdict,
             messages=[
                 {"role": "user", "content": compiled},
@@ -271,6 +285,7 @@ async def regenerate_with_feedback(chunks: List[Chunk], question: str, feedback:
     """Regenerate the answer using feedback from the judge, conditioning on the same context."""
     return client.chat.completions.create(
         model='gpt-5-mini',
+        reasoning_effort=r_reasoning,
         messages=[
             {"role": "system", "content": "You are a great scientific analyst who is extensively knowledgeable in microbiologics and patent applications."},
             {"role": "assistant", "content": f"reference data to answer questions {format_chunks(chunks)}"},

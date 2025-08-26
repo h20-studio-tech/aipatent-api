@@ -81,7 +81,9 @@ Additional details follow.
             "[" + context[rel_start:rel_end] + "]" + 
             context[rel_end:] + "..."
         )
-        print(f"  Context: {highlighted.replace(chr(10), '\\n')}")
+        newline_char = chr(10)
+        backslash_n = '\\n'
+        print(f"  Context: {highlighted.replace(newline_char, backslash_n)}")
         print()
     
     # Explain the enhancement

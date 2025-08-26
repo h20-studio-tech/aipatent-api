@@ -1438,7 +1438,8 @@ async def _summarize_text(text: str) -> str:
     # Re-use EmbodimentSummary pydantic schema for simplicity
     try:
         res: EmbodimentSummary = await client.chat.completions.create(
-            model="gpt-4o",
+            model="gpt-5-nano-2025-08-07",
+            reasoning_effort="minimal",
             messages=[
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": text},

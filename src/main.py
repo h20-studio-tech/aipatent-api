@@ -30,6 +30,10 @@ from supabase import create_client, Client
 from src.utils.ocr import process_patent_document
 from src.utils.abstract_extractor import extract_abstract_from_pdf
 from src.embodiment_generation import generate_embodiment
+from src.models.rag_schemas import (
+    RetrievalRequest,
+    RetrievalResponse
+)
 from src.models.api_schemas import (
      FileUploadResponse,
      PatentProject,
@@ -39,12 +43,12 @@ from src.models.api_schemas import (
      PatentUploadResponse,
      MultiQueryResponse,
      FilesResponse,
-     SyntheticEmbodimentRequest,
      EmbodimentApproveSuccessResponse,
      EmbodimentApproveErrorResponse,
      EmbodimentsListResponse,
      EmbodimentListResponse,
      ApprovedEmbodimentRequest,
+     SyntheticEmbodimentRequest,
      ApproachKnowledge,
      InnovationKnowledge,
      TechnologyKnowledge,
@@ -69,7 +73,7 @@ from src.models.ocr_schemas import (
     GlossaryDefinition,
     ProcessedPage
 )
-from src.router.sections import router as sections_router
+from src.routers.sections import router as sections_router
 load_dotenv(".env")
 
 
@@ -468,6 +472,33 @@ async def query_search(query: str, target_files: list[str]):
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"Error during multiquery-search: {e}"
+        )
+        
+@app.post("/api/v1/rag/retrieval/", response_model=RetrievalResponse, tags=["RAG"])
+async def retrieval(r: RetrievalRequest):
+    """
+    Retrieve relevant chunks from the vector store based on the query.
+    
+    Args:
+        query (str): The search query string.
+    
+    Returns:
+        RetrieveResponse: A Pydantic model containing the status, a summary message, and data (formatted chunks).
+    Raises:
+        HTTPException: If an error occurs during the retrieve process.
+    """
+    table_names = [file.replace(".pdf", "") for file in r.target_files]
+    try:
+        formatted_chunks = await multiquery_search(
+            query=r.query, table_names=table_names, db=db_connection["db"]
+            )
+        
+        return RetrievalResponse(
+            status="success", message="Retrieved chunks successfully", data=formatted_chunks
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error during retrieve: {e}"
         )
 
 
