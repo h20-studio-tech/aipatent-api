@@ -13,6 +13,7 @@ dependencies = [
     "instructor>=1.10.0",
     "lancedb>=0.24.2",
     "langfuse<3.0.0",
+    "llama-cloud-services>=0.6.54",
     "nest-asyncio>=1.6.0",
     "numpy>=2.3.2",
     "openai>=1.99.6",

@@ -1,3 +1,9 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "WebSearch"
+    ]
+  },
   "outputStyle": "default"
 }

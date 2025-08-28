@@ -1,0 +1,67 @@
+
+Install the package
+pip install llama-cloud-services
+
+Parse from CLI
+You can parse your first PDF file using the command line interface. Use the command llama-parse [file_paths]. See the help text with llama-parse --help.
+
+export LLAMA_CLOUD_API_KEY='llx-...'
+
+# output as text
+llama-parse my_file.pdf --result-type text --output-file output.txt
+
+# output as markdown
+llama-parse my_file.pdf --result-type markdown --output-file output.md
+
+# output as raw json
+llama-parse my_file.pdf --output-raw-json --output-file output.json
+
+Parse in Python
+You can also create simple scripts:
+
+from llama_cloud_services import LlamaParse
+
+parser = LlamaParse(
+    api_key="llx-...",  # can also be set in your env as LLAMA_CLOUD_API_KEY
+    num_workers=4,       # if multiple files passed, split in `num_workers` API calls
+    verbose=True,
+    language="en",       # optionally define a language, default=en
+)
+
+# sync
+result = parser.parse("./my_file.pdf")
+
+# sync batch
+results = parser.parse(["./my_file1.pdf", "./my_file2.pdf"])
+
+# async
+result = await parser.aparse("./my_file.pdf")
+
+# async batch
+results = await parser.aparse(["./my_file1.pdf", "./my_file2.pdf"])
+
+The result object is a fully typed JobResult object. You can interact with it to parse and transform various parts of the result:
+
+# get the llama-index markdown documents
+markdown_documents = result.get_markdown_documents(split_by_page=True)
+
+# get the llama-index text documents
+text_documents = result.get_text_documents(split_by_page=False)
+
+# get the image documents
+image_documents = result.get_image_documents(
+    include_screenshot_images=True,
+    include_object_images=False,
+    # Optional: download the images to a directory
+    # (default is to return the image bytes in ImageDocument objects)
+    image_download_dir="./images",
+)
+
+# access the raw job result
+# Items will vary based on the parser configuration
+for page in result.pages:
+    print(page.text)
+    print(page.md)
+    print(page.images)
+    print(page.layout)
+    print(page.structuredData)
