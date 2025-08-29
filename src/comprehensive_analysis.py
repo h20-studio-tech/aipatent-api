@@ -34,10 +34,7 @@ class ComprehensiveAnalysisService:
             language="en"
         )
         
-        self.gemini_client = OpenAI(
-            api_key=self.gemini_api_key,
-            base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
-        )
+        self.gemini_client = OpenAI()
     
     async def analyze_from_lancedb(self, table_name: str, filename: str, db) -> Dict[str, Any]:
         """Get content from LanceDB and analyze with Gemini (bypasses LLaMA Parse)."""
@@ -62,12 +59,13 @@ class ComprehensiveAnalysisService:
             # Analyze with Gemini
             gemini_response = await asyncio.to_thread(
                 self.gemini_client.chat.completions.create,
-                model="gemini-2.5-flash",
+                model="gpt-5-mini",
                 messages=[
                     {"role": "system", "content": "Analyze this document comprehensively."},
                     {"role": "user", "content": parsed_content}
                 ],
                 temperature=0.2,
+                reasoning_effort="minimal"
             )
             
             analysis = gemini_response.choices[0].message.content
