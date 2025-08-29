@@ -59,12 +59,12 @@ class ComprehensiveAnalysisService:
             # Analyze with Gemini
             gemini_response = await asyncio.to_thread(
                 self.gemini_client.chat.completions.create,
-                model="gpt-5-mini",
+                model="gpt-5",
                 messages=[
-                    {"role": "system", "content": "Analyze this document comprehensively. and output a report course as much of the original document taxonomy that is recognized by the original sections and subsections, and also output your response in Markdown. Missing proper highlighting for headers and the special words."},
+                    {"role": "system", "content": "Analyze this document comprehensively. and output a report course as much of the original document taxonomy that is recognized by the original sections and subsections, and also output your response in Markdown. Using proper highlighting for headers and the special words. Do not repeat the instructions you are given in your output. Do not mention what you're doing. Just output the report, breaking it down into different headers and paragraphs for easier reading. for headersv use #### for important words use ** word goes here **"},
                     {"role": "user", "content": parsed_content}
                 ],
-                reasoning_effort="minimal"
+                reasoning_effort="low"
             )
             
             analysis = gemini_response.choices[0].message.content
