@@ -61,7 +61,7 @@ class ComprehensiveAnalysisService:
                 self.gemini_client.chat.completions.create,
                 model="gpt-5-mini",
                 messages=[
-                    {"role": "system", "content": "Analyze this document comprehensively."},
+                    {"role": "system", "content": "Analyze this document comprehensively. and output a report course as much of the original document taxonomy that is recognized by the original sections and subsections, and also output your response in Markdown. Missing proper highlighting for headers and the special words."},
                     {"role": "user", "content": parsed_content}
                 ],
                 reasoning_effort="minimal"
