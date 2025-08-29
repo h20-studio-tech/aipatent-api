@@ -186,7 +186,6 @@ async def main():
     
     # Find PDF files in experiments folder
     pdf_files = [
-        "/workspaces/aipatent-api/experiments/sample_patents/test file.pdf",
         "/workspaces/aipatent-api/experiments/sample_patents/COVID-19 NEUTRALIZING ANTIBODY DETE.pdf"
     ]
     

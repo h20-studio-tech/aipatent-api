@@ -23,6 +23,7 @@ from src.pdf_processing import (
     supabase_files,
     lancedb_tables,
     supabase_delete,
+    supabase_download,
 )
 from src.utils.normalize_filename import normalize_filename
 from dotenv import load_dotenv
@@ -30,6 +31,7 @@ from supabase import create_client, Client
 from src.utils.ocr import process_patent_document
 from src.utils.abstract_extractor import extract_abstract_from_pdf
 from src.embodiment_generation import generate_embodiment
+from src.comprehensive_analysis import ComprehensiveAnalysisService
 from src.models.rag_schemas import (
     RetrievalRequest,
     RetrievalResponse
@@ -55,6 +57,8 @@ from src.models.api_schemas import (
      ResearchNote,
      ApproachKnowledgeListResponse,
      InnovationKnowledgeListResponse,
+     ComprehensiveAnalysisRequest,
+     ComprehensiveAnalysisResponse,
      TechnologyKnowledgeListResponse,
      ResearchNoteListResponse,
      DropTablesResponse,
@@ -1409,6 +1413,99 @@ async def drop_table(table_name: str):
             raise HTTPException(status_code=500, detail="LanceDB connection not initialized")
         await db.drop_table(table_name)
         return DropTableResponse(status="success", table=table_name)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/v1/documents/comprehensive-analysis/lancedb/{table_name}", tags=["Documents"])
+async def comprehensive_analysis_lancedb(table_name: str):
+    """
+    Comprehensive analysis using existing LanceDB content (bypasses LLaMA Parse).
+    Fast path - uses already processed content from LanceDB.
+    """
+    try:
+        # Get database connection
+        db = db_connection.get("db")
+        if db is None:
+            raise HTTPException(status_code=500, detail="LanceDB connection not initialized")
+        
+        # Check if table exists
+        table_names = await lancedb_tables(db)
+        if table_name not in table_names:
+            raise HTTPException(status_code=404, detail=f"Table {table_name} not found in LanceDB")
+        
+        filename = f"{table_name}.pdf"  # Reconstruct filename
+        
+        # Initialize analysis service
+        analysis_service = ComprehensiveAnalysisService()
+        
+        # Analyze from LanceDB content
+        result = await analysis_service.analyze_from_lancedb(table_name, filename, db)
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/v1/documents/comprehensive-analysis/filename/{filename}", tags=["Documents"])
+async def comprehensive_analysis_filename(filename: str):
+    """
+    Comprehensive analysis by filename (downloads from Supabase storage).
+    Requires exact filename as it appears in storage.
+    """
+    try:
+        # Download file content from Supabase storage
+        file_content = supabase_download(filename)
+        
+        # Initialize analysis service
+        analysis_service = ComprehensiveAnalysisService()
+        
+        # Perform analysis with LLaMA Parse
+        result = await analysis_service.analyze_from_file_content(file_content, filename)
+        
+        return result
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/v1/documents/comprehensive-analysis/storage-id/{file_id}", tags=["Documents"])
+async def comprehensive_analysis_storage_id(file_id: str):
+    """
+    Comprehensive analysis by storage file ID (from /api/v1/documents/ response).
+    Maps storage ID to filename, downloads from Supabase, analyzes with LLaMA Parse.
+    """
+    try:
+        # Get filename from storage files list
+        files = supabase_files()
+        target_file = None
+        
+        for file in files:
+            if file["id"] == file_id:
+                target_file = file
+                break
+        
+        if not target_file:
+            raise HTTPException(status_code=404, detail=f"File with storage ID {file_id} not found")
+        
+        filename = target_file["name"]
+        
+        # Download file content from Supabase storage
+        file_content = supabase_download(filename)
+        
+        # Initialize analysis service
+        analysis_service = ComprehensiveAnalysisService()
+        
+        # Perform analysis with LLaMA Parse
+        result = await analysis_service.analyze_from_file_content(file_content, filename)
+        
+        return result
+        
     except HTTPException:
         raise
     except Exception as e:

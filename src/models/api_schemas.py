@@ -11,6 +11,71 @@ from src.models.rag_schemas import Chunk
 from enum import Enum
 from src.models.ocr_schemas import Glossary
 
+
+class PageAnalysis(BaseModel):
+    """Analysis result for a single page of a document."""
+    page_number: int = Field(..., description="Page number")
+    content: str = Field(..., description="Extracted content from the page")
+    word_count: int = Field(..., description="Number of words on the page")
+    analysis: str = Field(..., description="AI analysis of the page content")
+
+
+class SectionAnalysis(BaseModel):
+    """Analysis result for a document section."""
+    section_title: str = Field(..., description="Title of the section")
+    section_type: str = Field(..., description="Type of section (e.g., 'abstract', 'claims', 'description')")
+    content: str = Field(..., description="Section content")
+    analysis: str = Field(..., description="AI analysis of the section")
+    key_insights: List[str] = Field(default_factory=list, description="Key insights extracted from the section")
+
+
+class ComprehensiveAnalysisRequest(BaseModel):
+    """Request model for comprehensive document analysis."""
+    analysis_type: str = Field(
+        default="full", 
+        description="Type of analysis: 'full', 'sections_only', or 'summary_only'"
+    )
+    include_page_breakdown: bool = Field(
+        default=True, 
+        description="Whether to include page-by-page analysis"
+    )
+    custom_instructions: Optional[str] = Field(
+        None, 
+        description="Custom instructions for the analysis"
+    )
+
+
+class ComprehensiveAnalysisResponse(BaseModel):
+    """Response model for comprehensive document analysis."""
+    filename: str = Field(..., description="Name of the analyzed file")
+    total_pages: int = Field(..., description="Total number of pages processed")
+    total_characters: int = Field(..., description="Total characters in the document")
+    
+    # Overall analysis
+    document_summary: str = Field(..., description="Overall document summary")
+    document_type: str = Field(..., description="Type of document identified")
+    key_technical_concepts: List[str] = Field(..., description="Main technical concepts found")
+    main_claims_findings: List[str] = Field(..., description="Key claims or findings")
+    innovation_assessment: str = Field(..., description="Assessment of document's innovation")
+    potential_applications: List[str] = Field(..., description="Potential applications")
+    
+    # Detailed breakdowns
+    page_analyses: Optional[List[PageAnalysis]] = Field(None, description="Page-by-page analysis")
+    section_analyses: List[SectionAnalysis] = Field(..., description="Section-based analysis")
+    
+    # Processing metadata
+    processing_time_seconds: float = Field(..., description="Time taken to process the document")
+    analysis_timestamp: datetime = Field(..., description="When the analysis was completed")
+    status: str = Field(..., description="Processing status")
+
+
+class ComprehensiveAnalysisErrorResponse(BaseModel):
+    """Error response for comprehensive analysis."""
+    error: str = Field(..., description="Error message")
+    filename: str = Field(..., description="Name of the file that failed to process")
+    status_code: int = Field(..., description="HTTP status code")
+    timestamp: datetime = Field(..., description="When the error occurred")
+
 class FileUploadResponse(BaseModel):
     """
     Response model for file upload operations.

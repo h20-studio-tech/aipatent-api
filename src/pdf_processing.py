@@ -120,6 +120,20 @@ def supabase_delete(filename: str, partition: bool = False) -> dict:
         logging.error(f"Error deleting file {path} from Supabase storage: {e}")
         raise
 
+def supabase_download(filename: str) -> bytes:
+    """
+    Download a file from Supabase storage.
+    """
+    bucket_name = os.getenv("SUPABASE_BUCKET_NAME")
+    path = f"files/{filename}"
+    try:
+        res = supabase.storage.from_(bucket_name).download(path)
+        logging.info(f"Downloaded file {path} from Supabase storage.")
+        return res
+    except Exception as e:
+        logging.error(f"Error downloading file {path} from Supabase storage: {e}")
+        raise
+
 async def extract_metadata(text: str, chunk_id: str) -> dict:
     """
     Asynchronously extract metadata (keywords, methods, hypothetical questions)
