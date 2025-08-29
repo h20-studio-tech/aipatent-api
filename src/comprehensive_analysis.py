@@ -64,7 +64,6 @@ class ComprehensiveAnalysisService:
                     {"role": "system", "content": "Analyze this document comprehensively."},
                     {"role": "user", "content": parsed_content}
                 ],
-                temperature=0.2,
                 reasoning_effort="minimal"
             )
             
