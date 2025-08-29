@@ -20,8 +20,7 @@
       source $HOME/.cargo/env
   fi
 
-  # Sync dependencies with uv (handles 
-  virtual environment automatically)
+  # Sync dependencies with uv (handles virtual environment automatically)
   echo "📦 Installing dependencies with uv"
   uv sync
 
