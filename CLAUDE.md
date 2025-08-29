@@ -85,7 +85,7 @@ uv run black src/
 # Lint with ruff (if configured)
 uv run ruff check src/
 ```
-
+js
 ## Key API Endpoints
 
 ### Document Processing
