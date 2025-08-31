@@ -262,7 +262,7 @@ async def judge_answer(question: str, context: List[Chunk], answer: str, label: 
         context_text = format_chunks(context)
         compiled = prompt_obj.compile(question=question, context=context_text, answer=answer)
 
-        verdict = openai.chat.completions.create(
+        verdict = instructor_openai.chat.completions.create(
             model='gpt-5-mini',
             reasoning_effort="low",
             response_model=JudgeVerdict,
