@@ -264,7 +264,7 @@ async def judge_answer(question: str, context: List[Chunk], answer: str, label: 
 
         verdict = openai.chat.completions.create(
             model='gpt-5-mini',
-            reasoning_effort="minimal",
+            reasoning_effort="low",
             response_model=JudgeVerdict,
             messages=[
                 {"role": "user", "content": compiled},
