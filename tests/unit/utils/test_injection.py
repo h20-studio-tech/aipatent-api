@@ -3,7 +3,7 @@ Test dependency injection without Langfuse dependency.
 """
 from src.utils.ai import oai, gemini
 
-# Create a minimal test function that mimics the pattern
+# Create a low test function that mimics the pattern
 def test_generate_simple(client, model="gpt-4o-mini"):
     """Simple test function with dependency injection."""
     if not client:

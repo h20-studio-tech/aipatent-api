@@ -1439,7 +1439,7 @@ async def _summarize_text(text: str) -> str:
     try:
         res: EmbodimentSummary = await client.chat.completions.create(
             model="gpt-5-nano-2025-08-07",
-            reasoning_effort="minimal",
+            reasoning_effort="low",
             messages=[
                 {"role": "system", "content": prompt},
                 {"role": "user", "content": text},

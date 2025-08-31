@@ -176,7 +176,7 @@ class RagWorkflow:
             extraction = await asyncio.to_thread(
                 self.openai.chat.completions.create,
                 model=model,
-                reasoning_effort="minimal",
+                reasoning_effort="low",
                 response_model=Extraction,
                 messages=messages
             )
@@ -596,7 +596,7 @@ class RagWorkflow:
             logging.info(f"Generating MultiQuery questions")
             multiquery = self.openai.chat.completions.create(
                 model="gpt-5-nano-2025-08-07",
-                reasoning_effort="minimal",
+                reasoning_effort="low",
                 response_model=MultiQueryQuestions,
                 messages=[{"role": "user", "content": prompt}],
             )

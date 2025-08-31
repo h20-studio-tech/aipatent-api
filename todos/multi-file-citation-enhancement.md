@@ -10,7 +10,7 @@ When users select multiple files in the RAG query interface, chunk_ids can colli
 Simple inline citations using format: `[chunk_id: X]`
 - Works well for single file queries
 - Chunk_ids are unique within a single document
-- Clean, minimal output without filename clutter
+- Clean, low output without filename clutter
 
 ## Future Enhancement Options
 
