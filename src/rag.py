@@ -8,6 +8,7 @@ try:
     from langfuse.decorators import observe
 except Exception:  # pragma: no cover - fallback for test envs
     from src.utils.langfuse_stub import observe
+from instructor.models import KnownModelName
 from src.models.rag_schemas import Chunk
 from pydantic import BaseModel
 from typing import List, Optional
@@ -28,24 +29,20 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
 )
 
-provider = os.getenv("AI_PROVIDER")
+openai = OpenAI()
+instructor_openai = instructor.from_openai(openai)
+gemini = OpenAI(
+    api_key=os.getenv("GEMINI_API_KEY"),
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+)
+instructor_gemini = instructor.from_openai(gemini)
+
 r_reasoning = os.getenv("r_reasoning")
 
-client = None
 
-if provider == "gemini":
-    client = OpenAI(
-        api_key=os.getenv("GEMINI_API_KEY"),
-        base_url='https://generativelanguage.googleapis.com/v1beta/openai/'
-    )
-else:
-    client = OpenAI()
-    
-openai = instructor.from_openai(OpenAI())
-asyncopenai = instructor.from_openai(AsyncOpenAI())
 langfuse = get_langfuse_instance()
 
-func = get_registry().get("openai").create(name=os.getenv("EMBEDDING_MODEL_NAME"))
+func = get_registry().get("openai").create(name=os.getenv("OPENAI_EMBEDDING_MODEL"))
 
 
 class Schema(LanceModel):
@@ -150,8 +147,8 @@ async def search(
     k_results: int = 4,
 ) -> List[LanceModel]:
     try:
-        res = client.embeddings.create(
-            model=os.getenv("EMBEDDING_MODEL_NAME"), input=query
+        res = openai.embeddings.create(
+            model=os.getenv("OPENAI_EMBEDDING_MODEL"), input=query
         )
         vector = res.data[0].embedding
         table = await db.open_table(table_name)
@@ -197,9 +194,9 @@ async def multiquery_search(
             """
     try:
         logging.info(f"Generating MultiQuery questions")
-        multiquery = openai.chat.completions.create(
-            model="gpt-5-mini",
-            reasoning_effort='minimal',
+        multiquery = instructor_gemini.chat.completions.create(
+            model="gemini-2.5-flash",
+            reasoning_effort='low',
             response_model=MultiQueryQuestions,
             messages=[{"role": "user", "content": prompt}],
         )
@@ -237,7 +234,7 @@ async def multiquery_search(
     
 @observe(name="multiquery_message")    
 async def chunks_summary(chunks:List[Chunk], prompt: str):
-    return client.chat.completions.create(
+    return openai.chat.completions.create(
          model="gpt-5-mini",
          reasoning_effort=r_reasoning,
          messages=[
@@ -283,7 +280,7 @@ async def judge_answer(question: str, context: List[Chunk], answer: str, label: 
 @observe(name="regenerate_with_feedback")
 async def regenerate_with_feedback(chunks: List[Chunk], question: str, feedback: str) -> str:
     """Regenerate the answer using feedback from the judge, conditioning on the same context."""
-    return client.chat.completions.create(
+    return openai.chat.completions.create(
         model='gpt-5-mini',
         reasoning_effort=r_reasoning,
         messages=[
