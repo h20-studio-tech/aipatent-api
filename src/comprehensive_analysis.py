@@ -146,11 +146,9 @@ class ComprehensiveAnalysisService:
                 model="gemini-2.5-flash",
                 messages=[   
                         {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": parsed_content}
-=======
+                    {"role": "user", "content": parsed_content},
                     {"role": "system", "content": self.system_prompt},
                     {"role": "user", "content": parsed_content},
->>>>>>> 2657485 (:rocket: Add comprehensive analysis service with shared system prompt and update model to gemini-2.5-flash)
                 ],
                 reasoning_effort="low",
             )
@@ -187,8 +185,8 @@ class ComprehensiveAnalysisService:
                 model="gemini-2.5-flash",
                 messages=[
                     {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": parsed_content}
-                {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": parsed_content},
+                    {"role": "system", "content": self.system_prompt},
                     {"role": "user", "content": parsed_content},
 
                 ],
