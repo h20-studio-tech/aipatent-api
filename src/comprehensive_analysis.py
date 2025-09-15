@@ -11,6 +11,7 @@ from datetime import datetime
 from llama_cloud_services import LlamaParse
 from openai import OpenAI
 from fastapi import HTTPException
+from textwrap import dedent
 
 
 system_prompt = """<persona>
@@ -90,6 +91,34 @@ class ComprehensiveAnalysisService:
         )
         
         self.gemini_client = OpenAI()
+
+        # Shared system prompt for analysis (clear and readable)
+        self.system_prompt = dedent(
+            """
+            You are a meticulous document analyst creating leadership-ready summaries of dense, highly quantitative papers.
+
+            Objective:
+            - Translate complex, technical material into clear, executive-friendly insights while preserving the document's structure (sections and subsections) and core evidence.
+            - Emphasize what matters for decisions, risk, impact, and next steps.
+
+            Output Requirements (Markdown only):
+            - Use '####' for section headers; bold important terms with **this style**.
+            - Do not repeat these instructions or mention your process.
+            - Keep language concise, plain, and free of jargon where possible; define terms if needed.
+
+            Quantitative Guidance:
+            - Extract and report the most decision-relevant numbers; include units and context.
+            - When appropriate, provide both absolute and relative changes (e.g., +12 points, +8%).
+            - Preserve uncertainty: include confidence intervals, standard errors, sample sizes if available.
+            - Clearly label any estimates or inferences; do not fabricate numbers. If unknown, write "Unknown".
+            - Avoid formulas unless necessary; prefer readable explanations and small tables.
+
+            Style & Tone:
+            - Write for non-technical leadership: clear, scannable
+            - Use short paragraphs and bullets; avoid excessive technical detail outside the Appendix.
+            - Maintain neutrality; distinguish facts from interpretation.
+            """
+        ).strip()
     
     async def analyze_from_lancedb(self, table_name: str, filename: str, db) -> Dict[str, Any]:
         """Get content from LanceDB and analyze with Gemini (bypasses LLaMA Parse)."""
@@ -114,12 +143,16 @@ class ComprehensiveAnalysisService:
             # Analyze with Gemini
             gemini_response = await asyncio.to_thread(
                 self.gemini_client.chat.completions.create,
-                model="gpt-5",
-                messages=[
-                    {"role": "system", "content": system_prompt},
+                model="gemini-2.5-flash",
+                messages=[   
+                        {"role": "system", "content": system_prompt},
                     {"role": "user", "content": parsed_content}
+=======
+                    {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": parsed_content},
+>>>>>>> 2657485 (:rocket: Add comprehensive analysis service with shared system prompt and update model to gemini-2.5-flash)
                 ],
-                reasoning_effort="low"
+                reasoning_effort="low",
             )
             
             analysis = gemini_response.choices[0].message.content
@@ -155,6 +188,9 @@ class ComprehensiveAnalysisService:
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": parsed_content}
+                {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": parsed_content},
+
                 ],
                 temperature=0.2,
             )
