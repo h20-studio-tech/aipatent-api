@@ -131,12 +131,12 @@ class ComprehensiveAnalysisService:
             # Since we want all content, we'll create a simple query vector
             query_vector = [0.0] * 3072  # Assuming text-embedding-3-large dimensions
             
-            # Get search results as DataFrame - using to_pandas()
-            df = await table.vector_search(query_vector).limit(1000).to_pandas()
-            
+            # Get search results as list - compatible with LanceDB Cloud
+            results = await table.vector_search(query_vector).limit(1000).to_list()
+
             # Combine all text chunks
             parsed_content = ""
-            for idx, row in df.iterrows():
+            for idx, row in enumerate(results):
                 text_content = row.get('text', '')
                 parsed_content += f"\n\n--- Chunk {idx + 1} ---\n\n{text_content}"
             
@@ -144,11 +144,12 @@ class ComprehensiveAnalysisService:
             gemini_response = await asyncio.to_thread(
                 self.gemini_client.chat.completions.create,
                 model="gpt-4.1",
-                messages=[
-                    {"role": "system", "content": "Analyze this document comprehensively. and output a report course as much of the original document taxonomy that is recognized by the original sections and subsections, and also output your response in Markdown. Using proper highlighting for headers and the special words. Do not repeat the instructions you are given in your output. Do not mention what you're doing. Just output the report, breaking it down into different headers and paragraphs for easier reading. for headersv use #### for important words use ** word goes here **"},
-                    {"role": "user", "content": parsed_content}
+                messages=[   
+                        {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": parsed_content},
+                    {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": parsed_content},
                 ],
-                reasoning_effort="low",
             )
             
             analysis = gemini_response.choices[0].message.content
@@ -180,6 +181,7 @@ class ComprehensiveAnalysisService:
             # Analyze with Gemini
             gemini_response = await asyncio.to_thread(
                 self.gemini_client.chat.completions.create,
+                model="gpt-4.1",
                 model="gpt-4.1",
                 messages=[
                     {"role": "system", "content": system_prompt},

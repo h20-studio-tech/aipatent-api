@@ -132,28 +132,6 @@ def get_temporary_credentials(duration=3600):
         raise
 
 
-async def refresh_lancedb_connection(lancedb_uri: str, refresh_interval: int = 3000):
-    """Periodically refresh the LanceDB connection using new AWS credentials."""
-    while True:
-        try:
-            creds = get_temporary_credentials()
-
-            # Reinitialize the LanceDB connection with the new credentials
-            new_connection = await lancedb.connect_async(
-                lancedb_uri,
-                storage_options={
-                    "aws_access_key_id": creds["AccessKeyId"],
-                    "aws_secret_access_key": creds["SecretAccessKey"],
-                    "aws_session_token": creds["SessionToken"],
-                },
-            )
-            db_connection["db"] = new_connection
-            logging.info("LanceDB connection refreshed successfully.")
-        except Exception as e:
-            logging.error(f"Error refreshing LanceDB connection: {e}")
-
-        # Wait for the refresh interval before updating again
-        await asyncio.sleep(refresh_interval)
 
 
 @asynccontextmanager
@@ -167,72 +145,47 @@ async def lifespan(app: FastAPI):
         raise ValueError("LANCEDB_URI environment variable is missing.")
 
     try:
-        # Use direct AWS credentials instead of temporary ones
-        aws_access_key = os.getenv("ACCESS_KEY_ID")
-        aws_secret_key = os.getenv("SECRET_ACCESS_KEY")
-        aws_region = os.getenv("AWS_REGION", "us-east-1")
-        
-        if not aws_access_key or not aws_secret_key:
-            logging.error("AWS credentials are missing. LanceDB connection will likely fail.")
-            raise ValueError("AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables are required")
-            
-        logging.info(f"DynamoDB using key ID that starts with: {aws_access_key[:4] if aws_access_key else 'None'}")
-        
-        # Test AWS credentials
-        try:
-            session = boto3.Session(
-                aws_access_key_id=aws_access_key,
-                aws_secret_access_key=aws_secret_key,
-                region_name=aws_region
-            )
-            sts = session.client('sts')
-            account_id = sts.get_caller_identity().get('Account')
-            logging.info(f"DynamoDB connected to AWS account: {account_id}")
-        except Exception as e:
-            logging.error(f"AWS credential test failed: {str(e)}")
-            raise
+        # Get LanceDB Cloud credentials
+        lancedb_api_key = os.getenv("LANCEDB_CLOUD_KEY")
 
-        # Initialize the LanceDB connection with direct AWS credentials
+        if not lancedb_api_key:
+            logging.error("LanceDB Cloud API key is missing.")
+            raise ValueError("LANCEDB_CLOUD_KEY environment variable is required")
+
+        logging.info("Connecting to LanceDB Cloud...")
+
+        # Initialize the LanceDB Cloud connection
         db_connection["db"] = await lancedb.connect_async(
-            lancedb_uri,
-            storage_options={
-                "aws_access_key_id": aws_access_key,
-                "aws_secret_access_key": aws_secret_key,
-                "region_name": aws_region
-            },
+            uri="db://aipatent-ym7e4b",
+            api_key=lancedb_api_key,
+            region="us-east-1"
         )
 
         # Test connection
         tables = await db_connection["db"].table_names()
-        logging.info(f"Connected to LanceDB at {lancedb_uri} with tables: {tables}")
+        logging.info(f"Connected to LanceDB Cloud with tables: {tables}")
 
-        # Start background task to refresh credentials and connection periodically
-        # Modify to use direct credentials instead of temporary ones
+        # Simple connection health check (no credential refresh needed for cloud)
         async def keep_alive_connection():
             while True:
                 try:
-                    # Just verify connection is still working
                     tables = await db_connection["db"].table_names()
-                    logging.debug(f"LanceDB connection verified with {len(tables)} tables")
+                    logging.debug(f"LanceDB Cloud connection verified with {len(tables)} tables")
                 except Exception as e:
-                    logging.error(f"Connection error, attempting to reconnect: {e}")
-                    # Reconnect with direct credentials
+                    logging.error(f"LanceDB Cloud connection error: {e}")
+                    # Attempt to reconnect
                     try:
                         db_connection["db"] = await lancedb.connect_async(
-                            lancedb_uri,
-                            storage_options={
-                                "aws_access_key_id": aws_access_key,
-                                "aws_secret_access_key": aws_secret_key,
-                                "region_name": aws_region
-                            },
+                            uri="db://aipatent-ym7e4b",
+                            api_key=lancedb_api_key,
+                            region="us-east-1"
                         )
-                        logging.info("LanceDB connection refreshed successfully.")
+                        logging.info("LanceDB Cloud connection restored.")
                     except Exception as conn_error:
-                        logging.error(f"Failed to reconnect: {conn_error}")
-                
-                # Wait before checking again
-                await asyncio.sleep(3000)  # 5 minutes
-                
+                        logging.error(f"Failed to reconnect to LanceDB Cloud: {conn_error}")
+
+                await asyncio.sleep(300)  # Check every 5 minutes
+
         refresh_task = asyncio.create_task(keep_alive_connection())
 
         yield  # Keep the app running during its lifespan

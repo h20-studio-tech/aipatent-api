@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Git Commit Guidelines
+
+**NEVER use co-signing in commits.** Do not add "Co-Authored-By: Claude" or similar co-signing tags to commit messages. Keep commit messages clean and focused on the actual changes.
+
 ## Project Overview
 
 AIPatent API is a FastAPI-based microservice for processing and managing patent-related documents. It provides intelligent patent document analysis, embodiment extraction, glossary term identification, and patent section generation using AI models.
@@ -113,11 +117,11 @@ js
 
 Critical environment variables that must be configured:
 - `OPENAI_API_KEY` - OpenAI API key for LLM operations
-- `LANCEDB_URI` - S3 URI for LanceDB vector storage
-- `ACCESS_KEY_ID`, `SECRET_ACCESS_KEY` - AWS credentials
+- `LANCEDB_CLOUD_KEY` - LanceDB Cloud API key for vector storage
+- `ACCESS_KEY_ID`, `SECRET_ACCESS_KEY` - AWS credentials (for DynamoDB)
 - `SUPABASE_URL`, `SUPABASE_SECRET_KEY` - Supabase connection
 - `LANGFUSE_*` - Langfuse observability configuration
-- `UNSTRUCTURED_API_KEY`, `UNSTRUCTURED_API_URL` - Document processing API
+- `LLAMA_CLOUD_API_KEY` - LlamaParse API key for document processing
 - `DYNAMODB_TABLE` - DynamoDB table name (default: "patents")
 
 ## Testing Approach

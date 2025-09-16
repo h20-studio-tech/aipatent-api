@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-import unstructured_client
 import lancedb
 import json
 import uuid
@@ -11,7 +10,7 @@ import time
 import aiofiles 
 import pprint
 
-from unstructured_client.models import operations, shared
+from llama_cloud_services import LlamaParse
 from lancedb.pydantic import LanceModel, Vector
 from lancedb.embeddings import get_registry
 from typing import List, Tuple, Union
@@ -57,14 +56,20 @@ class ReviewedChunk(BaseModel):
     
 class RagWorkflow:
     def __init__(self):
-        self.client = unstructured_client.UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+        self.llama_parser = LlamaParse(
+            api_key=os.getenv("LLAMA_CLOUD_API_KEY"),
+            result_type="markdown",
+            num_workers=4,
+            verbose=True,
+            language="en"
         )
 
         self.func = get_registry().get("openai").create(name="text-embedding-3-large")
-        self.uri = "app/data/lancedb"
-        self.db = lancedb.connect(self.uri)
+        self.db = lancedb.connect(
+            uri="db://aipatent-ym7e4b",
+            api_key=os.getenv("LANCEDB_CLOUD_KEY"),
+            region="us-east-1"
+        )
         self.table_name = "document"
         self.asyncopenai = instructor.from_openai(AsyncOpenAI())
         self.openai = instructor.from_openai(OpenAI())

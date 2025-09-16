@@ -5,10 +5,7 @@ import asyncio
 import json
 import pandas as pd
 import instructor
-import unstructured_client
-
-from unstructured_client.models import shared
-from unstructured_client.models.operations import PartitionRequest
+from llama_cloud_services import LlamaParse
 from supabase import create_client
 from src.models.pdf_workflow import FileProcessedError
 # from models.metadata_extraction import Extraction
@@ -16,6 +13,7 @@ from openai import OpenAI, AsyncOpenAI
 from pydantic import BaseModel, Field
 from lancedb.db import AsyncConnection
 from dotenv import load_dotenv
+
 
 load_dotenv('.env')
 
@@ -36,8 +34,12 @@ class Extraction(BaseModel):
 openai = instructor.from_openai(OpenAI())
 asyncopenai = instructor.from_openai(AsyncOpenAI())
 
-unstructured = unstructured_client.UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+llama_parser = LlamaParse(
+    api_key=os.getenv("LLAMA_CLOUD_API_KEY"),
+    result_type="markdown",
+    num_workers=4,
+    verbose=True,
+    language="en"
 )
 
 
@@ -53,26 +55,82 @@ supabase = create_client(
 )
 
 
-async def partition_request(filename: str, content: bytes) -> PartitionRequest:
-  
+async def parse_pdf_with_llama(filename: str, content: bytes) -> list:
+    """Parse PDF using LlamaParse and return structured data."""
+    import tempfile
+    import os
 
-    return PartitionRequest(
-        partition_parameters=shared.PartitionParameters(
-            files=shared.Files(
-                content=content,
-                file_name=filename,
-            ),
-            combine_under_n_chars=120,
-            chunking_strategy="by_page",
-            strategy=shared.Strategy.FAST,
-            languages=["eng"],
-            split_pdf_page=True,
-            split_pdf_allow_failed=True,
-            split_pdf_concurrency_level=15,
-            max_characters=1000,
-            overlap=500,
-        ),
-    )
+    # Save content to temporary file
+    with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as temp_file:
+        temp_file.write(content)
+        temp_file_path = temp_file.name
+
+    try:
+        # Parse with LlamaParse
+        result = await llama_parser.aparse(temp_file_path)
+
+        # Convert to element-like structure with proper chunking
+        elements = []
+        chunk_size = 1000
+        overlap = 200
+
+        for page_num, page in enumerate(result.pages, start=1):
+            page_text = page.text or page.md or ""
+            if not page_text.strip():
+                continue
+
+            # Split page into chunks with overlap
+            chunks = chunk_text_with_overlap(page_text, chunk_size, overlap)
+
+            for chunk_idx, chunk_text in enumerate(chunks, start=1):
+                if len(chunk_text.strip()) > 50:  # Skip very small chunks
+                    elements.append({
+                        "element_id": f"page_{page_num}_chunk_{chunk_idx}",
+                        "text": chunk_text,
+                        "metadata": {
+                            "page_number": page_num,
+                            "filename": filename,
+                            "chunk_index": chunk_idx
+                        }
+                    })
+
+        return elements
+
+    finally:
+        # Clean up temp file
+        os.unlink(temp_file_path)
+
+
+def chunk_text_with_overlap(text: str, chunk_size: int, overlap: int) -> list[str]:
+    """Split text into overlapping chunks."""
+    if len(text) <= chunk_size:
+        return [text]
+
+    chunks = []
+    start = 0
+
+    while start < len(text):
+        end = start + chunk_size
+        chunk = text[start:end]
+
+        # Try to break on sentence or paragraph boundaries
+        if end < len(text):
+            last_period = chunk.rfind('.')
+            last_newline = chunk.rfind('\n')
+            break_point = max(last_period, last_newline)
+
+            if break_point > start + chunk_size * 0.5:  # Don't break too early
+                chunk = text[start:break_point + 1]
+                end = break_point + 1
+
+        chunks.append(chunk.strip())
+
+        if end >= len(text):
+            break
+
+        start = end - overlap
+
+    return chunks
 
 async def lancedb_tables(db: AsyncConnection) -> list[str]:
     return await db.table_names()
@@ -195,15 +253,12 @@ async def process_file(content: bytes, filename: str, db: AsyncConnection, force
 
         logging.info(f"Processing file: {filename}")
         
-        req = await partition_request(filename, content)
-        
         try:
             start_time = time.perf_counter()
-            # Run the blocking partitioning API call in a separate thread
-            res = await asyncio.to_thread(unstructured.general.partition, request=req)
-            element_dicts = [element for element in res.elements]
+            # Parse PDF with LlamaParse
+            element_dicts = await parse_pdf_with_llama(filename, content)
             elapsed_time = time.perf_counter() - start_time
-            logging.info(f"Partitioning completed in {elapsed_time:.2f} seconds")
+            logging.info(f"LlamaParse processing completed in {elapsed_time:.2f} seconds")
 
             # Asynchronously upload the raw JSON data to supabase
             json_filename = table_name + ".json"
