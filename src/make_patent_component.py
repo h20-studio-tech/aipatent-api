@@ -33,7 +33,7 @@ else:
     client = OpenAI()
 
 langfuse = get_langfuse_instance()
-model = os.getenv("MODEL")
+model = "gemini-2.5-flash"
 g_reasoning = os.getenv("g_reasoning")
 
 
