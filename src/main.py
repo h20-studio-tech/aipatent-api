@@ -244,9 +244,9 @@ try:
     logging.info(f"DynamoDB connected to AWS account: {dynamodb_account}")
     
     # Verify table exists
-    table = dynamodb.Table("patents")
-    table.meta.client.describe_table(TableName="patents")
-    logging.info("Successfully verified 'patents' table exists")
+    table = dynamodb.Table("aipatent-projects")
+    table.meta.client.describe_table(TableName="aipatent-projects")
+    logging.info("Successfully verified 'aipatent-projects' table exists")
 except Exception as e:
     logging.error(f"DynamoDB connection test failed: {e}")
 
