@@ -38,14 +38,14 @@ g_reasoning = os.getenv("g_reasoning")
 
 
 def generate_field_of_invention(
-    innovation: str, 
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
+    additional:str,
     model: str = model,
-    client=None,
+    client=client,
     lf=None) -> FieldOfInvention:
     lf = lf or langfuse
 
@@ -736,12 +736,13 @@ def generate_claims(
     )
 
 def generate_key_terms(
-    innovation: str, 
+    innovation: str,
     technology: str,
-    approach: str, 
-    antigen: str, 
+    approach: str,
+    antigen: str,
     disease: str,
-    additional:str, 
+    additional: str,
+    context: str,
     model: str = model
 ) -> KeyTerms:
     
@@ -753,33 +754,36 @@ def generate_key_terms(
         id=trace_id,
         name="generate_key_terms",
         input=values_to_json(
-            technology=technology, 
-            antigen=antigen, 
+            technology=technology,
+            antigen=antigen,
             disease=disease,
             innovation=innovation,
             approach=approach,
-            additional=additional),
+            additional=additional,
+            context=context),
         tags=["evaluation"],
     )
     fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
     raw_prompt = langfuse.get_prompt("generate_key_terms")
     prompt = raw_prompt.compile(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
-        additional=additional
+        additional=additional,
+        context=context
         )
     fetch_prompt.end(
         end_time=datetime.now(),
         input=values_to_json(
-        technology=technology, 
-        antigen=antigen, 
+        technology=technology,
+        antigen=antigen,
         disease=disease,
         innovation=innovation,
         approach=approach,
-        additional=additional,        ),
+        additional=additional,
+        context=context),
         output=raw_prompt,
     )
 
