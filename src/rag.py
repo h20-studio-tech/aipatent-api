@@ -235,7 +235,7 @@ async def multiquery_search(
 @observe(name="multiquery_message")    
 async def chunks_summary(chunks:List[Chunk], prompt: str):
     return openai.chat.completions.create(
-         model="gpt-5-mini",
+         model="gpt-5",
          reasoning_effort=r_reasoning,
          messages=[
            {"role": "system", "content": "You are a great scientific analyst who is extensively knowledgeable in microbiologics and patent applications."},
@@ -244,7 +244,17 @@ async def chunks_summary(chunks:List[Chunk], prompt: str):
 
 Use the above document segments as your reference. When you use information from a specific chunk, add an inline citation using the format [X] where X is the chunk ID number.
 
-For example: "IgY antibodies have been shown to reduce bacterial adhesion [57] and improve growth performance in livestock [36]."
+IMPORTANT: When you use information from a specific chunk, add an inline citation using the format [X] where X is the chunk ID number.
+
+correct way to do citations: 
+* "IgY antibodies have been shown to reduce bacterial adhesion [57] and improve growth performance in livestock [36]."
+* "some text [12][41][47]"
+
+incorrect ways to do citations:
+* "text [12,11,106]"
+* "text chunks(100, 20, 10)"
+
+the above incorrect ways and anything that is not the especified in the correct examples is wrong and you should never do citations in the incorrect ways 
 
 Make sure to cite the specific chunk_id(s) that support each claim or piece of information in your response."""}
          ],
@@ -281,7 +291,7 @@ async def judge_answer(question: str, context: List[Chunk], answer: str, label: 
 async def regenerate_with_feedback(chunks: List[Chunk], question: str, feedback: str) -> str:
     """Regenerate the answer using feedback from the judge, conditioning on the same context."""
     return openai.chat.completions.create(
-        model='gpt-5-mini',
+        model='gpt-5',
         reasoning_effort=r_reasoning,
         messages=[
             {"role": "system", "content": "You are a great scientific analyst who is extensively knowledgeable in microbiologics and patent applications."},
@@ -293,7 +303,15 @@ Please provide a single improved answer strictly using the above document segmen
 
 IMPORTANT: When you use information from a specific chunk, add an inline citation using the format [X] where X is the chunk ID number.
 
-For example: "IgY antibodies have been shown to reduce bacterial adhesion [57] and improve growth performance in livestock [36]."
+correct way to do citations: 
+* "IgY antibodies have been shown to reduce bacterial adhesion [57] and improve growth performance in livestock [36]."
+* "some text [12][41][47]"
+
+incorrect ways to do citations:
+* "text [12,11,106]"
+* "text chunks(100, 20, 10)"
+
+the above incorrect ways and anything that is not the especified in the correct examples is wrong and you should never do citations in the incorrect ways 
 
 Make sure to cite the specific chunk_id(s) that support each claim or piece of information in your response."""},
         ],
