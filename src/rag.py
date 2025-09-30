@@ -298,3 +298,58 @@ For example: "IgY antibodies have been shown to reduce bacterial adhesion [57] a
 Make sure to cite the specific chunk_id(s) that support each claim or piece of information in your response."""},
         ],
     ).choices[0].message.content
+
+
+async def get_chunks_by_ids(
+    chunk_ids: List[int],
+    table_names: List[str],
+    db: AsyncConnection,
+) -> List[Chunk]:
+    """
+    Retrieve specific chunks by their IDs from the specified tables.
+    
+    Args:
+        chunk_ids: List of chunk IDs to retrieve
+        table_names: List of table names to search in (e.g., ["document1", "document2"])
+        db: LanceDB async connection
+    
+    Returns:
+        List of Chunk objects matching the provided IDs
+    """
+    try:
+        logging.info(f"Retrieving chunks by IDs: {chunk_ids} from tables: {table_names}")
+        
+        all_chunks = []
+        
+        for table_name in table_names:
+            try:
+                table = await db.open_table(table_name)
+                
+                # Build filter condition for all requested chunk IDs
+                # LanceDB filter syntax: "chunk_id IN (1, 2, 3)"
+                chunk_ids_str = ", ".join(str(cid) for cid in chunk_ids)
+                filter_condition = f"chunk_id IN ({chunk_ids_str})"
+                
+                # Query all matching chunks at once using filter
+                # Note: LanceDB requires a dummy vector search, so we'll use query() instead
+                results = await table.query().where(filter_condition).to_list()
+                
+                # Convert results to Chunk objects
+                for chunk_data in results:
+                    all_chunks.append(Chunk(
+                        chunk_id=chunk_data['chunk_id'],
+                        text=chunk_data['text'],
+                        page_number=chunk_data['page_number'],
+                        filename=chunk_data['filename']
+                    ))
+                        
+            except Exception as table_error:
+                logging.warning(f"Error accessing table {table_name}: {str(table_error)}")
+                continue
+        
+        logging.info(f"Retrieved {len(all_chunks)} chunks by ID")
+        return all_chunks
+        
+    except Exception as e:
+        logging.error(f"Error retrieving chunks by IDs: {str(e)}")
+        return []

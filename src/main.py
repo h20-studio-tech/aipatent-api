@@ -15,7 +15,7 @@ from fastapi import status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from src.models.pdf_workflow import FileProcessedError
-from src.rag import multiquery_search, create_table_from_file, chunks_summary, judge_answer, regenerate_with_feedback
+from src.rag import multiquery_search, create_table_from_file, chunks_summary, judge_answer, regenerate_with_feedback, get_chunks_by_ids
 from contextlib import asynccontextmanager
 from src.pdf_processing import (
     supabase_upload,
@@ -26,7 +26,6 @@ from src.pdf_processing import (
     supabase_download,
 )
 from src.utils.normalize_filename import normalize_filename
-from dotenv import load_dotenv
 from supabase import create_client, Client
 from src.utils.ocr import process_patent_document
 from src.utils.abstract_extractor import extract_abstract_from_pdf
@@ -34,7 +33,9 @@ from src.embodiment_generation import generate_embodiment
 from src.comprehensive_analysis import ComprehensiveAnalysisService
 from src.models.rag_schemas import (
     RetrievalRequest,
-    RetrievalResponse
+    RetrievalResponse,
+    ChunksByIdsRequest,
+    ChunksByIdsResponse
 )
 from src.models.api_schemas import (
      FileUploadResponse,
@@ -78,6 +79,7 @@ from src.models.ocr_schemas import (
     ProcessedPage
 )
 from src.routers.sections import router as sections_router
+from dotenv import load_dotenv
 load_dotenv(".env")
 
 
@@ -457,6 +459,57 @@ async def retrieval(r: RetrievalRequest):
         raise HTTPException(
             status_code=500, detail=f"Error during retrieve: {e}"
         )
+
+@app.post("/api/v1/rag/chunks-by-ids/", response_model=ChunksByIdsResponse, tags=["RAG"])
+async def get_chunks_by_ids_endpoint(request: ChunksByIdsRequest):
+    """
+    Retrieve specific chunks by their IDs from the vector database.
+    
+    This endpoint enables traceability from stored knowledge back to original document chunks.
+    When a stored knowledge entry references chunk IDs (e.g., [75, 12, 89]), this endpoint
+    retrieves the full chunk data including text, page number, and filename.
+    
+    Args:
+        request: ChunksByIdsRequest containing:
+            - chunk_ids: List of chunk IDs to retrieve
+            - document_names: List of document names (without .pdf extension)
+    
+    Returns:
+        ChunksByIdsResponse: Contains status, message, retrieved chunks, and count
+    
+    Raises:
+        HTTPException: If an error occurs during chunk retrieval
+    
+    Example:
+        POST /api/v1/rag/chunks-by-ids/
+        {
+            "chunk_ids": [75, 12, 89],
+            "document_names": ["vaccine_paper", "antibody_study"]
+        }
+    """
+    try:
+        logging.info(f"Retrieving chunks by IDs: {request.chunk_ids} from documents: {request.document_names}")
+        
+        # Retrieve chunks using the new function
+        chunks = await get_chunks_by_ids(
+            chunk_ids=request.chunk_ids,
+            table_names=request.document_names,
+            db=db_connection["db"]
+        )
+        
+        return ChunksByIdsResponse(
+            status="success",
+            message=f"Successfully retrieved {len(chunks)} chunk(s)",
+            chunks=chunks,
+            count=len(chunks)
+        )
+    except Exception as e:
+        logging.error(f"Error retrieving chunks by IDs: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error retrieving chunks by IDs: {str(e)}"
+        )
+
 
 
 @app.post("/api/v1/patent/{patent_id}/", response_model=PatentUploadResponse, status_code=200, tags=["Patent"])
