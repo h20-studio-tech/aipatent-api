@@ -939,28 +939,27 @@ def generate_target_patient_populations(
             additional=additional),
         tags=["evaluation"],
     )
-    fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
-    raw_prompt = langfuse.get_prompt("generate_target_patient_populations")
-    prompt = raw_prompt.compile(
-        technology=technology,
-        antigen=antigen,
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional
-    )
-    fetch_prompt.end(
-        end_time=datetime.now(),
-        input=values_to_json(
-            technology=technology,
-            antigen=antigen,
-            disease=disease,
-            innovation=innovation,
-            approach=approach,
-            additional=additional
-        ),
-        output=raw_prompt,
-    )
+
+    # Inline prompt for target patient populations
+    prompt = f"""Generate a target patient populations subsection for a patent application.
+
+This subsection should comprehensively identify and describe:
+1. Primary patient populations who would benefit from {antigen}-targeted therapy for {disease}
+2. Patient subgroups based on disease severity, comorbidities, or risk factors
+3. Age groups and demographics most affected
+4. Special populations (pediatric, geriatric, immunocompromised)
+5. Inclusion and exclusion criteria for treatment
+6. Patient selection biomarkers or diagnostic criteria
+
+Context:
+- Technology: {technology}
+- Target Antigen: {antigen}
+- Disease: {disease}
+- Innovation: {innovation}
+- Approach: {approach}
+- Additional Information: {additional}
+
+Write in formal patent language, clearly defining each patient population and their specific characteristics. Include prevalence data and unmet needs for each population."""
 
     generation = trace.generation(
         name="target_patient_populations",
@@ -1016,28 +1015,28 @@ def generate_therapeutic_composition(
             additional=additional),
         tags=["evaluation"],
     )
-    fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
-    raw_prompt = langfuse.get_prompt("generate_therapeutic_composition")
-    prompt = raw_prompt.compile(
-        technology=technology,
-        antigen=antigen,
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional
-    )
-    fetch_prompt.end(
-        end_time=datetime.now(),
-        input=values_to_json(
-            technology=technology,
-            antigen=antigen,
-            disease=disease,
-            innovation=innovation,
-            approach=approach,
-            additional=additional
-        ),
-        output=raw_prompt,
-    )
+
+    # Inline prompt for therapeutic composition
+    prompt = f"""Generate a therapeutic composition subsection for a patent application.
+
+This subsection should detail:
+1. Active ingredients (IgY antibodies specific to {antigen})
+2. Antibody concentrations and titers
+3. Formulation components and excipients
+4. Dosage forms (oral, injectable, topical)
+5. Combination therapies with other active agents
+6. Adjuvant components to enhance efficacy
+7. Delivery vehicles or carriers
+
+Context:
+- Technology: {technology}
+- Target Antigen: {antigen}
+- Disease: {disease}
+- Innovation: {innovation}
+- Approach: {approach}
+- Additional Information: {additional}
+
+Use precise pharmaceutical terminology with specific concentration ranges, ratios, and formulation details. Include multiple embodiments of the therapeutic composition."""
 
     generation = trace.generation(
         name="therapeutic_composition",
@@ -1093,28 +1092,29 @@ def generate_alternative_embodiments(
             additional=additional),
         tags=["evaluation"],
     )
-    fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
-    raw_prompt = langfuse.get_prompt("generate_alternative_embodiments")
-    prompt = raw_prompt.compile(
-        technology=technology,
-        antigen=antigen,
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional
-    )
-    fetch_prompt.end(
-        end_time=datetime.now(),
-        input=values_to_json(
-            technology=technology,
-            antigen=antigen,
-            disease=disease,
-            innovation=innovation,
-            approach=approach,
-            additional=additional
-        ),
-        output=raw_prompt,
-    )
+
+    # Inline prompt for alternative embodiments
+    prompt = f"""Generate an alternative embodiments subsection for a patent application.
+
+This subsection should describe various alternative implementations including:
+1. Alternative antigen preparations or modifications
+2. Different IgY antibody formats (whole IgY, Fab fragments, etc.)
+3. Alternative production methods (different bird species, immunization protocols)
+4. Various formulation approaches
+5. Different routes of administration
+6. Alternative dosing regimens
+7. Combination with different therapeutic agents
+8. Modified delivery systems
+
+Context:
+- Technology: {technology}
+- Target Antigen: {antigen}
+- Disease: {disease}
+- Innovation: {innovation}
+- Approach: {approach}
+- Additional Information: {additional}
+
+Present each alternative embodiment with technical detail while maintaining broad patent coverage. Use "In another embodiment..." or similar transitions between alternatives."""
 
     generation = trace.generation(
         name="alternative_embodiments",
@@ -1170,28 +1170,27 @@ def generate_core_claims(
             additional=additional),
         tags=["evaluation"],
     )
-    fetch_prompt = trace.span(name="fetch_prompt", start_time=datetime.now())
-    raw_prompt = langfuse.get_prompt("generate_core_claims")
-    prompt = raw_prompt.compile(
-        technology=technology,
-        antigen=antigen,
-        disease=disease,
-        innovation=innovation,
-        approach=approach,
-        additional=additional
-    )
-    fetch_prompt.end(
-        end_time=datetime.now(),
-        input=values_to_json(
-            technology=technology,
-            antigen=antigen,
-            disease=disease,
-            innovation=innovation,
-            approach=approach,
-            additional=additional
-        ),
-        output=raw_prompt,
-    )
+
+    # Inline prompt for core claims
+    prompt = f"""Generate core claims subsection for a patent application.
+
+This subsection should outline the fundamental patent claims including:
+1. Composition of matter claims for the IgY antibodies
+2. Method of treatment claims for {disease}
+3. Method of production claims for the antibodies
+4. Pharmaceutical composition claims
+5. Use claims for treating specific patient populations
+6. Combination therapy claims
+
+Context:
+- Technology: {technology}
+- Target Antigen: {antigen}
+- Disease: {disease}
+- Innovation: {innovation}
+- Approach: {approach}
+- Additional Information: {additional}
+
+Structure claims in standard patent format with independent and dependent claims. Ensure broad coverage while maintaining specificity to the invention. Use proper claim language and formatting."""
 
     generation = trace.generation(
         name="core_claims",
