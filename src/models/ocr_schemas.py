@@ -53,6 +53,7 @@ class GlossarySubsectionPage(BaseModel):
 
 
 class Embodiment(BaseModel):
+    id: Optional[str] = Field(None, description="Unique identifier for the embodiment (UUID)")
     text: str = Field(..., description="The embodiment")
     filename: str = Field(..., description="The source file of the embodiment")
     page_number: int = Field(
@@ -69,6 +70,7 @@ class Embodiment(BaseModel):
 
 class DetailedDescriptionEmbodiment(BaseModel):
     # Define all fields explicitly instead of using inheritance
+    id: Optional[str] = Field(None, description="Unique identifier for the embodiment (UUID)")
     text: str = Field(..., description="The embodiment")
     filename: str = Field(..., description="The source file of the embodiment")
     page_number: int = Field(

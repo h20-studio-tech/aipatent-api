@@ -296,12 +296,10 @@ class EmbodimentStatusUpdateRequest(BaseModel):
     Request model for updating embodiment status.
 
     Attributes:
-        file_id: The file ID of the embodiment
-        emb_number: The embodiment number within that file
+        embodiment_id: The unique ID of the embodiment (UUID)
         status: The new status (pending, approved, or rejected)
     """
-    file_id: str = Field(..., description="File ID of the embodiment")
-    emb_number: int = Field(..., description="Embodiment number within the file")
+    embodiment_id: str = Field(..., description="Unique ID (UUID) of the embodiment")
     status: str = Field(..., pattern="^(pending|approved|rejected)$",
                        description="New status for the embodiment")
 

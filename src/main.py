@@ -650,6 +650,7 @@ async def patent(patent_id: str, file: UploadFile):
                 supabase.table("embodiments").insert(
                     [
                         {
+                            "id": str(uuid4()),  # Generate unique UUID for each embodiment
                             "file_id": str(patent_id),
                             "emb_number": idx,
                             "text": emb.text,
@@ -1174,23 +1175,22 @@ async def update_embodiment_status(request: EmbodimentStatusUpdateRequest):
     Update the approval status of a specific embodiment.
 
     Args:
-        request (EmbodimentStatusUpdateRequest): Contains file_id, emb_number, and new status
+        request (EmbodimentStatusUpdateRequest): Contains embodiment_id (UUID) and new status
 
     Returns:
         JSONResponse: Success or error response with updated embodiment data
     """
     try:
-        # Update the embodiment status in Supabase
+        # Update the embodiment status in Supabase using the unique ID
         response = (
             supabase.table("embodiments")
             .update({"status": request.status})
-            .eq("file_id", request.file_id)
-            .eq("emb_number", request.emb_number)
+            .eq("id", request.embodiment_id)
             .execute()
         )
 
         if response.data and len(response.data) > 0:
-            logging.info(f"Updated embodiment {request.file_id}-{request.emb_number} status to {request.status}")
+            logging.info(f"Updated embodiment {request.embodiment_id} status to {request.status}")
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={
@@ -1200,12 +1200,12 @@ async def update_embodiment_status(request: EmbodimentStatusUpdateRequest):
                 }
             )
         else:
-            logging.warning(f"Embodiment {request.file_id}-{request.emb_number} not found")
+            logging.warning(f"Embodiment {request.embodiment_id} not found")
             return JSONResponse(
                 status_code=status.HTTP_404_NOT_FOUND,
                 content={
                     "status": "error",
-                    "message": f"Embodiment with file_id={request.file_id} and emb_number={request.emb_number} not found"
+                    "message": f"Embodiment with id={request.embodiment_id} not found"
                 }
             )
     except Exception as e:
