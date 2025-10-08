@@ -11,6 +11,22 @@ from src.make_patent_component import (
     generate_key_terms,
     generate_target_overview,
     generate_underlying_mechanism,
+    # Summary of Invention Subsections
+    generate_target_patient_populations,
+    generate_therapeutic_composition,
+    generate_alternative_embodiments,
+    generate_core_claims,
+    # Detailed Description - Disease & Pathology
+    generate_disease_specific_overview,
+    generate_target_in_disease,
+    generate_epidemiology_clinical_need,
+    # Detailed Description - Therapeutic Formulation
+    generate_hyperimmunized_egg_products,
+    generate_antigenic_targets,
+    generate_production_methods,
+    generate_pharmaceutical_compositions,
+    # Detailed Description - Definitions
+    generate_key_terminology,
 )
 from src.models.sections_schemas import (
     SectionGenerationRequest,
@@ -19,6 +35,10 @@ from src.models.sections_schemas import (
     TargetOverviewResponse,
     KeyTermsGenerationRequest,
     KeyTermsResponse,
+    DiseaseSpecificOverviewRequest,
+    DiseaseSpecificOverviewResponse,
+    TargetInDiseaseRequest,
+    TargetInDiseaseResponse,
 )
 router = APIRouter(prefix="/api/v1/sections", tags=["sections"])
 
@@ -233,6 +253,295 @@ async def key_terms(req: KeyTermsGenerationRequest) -> KeyTermsResponse:
         approach=req.approach,
         antigen=req.antigen,
         disease=req.disease,
-        additional=req.additional,      
+        additional=req.additional,
         context=req.context,
+    )
+
+# ============================================
+# Patent Subsections Endpoints
+
+# ============================================
+# Summary of Invention Subsections
+# ============================================
+
+@router.post("/subsections/target_patient_populations", response_model=SectionResponse)
+async def target_patient_populations(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate target patient populations subsection"""
+    res = generate_target_patient_populations(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+
+@router.post("/subsections/therapeutic_composition", response_model=SectionResponse)
+async def therapeutic_composition(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate therapeutic composition subsection"""
+    res = generate_therapeutic_composition(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+
+@router.post("/subsections/alternative_embodiments", response_model=SectionResponse)
+async def alternative_embodiments(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate alternative embodiments subsection"""
+    res = generate_alternative_embodiments(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+
+@router.post("/subsections/core_claims", response_model=SectionResponse)
+async def core_claims(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate core claims subsection"""
+    res = generate_core_claims(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+
+# ============================================
+# Detailed Description - Disease & Pathology
+# ============================================
+
+@router.post("/subsections/disease_specific_overview", response_model=DiseaseSpecificOverviewResponse)
+async def disease_specific_overview(req: DiseaseSpecificOverviewRequest) -> DiseaseSpecificOverviewResponse:
+    """Generate disease-specific overview subsection"""
+    res = generate_disease_specific_overview(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+        disease_name=req.disease_name,
+    )
+    return DiseaseSpecificOverviewResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+        disease_name=res.disease_name,
+    )
+
+@router.post("/subsections/target_in_disease", response_model=TargetInDiseaseResponse)
+async def target_in_disease(req: TargetInDiseaseRequest) -> TargetInDiseaseResponse:
+    """Generate target in disease subsection"""
+    res = generate_target_in_disease(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+        target_name=req.target_name,
+        disease_name=req.disease_name,
+    )
+    return TargetInDiseaseResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+        target_name=res.target_name,
+        disease_name=res.disease_name,
+    )
+
+@router.post("/subsections/epidemiology_clinical_need", response_model=SectionResponse)
+async def epidemiology_clinical_need(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate epidemiology and clinical need subsection"""
+    res = generate_epidemiology_clinical_need(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+
+# ============================================
+# Detailed Description - Therapeutic Formulation
+# ============================================
+
+@router.post("/subsections/hyperimmunized_egg_products", response_model=SectionResponse)
+async def hyperimmunized_egg_products(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate hyperimmunized egg products subsection"""
+    res = generate_hyperimmunized_egg_products(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+
+@router.post("/subsections/antigenic_targets", response_model=SectionResponse)
+async def antigenic_targets(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate antigenic targets subsection"""
+    res = generate_antigenic_targets(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+
+@router.post("/subsections/production_methods", response_model=SectionResponse)
+async def production_methods(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate production methods subsection"""
+    res = generate_production_methods(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+
+@router.post("/subsections/pharmaceutical_compositions", response_model=SectionResponse)
+async def pharmaceutical_compositions(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate pharmaceutical compositions subsection"""
+    res = generate_pharmaceutical_compositions(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+
+# ============================================
+# Detailed Description - Definitions
+# ============================================
+
+@router.post("/subsections/key_terminology", response_model=SectionResponse)
+async def key_terminology(req: SectionGenerationRequest) -> SectionResponse:
+    """Generate key terminology subsection"""
+    res = generate_key_terminology(
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
+    )
+    return SectionResponse(
+        prediction=res.prediction,
+        trace_id=res.trace_id,
+        innovation=req.innovation,
+        technology=req.technology,
+        approach=req.approach,
+        antigen=req.antigen,
+        disease=req.disease,
+        additional=req.additional,
     )

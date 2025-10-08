@@ -27,3 +27,18 @@ class TargetOverviewRequest(SectionGenerationRequest):
     
 class TargetOverviewResponse(SectionResponse):
     context: str = Field(..., description="Context for the target overview")
+
+# Subsection schemas for sections with extra parameters
+class DiseaseSpecificOverviewRequest(SectionGenerationRequest):
+    disease_name: str = Field(..., description="Specific disease name for this overview")
+
+class DiseaseSpecificOverviewResponse(SectionResponse):
+    disease_name: str = Field(..., description="Specific disease name for this overview")
+
+class TargetInDiseaseRequest(SectionGenerationRequest):
+    target_name: str = Field(..., description="Specific target name")
+    disease_name: str = Field(..., description="Specific disease name")
+
+class TargetInDiseaseResponse(SectionResponse):
+    target_name: str = Field(..., description="Specific target name")
+    disease_name: str = Field(..., description="Specific disease name")

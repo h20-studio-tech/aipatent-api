@@ -74,10 +74,146 @@ class KeyTerms(BaseModel):
 
 class DiseaseOverview(BaseModel):
     prediction: str = Field(
-        ..., 
+        ...,
         description="the redacted disease overview section for the patent draft"
     )
     trace_id: str = Field(
-        ..., 
+        ...,
         description="the langfuse trace id for the disease overview generation"
+    )
+
+# Summary of Invention Subsections
+class TargetPatientPopulations(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the target patient populations subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the target patient populations generation"
+    )
+
+class TherapeuticComposition(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the therapeutic composition subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the therapeutic composition generation"
+    )
+
+class AlternativeEmbodiments(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the alternative embodiments subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the alternative embodiments generation"
+    )
+
+class CoreClaims(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the core claims subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the core claims generation"
+    )
+
+# Detailed Description - Disease & Pathology Subsections
+class DiseaseSpecificOverview(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the disease-specific overview subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the disease-specific overview generation"
+    )
+    disease_name: str = Field(
+        ...,
+        description="the specific disease name this overview is for"
+    )
+
+class TargetInDisease(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the target in disease subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the target in disease generation"
+    )
+    target_name: str = Field(
+        ...,
+        description="the specific target name"
+    )
+    disease_name: str = Field(
+        ...,
+        description="the specific disease name"
+    )
+
+class EpidemiologyClinicalNeed(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the epidemiology and clinical need subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the epidemiology and clinical need generation"
+    )
+
+# Detailed Description - Therapeutic Formulation Subsections
+class HyperimmunizedEggProducts(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the hyperimmunized egg products subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the hyperimmunized egg products generation"
+    )
+
+class AntigenicTargets(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the antigenic targets subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the antigenic targets generation"
+    )
+
+class ProductionMethods(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the production methods subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the production methods generation"
+    )
+
+class PharmaceuticalCompositions(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the pharmaceutical compositions subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the pharmaceutical compositions generation"
+    )
+
+# Detailed Description - Definitions Subsection
+class KeyTerminology(BaseModel):
+    prediction: str = Field(
+        ...,
+        description="the key terminology subsection for the patent draft"
+    )
+    trace_id: str = Field(
+        ...,
+        description="the langfuse trace id for the key terminology generation"
     )

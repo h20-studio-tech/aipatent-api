@@ -50,6 +50,7 @@ from src.models.api_schemas import (
      EmbodimentApproveErrorResponse,
      EmbodimentsListResponse,
      EmbodimentListResponse,
+     EmbodimentStatusUpdateRequest,
      ApprovedEmbodimentRequest,
      SyntheticEmbodimentRequest,
      ApproachKnowledge,
@@ -652,6 +653,7 @@ async def patent(patent_id: str, file: UploadFile):
                             "file_id": str(patent_id),
                             "emb_number": idx,
                             "text": emb.text,
+                            "status": "pending",  # Default status for new embodiments
                             **(
                                 {"header": emb.header}
                                 if isinstance(emb, DetailedDescriptionEmbodiment)
@@ -917,6 +919,40 @@ async def list_patent_files():
             detail=f"Error retrieving patent files: {e}"
         )
 
+@app.get("/api/v1/source-embodiments/approved/{patent_id}", tags=["Patent"])
+async def list_approved_embodiments(patent_id: str):
+    """
+    Retrieve only approved embodiments for a given patent_id.
+    This endpoint is used by generation functions to only include approved content.
+    """
+    try:
+        response = (
+            supabase.table("embodiments")
+            .select("*")
+            .eq("file_id", str(patent_id))
+            .eq("status", "approved")
+            .order("emb_number")
+            .execute()
+        )
+
+        approved_embodiments = response.data if response.data else []
+
+        logging.info(f"Retrieved {len(approved_embodiments)} approved embodiments for patent_id={patent_id}")
+
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "status": "success",
+                "message": f"Retrieved {len(approved_embodiments)} approved embodiments",
+                "patent_id": patent_id,
+                "data": approved_embodiments
+            }
+        )
+    except Exception as e:
+        logging.error(f"Failed to retrieve approved embodiments for patent_id={patent_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving approved embodiments: {e}")
+
+
 @app.get("/api/v1/source-embodiments/{patent_id}", response_model=EmbodimentsListResponse, tags=["Patent"])
 async def list_source_embodiments(patent_id: str):
     """
@@ -1132,8 +1168,57 @@ async def embodiment_approve(request: ApprovedEmbodimentRequest):
             message=str(e)
         )
 
-    
-    
+@app.put("/api/v1/embodiment/status/", tags=["Embodiment"])
+async def update_embodiment_status(request: EmbodimentStatusUpdateRequest):
+    """
+    Update the approval status of a specific embodiment.
+
+    Args:
+        request (EmbodimentStatusUpdateRequest): Contains file_id, emb_number, and new status
+
+    Returns:
+        JSONResponse: Success or error response with updated embodiment data
+    """
+    try:
+        # Update the embodiment status in Supabase
+        response = (
+            supabase.table("embodiments")
+            .update({"status": request.status})
+            .eq("file_id", request.file_id)
+            .eq("emb_number", request.emb_number)
+            .execute()
+        )
+
+        if response.data and len(response.data) > 0:
+            logging.info(f"Updated embodiment {request.file_id}-{request.emb_number} status to {request.status}")
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={
+                    "status": "success",
+                    "message": f"Embodiment status updated to {request.status}",
+                    "data": response.data[0]
+                }
+            )
+        else:
+            logging.warning(f"Embodiment {request.file_id}-{request.emb_number} not found")
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={
+                    "status": "error",
+                    "message": f"Embodiment with file_id={request.file_id} and emb_number={request.emb_number} not found"
+                }
+            )
+    except Exception as e:
+        logging.error(f"Error updating embodiment status: {str(e)}")
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={
+                "status": "error",
+                "message": f"Failed to update embodiment status: {str(e)}"
+            }
+        )
+
+
 @app.post("/api/v1/knowledge/approach/", tags=["Knowledge"])
 async def store_approach_knowledge(request: ApproachKnowledge):
     """

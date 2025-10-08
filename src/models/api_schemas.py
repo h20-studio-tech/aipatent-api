@@ -291,10 +291,24 @@ class SyntheticEmbodimentRequest(BaseModel):
     disease: str = Field(..., description="Disease relevant to the embodiment")
     antigen: str = Field(..., description="Antigen relevant to the embodiment")
     
+class EmbodimentStatusUpdateRequest(BaseModel):
+    """
+    Request model for updating embodiment status.
+
+    Attributes:
+        file_id: The file ID of the embodiment
+        emb_number: The embodiment number within that file
+        status: The new status (pending, approved, or rejected)
+    """
+    file_id: str = Field(..., description="File ID of the embodiment")
+    emb_number: int = Field(..., description="Embodiment number within the file")
+    status: str = Field(..., pattern="^(pending|approved|rejected)$",
+                       description="New status for the embodiment")
+
 class EmbodimentApproveSuccessResponse(BaseModel):
     """
     Response model for successful embodiment approval.
-    
+
     Attributes:
         status: Status of the response (always "success")
         message: Status message describing the result of the approval operation
