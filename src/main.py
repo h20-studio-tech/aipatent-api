@@ -1622,11 +1622,13 @@ async def update_patent_component(patent_id: str, request: ComponentUpdateReques
         HTTPException: If there's an error updating the component
     """
     try:
+        logging.info(f"PATCH /component: Starting component update for patent_id={patent_id}, component_id={request.component_id}, type={request.type}")
+
         # Validate patent_id format
         try:
             uuid.UUID(patent_id)
         except ValueError:
-            logging.warning(f"Invalid patent_id format: {patent_id}")
+            logging.warning(f"PATCH /component: Invalid patent_id format: {patent_id}")
             raise HTTPException(
                 status_code=400,
                 detail=f"Invalid patent_id format. Expected UUID, got: {patent_id}"
@@ -1634,15 +1636,17 @@ async def update_patent_component(patent_id: str, request: ComponentUpdateReques
 
         # Fetch existing draft or prepare new one
         try:
+            logging.debug(f"PATCH /component: Querying existing draft for patent_id={patent_id}")
             existing_draft = (
                 supabase.table("patent_content_drafts")
                 .select("*")
                 .eq("patent_id", patent_id)
-                .maybe_single()
+                .limit(1)
                 .execute()
             )
+            logging.debug(f"PATCH /component: Query response = {existing_draft}")
         except Exception as db_error:
-            logging.error(f"Supabase query error for patent_id={patent_id}: {db_error}")
+            logging.error(f"PATCH /component: Supabase query error for patent_id={patent_id}: {db_error}", exc_info=True)
             raise HTTPException(
                 status_code=503,
                 detail="Database temporarily unavailable. Please try again."
@@ -1664,13 +1668,15 @@ async def update_patent_component(patent_id: str, request: ComponentUpdateReques
             new_component["metadata"] = request.metadata
 
         try:
+            # Check if draft exists (data will be empty list if no record, or list with one dict if found)
             if existing_draft.data:
-                # Update existing draft
-                current_components = existing_draft.data.get("components", [])
+                logging.info(f"PATCH /component: Updating existing draft for patent_id={patent_id}")
+                # Update existing draft - data[0] contains the record
+                current_components = existing_draft.data[0].get("components", [])
 
                 # Validate components is actually a list
                 if not isinstance(current_components, list):
-                    logging.error(f"Invalid components type for patent_id={patent_id}: {type(current_components)}")
+                    logging.error(f"PATCH /component: Invalid components type for patent_id={patent_id}: {type(current_components)}")
                     current_components = []
 
                 # Find and update component if it exists, otherwise append
@@ -1681,12 +1687,15 @@ async def update_patent_component(patent_id: str, request: ComponentUpdateReques
                     if comp.get("id") == request.component_id or comp.get("type") == request.type:
                         current_components[i] = new_component
                         component_updated = True
+                        logging.debug(f"PATCH /component: Replaced existing component at index {i}")
                         break
 
                 if not component_updated:
                     current_components.append(new_component)
+                    logging.debug(f"PATCH /component: Appended new component. Total components: {len(current_components)}")
 
                 # Update the draft
+                logging.debug(f"PATCH /component: Executing UPDATE query for patent_id={patent_id}")
                 response = (
                     supabase.table("patent_content_drafts")
                     .update({
@@ -1699,12 +1708,15 @@ async def update_patent_component(patent_id: str, request: ComponentUpdateReques
 
                 # Verify update succeeded
                 if not response.data:
-                    logging.error(f"Update returned no data for patent_id={patent_id}")
+                    logging.error(f"PATCH /component: UPDATE returned no data for patent_id={patent_id}")
                     raise HTTPException(
                         status_code=500,
                         detail="Failed to update component. No data returned from database."
                     )
+                logging.debug(f"PATCH /component: UPDATE response = {response}")
+                logging.info(f"PATCH /component: Successfully updated component for patent_id={patent_id}")
             else:
+                logging.info(f"PATCH /component: Creating new draft for patent_id={patent_id}")
                 # Create new draft
                 response = (
                     supabase.table("patent_content_drafts")
@@ -1719,24 +1731,28 @@ async def update_patent_component(patent_id: str, request: ComponentUpdateReques
 
                 # Verify insert succeeded
                 if not response.data:
-                    logging.error(f"Insert returned no data for patent_id={patent_id}")
+                    logging.error(f"PATCH /component: INSERT returned no data for patent_id={patent_id}")
                     raise HTTPException(
                         status_code=500,
                         detail="Failed to create draft. No data returned from database."
                     )
+                logging.debug(f"PATCH /component: INSERT response = {response}")
+                logging.info(f"PATCH /component: Successfully created new draft for patent_id={patent_id}")
 
         except HTTPException:
             raise
         except Exception as db_error:
-            logging.error(f"Supabase write error for patent_id={patent_id}: {db_error}")
+            logging.error(f"PATCH /component: Supabase write error for patent_id={patent_id}: {db_error}", exc_info=True)
             # Check for common Supabase errors
             error_str = str(db_error).lower()
             if "unique" in error_str or "constraint" in error_str:
+                logging.warning(f"PATCH /component: Constraint violation for patent_id={patent_id}")
                 raise HTTPException(
                     status_code=409,
                     detail="Conflict: Draft already exists with different version"
                 )
             elif "permission" in error_str or "policy" in error_str:
+                logging.warning(f"PATCH /component: Permission denied for patent_id={patent_id}")
                 raise HTTPException(
                     status_code=403,
                     detail="Permission denied: Cannot modify this draft"
@@ -1785,11 +1801,13 @@ async def save_patent_draft(patent_id: str, request: PatentDraftSaveRequest):
         HTTPException: If there's an error saving the draft
     """
     try:
+        logging.info(f"POST /save: Starting full draft save for patent_id={patent_id}, components_count={len(request.components)}")
+
         # Validate patent_id format
         try:
             uuid.UUID(patent_id)
         except ValueError:
-            logging.warning(f"Invalid patent_id format: {patent_id}")
+            logging.warning(f"POST /save: Invalid patent_id format: {patent_id}")
             raise HTTPException(
                 status_code=400,
                 detail=f"Invalid patent_id format. Expected UUID, got: {patent_id}"
@@ -1819,24 +1837,29 @@ async def save_patent_draft(patent_id: str, request: PatentDraftSaveRequest):
 
         # Check if draft exists to get current version
         try:
+            logging.debug(f"POST /save: Querying existing version for patent_id={patent_id}")
             existing_draft = (
                 supabase.table("patent_content_drafts")
                 .select("version")
                 .eq("patent_id", patent_id)
-                .maybe_single()
+                .limit(1)
                 .execute()
             )
+            logging.debug(f"POST /save: Query response = {existing_draft}")
         except Exception as db_error:
-            logging.error(f"Supabase query error for patent_id={patent_id}: {db_error}")
+            logging.error(f"POST /save: Supabase query error for patent_id={patent_id}: {db_error}", exc_info=True)
             raise HTTPException(
                 status_code=503,
                 detail="Database temporarily unavailable. Please try again."
             )
 
-        new_version = (existing_draft.data.get("version", 0) + 1) if existing_draft.data else 1
+        # Calculate new version (data will be empty list if no record exists)
+        new_version = (existing_draft.data[0].get("version", 0) + 1) if existing_draft.data else 1
+        logging.info(f"POST /save: Calculated new version={new_version} for patent_id={patent_id}")
 
         # Upsert the complete draft
         try:
+            logging.debug(f"POST /save: Executing UPSERT for patent_id={patent_id}")
             response = (
                 supabase.table("patent_content_drafts")
                 .upsert({
@@ -1850,28 +1873,34 @@ async def save_patent_draft(patent_id: str, request: PatentDraftSaveRequest):
 
             # Verify upsert succeeded
             if not response.data:
-                logging.error(f"Upsert returned no data for patent_id={patent_id}")
+                logging.error(f"POST /save: UPSERT returned no data for patent_id={patent_id}")
                 raise HTTPException(
                     status_code=500,
                     detail="Failed to save draft. No data returned from database."
                 )
 
+            logging.debug(f"POST /save: UPSERT response = {response}")
+            logging.info(f"POST /save: Successfully saved draft for patent_id={patent_id}, version={new_version}")
+
         except HTTPException:
             raise
         except Exception as db_error:
-            logging.error(f"Supabase upsert error for patent_id={patent_id}: {db_error}")
+            logging.error(f"POST /save: Supabase upsert error for patent_id={patent_id}: {db_error}", exc_info=True)
             error_str = str(db_error).lower()
             if "unique" in error_str or "constraint" in error_str:
+                logging.warning(f"POST /save: Constraint violation for patent_id={patent_id}")
                 raise HTTPException(
                     status_code=409,
                     detail="Conflict: Failed to save draft due to concurrent modification"
                 )
             elif "permission" in error_str or "policy" in error_str:
+                logging.warning(f"POST /save: Permission denied for patent_id={patent_id}")
                 raise HTTPException(
                     status_code=403,
                     detail="Permission denied: Cannot save this draft"
                 )
             elif "size" in error_str or "too large" in error_str:
+                logging.warning(f"POST /save: Content too large for patent_id={patent_id}")
                 raise HTTPException(
                     status_code=413,
                     detail="Draft content too large. Please reduce component sizes."
@@ -1919,11 +1948,13 @@ async def get_patent_draft(patent_id: str):
         HTTPException: 404 if draft doesn't exist, 500 for other errors
     """
     try:
+        logging.info(f"GET /patent: Retrieving draft for patent_id={patent_id}")
+
         # Validate patent_id format
         try:
             uuid.UUID(patent_id)
         except ValueError:
-            logging.warning(f"Invalid patent_id format: {patent_id}")
+            logging.warning(f"GET /patent: Invalid patent_id format: {patent_id}")
             raise HTTPException(
                 status_code=400,
                 detail=f"Invalid patent_id format. Expected UUID, got: {patent_id}"
@@ -1931,34 +1962,38 @@ async def get_patent_draft(patent_id: str):
 
         # Query draft from database
         try:
+            logging.debug(f"GET /patent: Querying draft for patent_id={patent_id}")
             response = (
                 supabase.table("patent_content_drafts")
                 .select("*")
                 .eq("patent_id", patent_id)
-                .maybe_single()
+                .limit(1)
                 .execute()
             )
+            logging.debug(f"GET /patent: Query response = {response}")
         except Exception as db_error:
-            logging.error(f"Supabase query error for patent_id={patent_id}: {db_error}")
+            logging.error(f"GET /patent: Supabase query error for patent_id={patent_id}: {db_error}", exc_info=True)
             raise HTTPException(
                 status_code=503,
                 detail="Database temporarily unavailable. Please try again."
             )
 
-        # Check if draft exists
+        # Check if draft exists (data will be empty list if no record found)
         if not response.data:
-            logging.info(f"No draft found for patent_id={patent_id}")
+            logging.info(f"GET /patent: No draft found for patent_id={patent_id}")
             raise HTTPException(
                 status_code=404,
                 detail=f"No draft found for patent_id={patent_id}"
             )
 
-        draft_data = response.data
+        # Extract the record from the list
+        draft_data = response.data[0]
+        logging.debug(f"GET /patent: Retrieved draft with {len(draft_data.get('components', []))} components")
 
         # Validate data integrity
         components = draft_data.get("components", [])
         if not isinstance(components, list):
-            logging.error(f"Invalid components type for patent_id={patent_id}: {type(components)}")
+            logging.error(f"GET /patent: Invalid components type for patent_id={patent_id}: {type(components)}")
             components = []
 
         # Ensure timestamps are present
@@ -1966,9 +2001,11 @@ async def get_patent_draft(patent_id: str):
         created_at = draft_data.get("created_at")
 
         if not last_saved_at:
-            logging.warning(f"Missing last_saved_at for patent_id={patent_id}")
+            logging.warning(f"GET /patent: Missing last_saved_at for patent_id={patent_id}")
         if not created_at:
-            logging.warning(f"Missing created_at for patent_id={patent_id}")
+            logging.warning(f"GET /patent: Missing created_at for patent_id={patent_id}")
+
+        logging.info(f"GET /patent: Successfully retrieved draft for patent_id={patent_id}, version={draft_data.get('version', 'unknown')}")
 
         return PatentDraftResponse(
             status="success",
