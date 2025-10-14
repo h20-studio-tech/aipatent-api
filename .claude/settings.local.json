@@ -1,9 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cat:*)",
-      "WebSearch",
-      "Bash(uv run:*)"
+      "*"
     ]
   },
   "outputStyle": "default"

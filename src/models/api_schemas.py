@@ -533,3 +533,49 @@ class PageBasedSectionsResponse(BaseModel):
     filename: Optional[str] = Field(None, description="Filename of the patent document")
     pages: List[PageData] = Field(..., description="List of pages with their content and metadata")
     total_pages: int = Field(..., description="Total number of pages in the document")
+
+
+# Patent Content Draft Models for AIP-1
+class ComponentUpdateRequest(BaseModel):
+    """Request model for updating a single patent draft component."""
+    component_id: str = Field(..., description="Unique component identifier")
+    type: str = Field(..., description="Component type (background, claims, abstract, etc.)")
+    title: str = Field(..., description="Component title")
+    content: str = Field(..., description="Generated text content")
+    order: int = Field(..., description="Display order")
+    trace_id: Optional[str] = Field(None, description="Langfuse trace ID")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata")
+
+
+class ComponentUpdateResponse(BaseModel):
+    """Response model for component update operations."""
+    status: str = Field(default="success", description="Status of the response")
+    message: str = Field(..., description="Status message")
+    patent_id: str = Field(..., description="Patent project ID")
+    component_id: str = Field(..., description="Updated component ID")
+    updated_at: datetime = Field(..., description="Update timestamp")
+
+
+class PatentDraftSaveRequest(BaseModel):
+    """Request model for saving complete patent draft state."""
+    components: List[Dict[str, Any]] = Field(..., description="Complete list of draft components")
+
+
+class PatentDraftSaveResponse(BaseModel):
+    """Response model for draft save operations."""
+    status: str = Field(default="success", description="Status of the response")
+    message: str = Field(..., description="Status message")
+    patent_id: str = Field(..., description="Patent project ID")
+    version: int = Field(..., description="Draft version number")
+    last_saved_at: datetime = Field(..., description="Last save timestamp")
+    components_count: int = Field(..., description="Number of components saved")
+
+
+class PatentDraftResponse(BaseModel):
+    """Response model for retrieving patent draft."""
+    status: str = Field(default="success", description="Status of the response")
+    patent_id: str = Field(..., description="Patent project ID")
+    components: List[Dict[str, Any]] = Field(..., description="List of draft components")
+    version: int = Field(..., description="Draft version number")
+    last_saved_at: datetime = Field(..., description="Last save timestamp")
+    created_at: datetime = Field(..., description="Draft creation timestamp")
