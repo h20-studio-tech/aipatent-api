@@ -70,7 +70,12 @@ from src.models.api_schemas import (
      PatentFilesListResponse,
      RawSectionsResponse,
      PageBasedSectionsResponse,
-     PageData
+     PageData,
+     ComponentUpdateRequest,
+     ComponentUpdateResponse,
+     PatentDraftSaveRequest,
+     PatentDraftSaveResponse,
+     PatentDraftResponse,
  )
 from src.models.ocr_schemas import (
     Embodiment, 
@@ -1584,13 +1589,225 @@ async def comprehensive_analysis_storage_id(file_id: str):
         
         # Initialize analysis service
         analysis_service = ComprehensiveAnalysisService()
-        
+
         # Perform analysis with LLaMA Parse
         result = await analysis_service.analyze_from_file_content(file_content, filename)
-        
+
         return result
-        
+
     except HTTPException:
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# Patent Content Draft Endpoints - AIP-1
+@app.patch("/api/v1/project/patent/{patent_id}/component", response_model=ComponentUpdateResponse, tags=["Patent Draft"])
+async def update_patent_component(patent_id: str, request: ComponentUpdateRequest):
+    """
+    Update or insert a single component in the patent draft.
+
+    This endpoint is called each time a section is generated to incrementally
+    build up the patent draft. It performs an upsert operation - if a component
+    with the same ID exists, it updates it; otherwise, it appends a new component.
+
+    Args:
+        patent_id: Unique identifier for the patent project
+        request: Component data including type, title, content, and metadata
+
+    Returns:
+        ComponentUpdateResponse: Status, updated component ID, and timestamp
+
+    Raises:
+        HTTPException: If there's an error updating the component
+    """
+    try:
+        # Fetch existing draft or prepare new one
+        existing_draft = (
+            supabase.table("patent_content_drafts")
+            .select("*")
+            .eq("patent_id", patent_id)
+            .maybe_single()
+            .execute()
+        )
+
+        # Prepare component data
+        new_component = {
+            "id": request.component_id,
+            "type": request.type,
+            "title": request.title,
+            "content": request.content,
+            "order": request.order,
+            "generated_at": datetime.now().isoformat(),
+        }
+
+        if request.trace_id:
+            new_component["trace_id"] = request.trace_id
+        if request.metadata:
+            new_component["metadata"] = request.metadata
+
+        if existing_draft.data:
+            # Update existing draft
+            current_components = existing_draft.data.get("components", [])
+
+            # Find and update component if it exists, otherwise append
+            component_updated = False
+            for i, comp in enumerate(current_components):
+                if comp.get("id") == request.component_id or comp.get("type") == request.type:
+                    current_components[i] = new_component
+                    component_updated = True
+                    break
+
+            if not component_updated:
+                current_components.append(new_component)
+
+            # Update the draft
+            response = (
+                supabase.table("patent_content_drafts")
+                .update({
+                    "components": current_components,
+                    "last_saved_at": datetime.now().isoformat()
+                })
+                .eq("patent_id", patent_id)
+                .execute()
+            )
+        else:
+            # Create new draft
+            response = (
+                supabase.table("patent_content_drafts")
+                .insert({
+                    "patent_id": patent_id,
+                    "components": [new_component],
+                    "version": 1,
+                    "last_saved_at": datetime.now().isoformat()
+                })
+                .execute()
+            )
+
+        return ComponentUpdateResponse(
+            status="success",
+            message="Component updated successfully",
+            patent_id=patent_id,
+            component_id=request.component_id,
+            updated_at=datetime.now()
+        )
+
+    except Exception as e:
+        logging.error(f"Error updating patent component for patent_id={patent_id}: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error updating patent component: {str(e)}"
+        )
+
+
+@app.post("/api/v1/project/patent/{patent_id}/save", response_model=PatentDraftSaveResponse, tags=["Patent Draft"])
+async def save_patent_draft(patent_id: str, request: PatentDraftSaveRequest):
+    """
+    Save complete patent draft state.
+
+    This endpoint is called when the user clicks "Save Progress" button.
+    It replaces the entire components array with the provided data,
+    increments the version number, and updates the timestamp.
+
+    Args:
+        patent_id: Unique identifier for the patent project
+        request: Complete list of draft components
+
+    Returns:
+        PatentDraftSaveResponse: Status, version, timestamp, and component count
+
+    Raises:
+        HTTPException: If there's an error saving the draft
+    """
+    try:
+        # Check if draft exists to get current version
+        existing_draft = (
+            supabase.table("patent_content_drafts")
+            .select("version")
+            .eq("patent_id", patent_id)
+            .maybe_single()
+            .execute()
+        )
+
+        new_version = (existing_draft.data.get("version", 0) + 1) if existing_draft.data else 1
+
+        # Upsert the complete draft
+        response = (
+            supabase.table("patent_content_drafts")
+            .upsert({
+                "patent_id": patent_id,
+                "components": request.components,
+                "version": new_version,
+                "last_saved_at": datetime.now().isoformat()
+            }, on_conflict="patent_id")
+            .execute()
+        )
+
+        return PatentDraftSaveResponse(
+            status="success",
+            message="Draft saved successfully",
+            patent_id=patent_id,
+            version=new_version,
+            last_saved_at=datetime.now(),
+            components_count=len(request.components)
+        )
+
+    except Exception as e:
+        logging.error(f"Error saving patent draft for patent_id={patent_id}: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error saving patent draft: {str(e)}"
+        )
+
+
+@app.get("/api/v1/project/patent/{patent_id}", response_model=PatentDraftResponse, tags=["Patent Draft"])
+async def get_patent_draft(patent_id: str):
+    """
+    Retrieve saved patent draft for a given patent project.
+
+    This endpoint fetches the complete draft state including all components,
+    version number, and timestamps.
+
+    Args:
+        patent_id: Unique identifier for the patent project
+
+    Returns:
+        PatentDraftResponse: Complete draft data with components and metadata
+
+    Raises:
+        HTTPException: 404 if draft doesn't exist, 500 for other errors
+    """
+    try:
+        response = (
+            supabase.table("patent_content_drafts")
+            .select("*")
+            .eq("patent_id", patent_id)
+            .maybe_single()
+            .execute()
+        )
+
+        if not response.data:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No draft found for patent_id={patent_id}"
+            )
+
+        draft_data = response.data
+
+        return PatentDraftResponse(
+            status="success",
+            patent_id=patent_id,
+            components=draft_data.get("components", []),
+            version=draft_data.get("version", 1),
+            last_saved_at=draft_data.get("last_saved_at"),
+            created_at=draft_data.get("created_at")
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Error retrieving patent draft for patent_id={patent_id}: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error retrieving patent draft: {str(e)}"
+        )
