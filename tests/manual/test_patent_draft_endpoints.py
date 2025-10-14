@@ -211,6 +211,165 @@ async def test_nonexistent_draft():
         print("✅ Test 6 PASSED")
 
 
+async def test_invalid_uuid_format():
+    """Test error handling for invalid UUID format"""
+    print(f"\n{'='*60}")
+    print("Test 7: Invalid UUID format (should return 400)")
+    print(f"{'='*60}")
+
+    async with httpx.AsyncClient() as client:
+        # Test GET with invalid UUID
+        response = await client.get(
+            f"{BASE_URL}/api/v1/project/patent/not-a-uuid",
+            timeout=30.0
+        )
+        print(f"GET Status Code: {response.status_code}")
+        assert response.status_code == 400
+        print(f"Error detail: {response.json().get('detail')}")
+
+        # Test PATCH with invalid UUID
+        response = await client.patch(
+            f"{BASE_URL}/api/v1/project/patent/invalid-uuid/component",
+            json={
+                "component_id": str(uuid.uuid4()),
+                "type": "test",
+                "title": "Test",
+                "content": "Test content",
+                "order": 1
+            },
+            timeout=30.0
+        )
+        print(f"PATCH Status Code: {response.status_code}")
+        assert response.status_code == 400
+
+        # Test POST with invalid UUID
+        response = await client.post(
+            f"{BASE_URL}/api/v1/project/patent/bad-uuid/save",
+            json={"components": []},
+            timeout=30.0
+        )
+        print(f"POST Status Code: {response.status_code}")
+        assert response.status_code == 400
+
+    print("✅ Test 7 PASSED")
+
+
+async def test_invalid_component_structure():
+    """Test error handling for invalid component structure"""
+    print(f"\n{'='*60}")
+    print("Test 8: Invalid component structure (should return 400)")
+    print(f"{'='*60}")
+
+    test_patent_id = str(uuid.uuid4())
+
+    async with httpx.AsyncClient() as client:
+        # Test with non-array components
+        response = await client.post(
+            f"{BASE_URL}/api/v1/project/patent/{test_patent_id}/save",
+            json={"components": "not an array"},
+            timeout=30.0
+        )
+        print(f"Non-array Status Code: {response.status_code}")
+        assert response.status_code == 400
+        print(f"Error: {response.json().get('detail')}")
+
+        # Test with component missing required fields
+        response = await client.post(
+            f"{BASE_URL}/api/v1/project/patent/{test_patent_id}/save",
+            json={
+                "components": [
+                    {"id": str(uuid.uuid4()), "type": "test"}  # Missing title, content, order
+                ]
+            },
+            timeout=30.0
+        )
+        print(f"Missing fields Status Code: {response.status_code}")
+        assert response.status_code == 400
+        print(f"Error: {response.json().get('detail')}")
+
+        # Test with non-dict component
+        response = await client.post(
+            f"{BASE_URL}/api/v1/project/patent/{test_patent_id}/save",
+            json={"components": ["string instead of object"]},
+            timeout=30.0
+        )
+        print(f"Non-object Status Code: {response.status_code}")
+        assert response.status_code == 400
+        print(f"Error: {response.json().get('detail')}")
+
+    print("✅ Test 8 PASSED")
+
+
+async def test_empty_components_save():
+    """Test saving with empty components array"""
+    print(f"\n{'='*60}")
+    print("Test 9: Save with empty components (edge case)")
+    print(f"{'='*60}")
+
+    test_patent_id = str(uuid.uuid4())
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{BASE_URL}/api/v1/project/patent/{test_patent_id}/save",
+            json={"components": []},
+            timeout=30.0
+        )
+
+        print(f"Status Code: {response.status_code}")
+        data = response.json()
+        print(f"Version: {data.get('version')}")
+        print(f"Components count: {data.get('components_count')}")
+
+        assert response.status_code == 200
+        assert data["components_count"] == 0
+        assert data["version"] == 1
+
+    print("✅ Test 9 PASSED")
+
+
+async def test_data_integrity():
+    """Test data integrity checks"""
+    print(f"\n{'='*60}")
+    print("Test 10: Data integrity validation")
+    print(f"{'='*60}")
+
+    test_patent_id = str(uuid.uuid4())
+
+    async with httpx.AsyncClient() as client:
+        # Save valid data with extra fields
+        valid_component = {
+            "id": str(uuid.uuid4()),
+            "type": "background",
+            "title": "Background",
+            "content": "Test content",
+            "order": 1,
+            "extra_field": "This should be preserved"  # Extra fields allowed
+        }
+
+        response = await client.post(
+            f"{BASE_URL}/api/v1/project/patent/{test_patent_id}/save",
+            json={"components": [valid_component]},
+            timeout=30.0
+        )
+
+        assert response.status_code == 200
+        print("✅ Saved component with extra fields")
+
+        # Retrieve and verify
+        response = await client.get(
+            f"{BASE_URL}/api/v1/project/patent/{test_patent_id}",
+            timeout=30.0
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert len(data["components"]) == 1
+        assert data["components"][0]["extra_field"] == "This should be preserved"
+        print("✅ Extra fields preserved correctly")
+
+    print("✅ Test 10 PASSED")
+
+
 async def main():
     """Run all tests"""
     print(f"\n{'#'*60}")
@@ -230,6 +389,10 @@ async def main():
 
         # Test error handling
         await test_nonexistent_draft()
+        await test_invalid_uuid_format()
+        await test_invalid_component_structure()
+        await test_empty_components_save()
+        await test_data_integrity()
 
         print(f"\n{'='*60}")
         print("✅ ALL TESTS PASSED!")
